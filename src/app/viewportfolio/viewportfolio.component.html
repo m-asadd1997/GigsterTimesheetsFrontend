@@ -1,0 +1,213 @@
+<nav class="navbar navbar-light bg-light" style="background-color: white !important;border-top-color: black;border-top-style:solid; border-top-width: thin; border-bottom-style: ridge; box-shadow:0px 5px 5px rgb(179, 179, 179);">
+  <a class="navbar-brand mb-0 h3" href="#" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight: 600;">
+   PROFILES</a>
+   <div style="margin-right: 50%;" *ngIf="checkToken()">
+    <button mat-stroked-button (click)="goToNewProfiles()">
+      Create New Profile
+    </button>
+    &nbsp;
+    <button mat-stroked-button (click)="goToapplicantTable()">Browse Profiles</button>
+   </div>
+   <div *ngIf="checkToken()" style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()">
+    <img src="assets/icons8-logout-rounded-left-24.png" alt="">
+  </div>
+   <div class="row" style="float: right; margin-right: 1%;">
+    <img src="assets/logo.jpeg" height="33" width="57">
+  </div>
+</nav>
+<br>
+<div *ngIf="showLoading" style="margin-left: 47%; margin-top: 10%;">
+  <div class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div *ngIf="applicantObj" class = "container" >
+<mat-card>
+  <mat-card-header style="background-color: #d7edf8">
+    <div class="container" id="myTableElementId">
+      <div class="row">
+        <div class="col-0">
+          
+          <img
+            style="margin-left: 2% ;height: 140px;"
+            [src]="applicantObj.userImage!=null? 'data:image/jpeg;base64,'+applicantObj.userImage : 'assets/user.png' "
+            alt="Avatar"
+            class="avatar"
+          /></div>
+
+          <!-- <input type="file"  style="margin-left: 40%;" > -->
+          <div class="col-6" style="margin-top: 40px;">
+              <div class="row">
+          <span
+            class="font-weight-bold col-6"
+            style="font-size: x-large;"
+            >{{applicantObj.name}}</span
+          ></div>
+
+          <!-- <br /> -->
+          <div class="row">
+          <span style="margin-top: 15px;margin-left: 15px;" >{{applicantObj.email}}</span></div>
+        </div>
+      </div>
+    </div>
+  </mat-card-header>
+  <br>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="row">
+        <div class="col-4">
+          <span class = "font-weight-bold text-uppercase text-muted" style="font-size: small;">Documentation</span>
+        </div>
+      </div>
+      <br>
+     
+      <div class="row">
+        <div class="col-4">
+          <span class = "font-weight-bold my-10" style="font-size: small">Visa Details</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <span class="text-muted" style="font-size: small">{{applicantObj.visaDetails}}</span>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-4">
+          <span class = "font-weight-bold my-4" style="font-size: small">Canadian Citizen</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <span class="text-muted" style="font-size: small">{{applicantObj.citizenship}}</span>
+        </div>
+      </div>
+      <br>
+      <!-- <div class="row">
+        <div class="col-6">
+          <span class = "font-weight-bold my-4" style="font-size: small">Completed Documentation</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <span class="text-muted" style="font-size: small">{{applicantObj.}}</span>
+        </div>
+
+      </div> -->
+      <br>
+      
+
+      <!-- <div class="row">
+        <div class="col-8">
+          <span class = "font-weight-bold text-uppercase text-muted" style="font-size: small;">Completed Documentation</span>
+        </div>
+      </div> -->
+      <br>
+      
+
+      <div class="row">
+        <div class="col-6" *ngIf="applicantObj.employeeApplication">
+          <span class = "font-weight-normal  text-muted" style="font-size: small;">Employee Application</span>
+        </div>
+        <div class="col-4" *ngIf="applicantObj.medicalClearance">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">Medical Clearance</span>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-6" *ngIf="applicantObj.employeeOrientation">
+          <span class = "font-weight-normal  text-muted" style="font-size: small;">Employee Orientation</span>
+        </div>
+        <div class="col-4" *ngIf="applicantObj.employeeWellness">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">Employee Wellness</span>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-6" *ngIf="applicantObj.employeeIdentification">
+          <span class = "font-weight-normal  text-muted" style="font-size: small;">Employee identification</span>
+        </div>
+        <div class="col-4" *ngIf="applicantObj.emergencyContact">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">Employee Contact</span>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-4" *ngIf="applicantObj.securityClearance">
+          <span class = "font-weight-normal text-muted" style="font-size: small;">Security Clearance</span>
+        </div>
+      </div>
+
+
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+
+<div class="col-4">
+    <div class="row">
+        <div class="col-8">
+          <span class = "font-weight-bold text-uppercase text-muted" style="font-size: small;">Contact Information</span>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-6">
+          <span class = "font-weight-bold" style="font-size: small;">Phone</span>
+        </div>
+        <div class="col-6">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">{{applicantObj.phone}}</span>
+          </div>
+      </div>
+      <br>
+      
+      <div class="row">
+        <div class="col-6">
+          <span class = "font-weight-bold" style="font-size: small;">Address</span>
+        </div>
+        <div class="col-6">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">{{applicantObj.address}}</span>
+          </div>
+      </div>
+      <br>
+      
+      <div class="row">
+        <div class="col-8">
+          <span class = "font-weight-bold text-uppercase text-muted" style="font-size: small;">Basic Information</span>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-6">
+          <span class = "font-weight-bold" style="font-size: small;">Birthday</span>
+        </div>
+        <div class="col-6">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">{{applicantObj.dateOfBirth}}</span>
+          </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-6">
+          <span class = "font-weight-bold" style="font-size: small;">Gender</span>
+        </div>
+        <div class="col-6">
+            <span class = "font-weight-normal  text-muted" style="font-size: small;">{{applicantObj.gender}}</span>
+          </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-6">
+        </div>
+        <div class="col-6">
+            <button class="btn btn-primary" (click)="downloadFile()">View Resume</button>
+         
+        </div>
+      </div>
+
+
+</div>
+
+  </div>
+</mat-card>
+</div>
+
+
