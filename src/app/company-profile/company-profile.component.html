@@ -1,0 +1,57 @@
+<mat-card style="width: 40%; margin-left: 30%; margin-top: 7%;">
+    <div>
+      <img src = "assets/icons8-contacts-30.png" > 
+      <b>Company Profile</b>
+    </div>
+    <hr />
+    <form class="example-form" #myForm="ngForm">
+
+        <div class="col">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <!-- <mat-label>Favorite food</mat-label> -->
+            <input matInput="text" placeholder="Legal Company Name" [(ngModel)]=companyObj.companyname name="companyName" required/>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <!-- <mat-label>Favorite food</mat-label> -->
+            <input matInput="text" placeholder="Corporate Address" [(ngModel)]=companyObj.companyaddress name="corporateAddress" required/>
+          </mat-form-field>
+        </div>
+      
+      <div class = "col">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <!-- <mat-label>Favorite food</mat-label> -->
+          <input matInput="text" placeholder="Billing Address" name="address" [(ngModel)]="companyObj.billingaddress" required
+  
+          />
+        </mat-form-field>
+      </div>
+      <div class = "col">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <!-- <mat-label>Favorite food</mat-label> -->
+          <input matInput="text" placeholder="Contact Name" name = name [(ngModel)]=companyObj.contactname required/>
+        </mat-form-field>
+      </div>
+      <div class = "col">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <!-- <mat-label>Favorite food</mat-label> -->
+          <input matInput="text" placeholder="Contact Title" name=title [(ngModel)]=companyObj.contacttitle required />
+        </mat-form-field>
+      </div>
+      <hr>
+      <br>
+      <div class = "col">
+        <button
+          [disabled]="disableSaveButton"
+          mat-raised-button
+          color="warn"
+          style="background-color: black;"
+          (click)="submit(myForm)"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </mat-card>
+  
