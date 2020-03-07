@@ -5,6 +5,8 @@ import { MainScreenComponent } from './main-screen/main-screen.component';
 import { ApplicantTableComponent } from './applicant-table/applicant-table.component';
 import { TestComponent } from './test/test.component';
 import { ViewportfolioComponent } from './viewportfolio/viewportfolio.component';
+import { AddCurrentTimesheetsComponent } from './add-current-timesheets/add-current-timesheets.component';
+import { ViewCurrentTimesheetsComponent } from './view-current-timesheets/view-current-timesheets.component';
 
 
 const routes: Routes = [
@@ -24,6 +26,11 @@ const routes: Routes = [
     path:"editapplicantform/:id",component:MainScreenComponent},
 
     {path:"viewportfolio/:id",component:ViewportfolioComponent
+  },
+  {
+    path:"addcurrenttimesheets",component:AddCurrentTimesheetsComponent
+  },{
+    path:"currenttimesheets",component:ViewCurrentTimesheetsComponent
   }
 ];
 
