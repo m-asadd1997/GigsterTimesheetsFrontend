@@ -1,0 +1,62 @@
+<mat-card style="width: 40%; margin-left: 30%; margin-top: 7%;">
+  <div  style="font-size: large;">
+    <img src = "assets/icons8-contacts-30.png" > 
+    <span><b>Add User</b></span>
+  </div>
+  <hr />
+  <form class="example-form" #myForm="ngForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <!-- <mat-label>Favorite food</mat-label> -->
+          <input matInput="text" placeholder="First Name" [(ngModel)]=adduserobj.firstname name="firstname" required/>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <!-- <mat-label>Favorite food</mat-label> -->
+          <input matInput="text" placeholder="Last Name" [(ngModel)]=adduserobj.lastname name="lastname" required/>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <mat-form-field class="example-full-width" style="width: 100%;">
+        <!-- <mat-label>Favorite food</mat-label> -->
+        <input matInput="email" placeholder="Email" name="email" [(ngModel)]="adduserobj.email" required
+
+        />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="example-full-width" style="width: 100%;">
+        <!-- <mat-label>Favorite food</mat-label> -->
+        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" placeholder="Password" name = "password" [(ngModel)]=adduserobj.password required/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="example-full-width" style="width: 100%;">
+        <!-- <mat-label>Favorite food</mat-label> -->
+        <input  matInput [type]="hide ? 'password' : 'text'" placeholder="Password" name="repeatpassword" [(ngModel)]=adduserobj.repeatpassword required />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-radio-group aria-label="Select an option" name ="options"[(ngModel)]=adduserobj.options>
+        <mat-radio-button value="Employee">Employee</mat-radio-button>
+        <mat-radio-button value="Supervisor">Supervisor</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <hr>
+    <br>
+    <div>
+      <button
+        [disabled]="disableSaveButton"
+        mat-raised-button
+        color="warn"
+        style="background-color: black;"
+        (click)="submit(myForm);"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</mat-card>

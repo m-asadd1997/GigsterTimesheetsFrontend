@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,6 +42,11 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { ViewCurrentTimesheetsComponent } from './view-current-timesheets/view-current-timesheets.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 registerLocaleData(en);
+import { AdduserComponent } from './adduser/adduser.component';
+import {MatRadioModule} from '@angular/material/radio';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
+
+
 
 // import {MatPaginator} from '@angular/material/paginator';
 // import {MatTableDataSource} from '@angular/material/table';
@@ -57,7 +61,10 @@ registerLocaleData(en);
     ViewportfolioComponent,
     NotificationsComponent,
     AddCurrentTimesheetsComponent,
-    ViewCurrentTimesheetsComponent
+    ViewCurrentTimesheetsComponent,
+    AdduserComponent,
+    CompanyProfileComponent
+    
   ],
   imports: [
     CommonModule,
@@ -75,14 +82,11 @@ registerLocaleData(en);
     HttpClientModule,
     MatCardModule,
     MatTableModule,
+    MatRadioModule,
 
     MatDialogModule,  
 
-    
-
     MatDividerModule,
-    
-
     NgbModule,
     MatIconModule,
     MatPaginatorModule,
@@ -103,6 +107,7 @@ registerLocaleData(en);
       multi: true
     },
     { provide: NZ_I18N, useValue: en_US },
+    
   ],
   bootstrap: [AppComponent]
 })
