@@ -48,4 +48,12 @@ export class ApplicantServiceService {
   getPortfolioDataById(id):Observable<any>{
     return this.http.get(this.url+"token/view-portfolio/"+id);
   }
+
+  getUserByEmail(email):Observable<any>{
+    return this.http.get(this.url+"token/user/"+email);
+  }
+
+  getSupervisors(organizationName):Observable<any>{
+    return this.http.get(this.url+"token/"+organizationName);
+  }
 }

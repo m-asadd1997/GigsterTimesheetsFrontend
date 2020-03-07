@@ -15,7 +15,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatCardModule} from '@angular/material/card';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
 import { TestComponent } from './test/test.component';
 
@@ -34,6 +34,14 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ExportAsModule } from 'ngx-export-as';
+import { AddCurrentTimesheetsComponent } from './add-current-timesheets/add-current-timesheets.component';
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import en from '@angular/common/locales/en';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { ViewCurrentTimesheetsComponent } from './view-current-timesheets/view-current-timesheets.component';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+registerLocaleData(en);
 import { AdduserComponent } from './adduser/adduser.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
@@ -52,6 +60,8 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
     EmailPopupComponent,
     ViewportfolioComponent,
     NotificationsComponent,
+    AddCurrentTimesheetsComponent,
+    ViewCurrentTimesheetsComponent,
     AdduserComponent,
     CompanyProfileComponent
     
@@ -82,7 +92,11 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
     MatPaginatorModule,
     MatDividerModule,
     MatSnackBarModule,
-    ExportAsModule
+    ExportAsModule,
+    NgZorroAntdModule,
+    NzDatePickerModule,
+    NzTimePickerModule,
+    NzButtonModule
     // MatGridListModule
   ],
   providers: [
@@ -92,6 +106,7 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
       useClass: NoopInterceptor,
       multi: true
     },
+    { provide: NZ_I18N, useValue: en_US },
     
   ],
   bootstrap: [AppComponent]

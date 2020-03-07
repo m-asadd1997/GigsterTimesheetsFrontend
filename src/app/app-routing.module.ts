@@ -5,6 +5,8 @@ import { MainScreenComponent } from './main-screen/main-screen.component';
 import { ApplicantTableComponent } from './applicant-table/applicant-table.component';
 import { TestComponent } from './test/test.component';
 import { ViewportfolioComponent } from './viewportfolio/viewportfolio.component';
+import { AddCurrentTimesheetsComponent } from './add-current-timesheets/add-current-timesheets.component';
+import { ViewCurrentTimesheetsComponent } from './view-current-timesheets/view-current-timesheets.component';
 import { AdduserComponent} from './adduser/adduser.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 
@@ -23,16 +25,22 @@ const routes: Routes = [
     path:"browseProfiles",component:TestComponent
   },
   {
-    path:"editapplicantform/:id",component:MainScreenComponent
+
+    path:"editapplicantform/:id",component:MainScreenComponent},
+
+    {path:"viewportfolio/:id",component:ViewportfolioComponent
   },
   {
-    path:"viewportfolio/:id",component:ViewportfolioComponent
+    path:"addcurrenttimesheets",component:AddCurrentTimesheetsComponent
+  },{
+    path:"currenttimesheets",component:ViewCurrentTimesheetsComponent
   },
   {
     path:"adduser",component:AdduserComponent
   },
   {
     path:"companyprofile", component:CompanyProfileComponent
+
   }
 ];
 
