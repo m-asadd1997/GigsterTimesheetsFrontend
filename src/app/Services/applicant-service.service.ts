@@ -12,6 +12,15 @@ export class ApplicantServiceService {
   
   constructor(private http: HttpClient) { }
    url:any = environment.baseUrl;
+
+  saveUserForm(adduserObj:any):Observable<any>{
+  return this.http.post("http://localhost:3000/userData",adduserObj)
+  }
+
+  saveCompanyProfile(addCompanyProfile:any):Observable<any>{
+    return this.http.post("http://localhost:3000/companyProfile",addCompanyProfile)
+  }
+
   saveApplicantForm(appObj: any):Observable<any>{
     return this.http.post(this.url+"api/applicant-form",appObj)
   }

@@ -5,6 +5,8 @@ import { MainScreenComponent } from './main-screen/main-screen.component';
 import { ApplicantTableComponent } from './applicant-table/applicant-table.component';
 import { TestComponent } from './test/test.component';
 import { ViewportfolioComponent } from './viewportfolio/viewportfolio.component';
+import { AdduserComponent} from './adduser/adduser.component';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
 
 
 const routes: Routes = [
@@ -21,9 +23,16 @@ const routes: Routes = [
     path:"browseProfiles",component:TestComponent
   },
   {
-    path:"editapplicantform/:id",component:MainScreenComponent},
-
-    {path:"viewportfolio/:id",component:ViewportfolioComponent
+    path:"editapplicantform/:id",component:MainScreenComponent
+  },
+  {
+    path:"viewportfolio/:id",component:ViewportfolioComponent
+  },
+  {
+    path:"adduser",component:AdduserComponent
+  },
+  {
+    path:"companyprofile", component:CompanyProfileComponent
   }
 ];
 
