@@ -45,6 +45,10 @@ registerLocaleData(en);
 import { AdduserComponent } from './adduser/adduser.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { SupervisorViewComponent } from './supervisor-view/supervisor-view.component';
+import { SupervisorEditComponent } from './supervisor-edit/supervisor-edit.component';
+import { RegisterComponent } from './register/register.component';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 
 
@@ -63,7 +67,10 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
     AddCurrentTimesheetsComponent,
     ViewCurrentTimesheetsComponent,
     AdduserComponent,
-    CompanyProfileComponent
+    CompanyProfileComponent,
+    SupervisorViewComponent,
+    SupervisorEditComponent,
+    RegisterComponent
     
   ],
   imports: [
@@ -96,7 +103,8 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
     NgZorroAntdModule,
     NzDatePickerModule,
     NzTimePickerModule,
-    NzButtonModule
+    NzButtonModule,
+    NzMessageModule,
     // MatGridListModule
   ],
   providers: [

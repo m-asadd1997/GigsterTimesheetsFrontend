@@ -9,6 +9,9 @@ import { AddCurrentTimesheetsComponent } from './add-current-timesheets/add-curr
 import { ViewCurrentTimesheetsComponent } from './view-current-timesheets/view-current-timesheets.component';
 import { AdduserComponent} from './adduser/adduser.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { SupervisorViewComponent } from './supervisor-view/supervisor-view.component';
+import { SupervisorEditComponent } from './supervisor-edit/supervisor-edit.component';
+import { RegisterComponent } from './register/register.component';
 
 
 const routes: Routes = [
@@ -33,7 +36,12 @@ const routes: Routes = [
   {
     path:"addcurrenttimesheets",component:AddCurrentTimesheetsComponent
   },{
-    path:"currenttimesheets",component:ViewCurrentTimesheetsComponent
+    path:"viewtimesheet/:id",component:AddCurrentTimesheetsComponent
+  },{
+    path:"modifytimesheets/:id",component:SupervisorEditComponent
+  }
+  ,{
+    path:"currenttimesheets/:id",component:ViewCurrentTimesheetsComponent
   },
   {
     path:"adduser",component:AdduserComponent
@@ -41,6 +49,15 @@ const routes: Routes = [
   {
     path:"companyprofile", component:CompanyProfileComponent
 
+  },
+  {
+    path:"supervisorview",component:SupervisorViewComponent
+  },
+  {
+    path:"supervisoredit",component:SupervisorEditComponent
+
+  },{
+    path:"register",component:RegisterComponent
   }
 ];
 

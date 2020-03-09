@@ -13,7 +13,7 @@ export class Timesheet {
   saturdayEndTime:String;
   sundayStartTime:String;
   sundayEndTime:String;
-  status:String;
+//   status:String;
   user:any;
   supervisor:any;
 }

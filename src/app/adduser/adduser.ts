@@ -1,11 +1,12 @@
 
+
 export class adduser{
 
-    firstname : string;
-    lastname : string;
+    name : string;
     email : string;
     password: string;
-    repeatpassword:string;
-    options: string
+    userType: string;
+    organizationName:String;
+    // active:boolean = true;
 
 }
