@@ -2,10 +2,31 @@
   class="navbar navbar-light bg-light"
   style="background-color: white !important;border-top-color: black;border-top-style:solid; border-top-width: thin; border-bottom-style: ridge; box-shadow:0px 5px 5px rgb(179, 179, 179);"
 >
- <div>
-     <img src="assets/Capture.PNG" width="120" height="30">
- </div>
+<div>
+  <img src="assets/Capture.PNG" width="120" height="30">
+</div>
+  <div style="margin-right: 50%;">
+    <button
+      mat-stroked-button
+      (click)="goToNewTimesheet()"
+      style=" font-size: 1.1em;font-weight: 600;"
+    >
+      Create Timesheet
+    </button>
+    &nbsp;
+    <button
+      mat-stroked-button
+      (click)="goToMyTimeSheets()"
+      style="font-size: 1.1em;font-weight: 600;"
+    >
+    My Timesheets
+    </button>
+  </div>
+  <div style="margin-right: 5%;" style="cursor: pointer;" ><!-- (click)="logout() -->
+    <img src="assets/icons8-logout-rounded-left-24.png" alt="">
+  </div>
 </nav>
+
 <br>
 
 <div class="container">
@@ -16,9 +37,15 @@
                 Current Timesheet
                 
             </h2>
-            <p style="color: #6E6F6D; margin-top: -3%;">
+
+            <div style="color: #6E6F6D; margin-top: -3%;">
+                <button mat-icon-button  color="primary" ><mat-icon>keyboard_arrow_left</mat-icon></button>          
+
                 Mon Feb 10 2020 to Sun Feb 16 2020
-            </p>
+
+                <button mat-icon-button  color="primary" ><mat-icon>keyboard_arrow_right</mat-icon></button>          
+
+            </div>
             
         </div>
     </div>
@@ -76,7 +103,7 @@
         <div class="row" style="margin-left: 43%;">
         <!-- <button mat-raised-button color="primary" style="background-color: black;">Save Timesheet</button> -->
     </div>
-    <div class="row" style="background-color: #FCFCFC;">
+    <div class="row" style="background-color: #FCFCFC;" *ngIf="disableButton">
     <div class="col-12">
         
         <h2 style="color: rgb(104, 105, 103); font-weight: 500;">

@@ -1,7 +1,9 @@
 export class company{
-    companyname: string;
-    companyaddress:string;
-    billingaddress:string;
-    contactname:string;
-    contacttitle:string;
+    companyName: string;
+    corporateAddress:String;
+    billingAddress:string;
+    contactName:string;
+    contactTitle:string;
+    roles:string;
+    startingDayOfWeek:String;
 }

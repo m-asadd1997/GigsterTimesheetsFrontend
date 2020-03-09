@@ -1,30 +1,31 @@
+
 <nav
-  class="navbar navbar-light bg-light"
-  style="background-color: white !important;border-top-color: black;border-top-style:solid; border-top-width: thin; border-bottom-style: ridge; box-shadow:0px 5px 5px rgb(179, 179, 179);"
+class="navbar navbar-light bg-light"
+style="background-color: white !important;border-top-color: black;border-top-style:solid; border-top-width: thin; border-bottom-style: ridge; box-shadow:0px 5px 5px rgb(179, 179, 179);"
 >
 <div>
-  <img src="assets/Capture.PNG" width="120" height="30">
+<img src="assets/Capture.PNG" width="120" height="30">
 </div>
-  <div style="margin-right: 50%;">
-    <button
-      mat-stroked-button
-      (click)="goToNewTimesheet()"
-      style=" font-size: 1.1em;font-weight: 600;"
-    >
-      Create Timesheet
-    </button>
-    &nbsp;
-    <button
-      mat-stroked-button
-      (click)="goToMyTimeSheets()"
-      style="font-size: 1.1em;font-weight: 600;"
-    >
-      My Timesheets
-    </button>
-  </div>
-  <div style="margin-right: 5%;" style="cursor: pointer;" ><!-- (click)="logout() -->
-    <img src="assets/icons8-logout-rounded-left-24.png" alt="">
-  </div>
+<div style="margin-right: 50%;">
+  <!-- <button
+    mat-stroked-button
+    (click)="goToNewTimesheet()"
+    style=" font-size: 1.1em;font-weight: 600;"
+  >
+    Create Timesheet
+  </button>
+  &nbsp;
+  <button
+    mat-stroked-button
+    (click)="goToMyTimeSheets()"
+    style="font-size: 1.1em;font-weight: 600;"
+  >
+    My Timesheets
+  </button> -->
+</div>
+<div style="margin-right: 5%;" style="cursor: pointer;" ><!-- (click)="logout() -->
+  <img src="assets/icons8-logout-rounded-left-24.png" alt="">
+</div>
 </nav>
 <br>
 <div class="container">
@@ -48,22 +49,23 @@
         </ng-container>
     
         <!-- Weight Column -->
-        <ng-container matColumnDef="modifiedBy">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Modified</th>
+        <ng-container matColumnDef="lastModifiedBy">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Last Modified By </th>
           <td mat-cell *matCellDef="let element"> {{element.modifiedBy}} </td>
         </ng-container>
     
         <!-- Symbol Column -->
-        <!-- <ng-container matColumnDef="address">
+        <ng-container matColumnDef="sentBy">
           <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Sent By </th>
-          <td mat-cell *matCellDef="let element"> {{element.}} </td>
-        </ng-container> -->
+          <td mat-cell *matCellDef="let element"> {{element.sentBy}} </td>
+        </ng-container>
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action </th>
+          <!-- <td mat-cell *matCellDef="let element"> {{element.address}} </td> -->
           <td mat-cell *matCellDef="let element">
-          <button mat-icon-button  color="primary" (click)="viewTimesheet(element.id)"><mat-icon>visibility</mat-icon></button> 
-          <!-- <button mat-icon-button (click)="modifyAndApproveTimesheet()"><mat-icon>edit</mat-icon></button>           -->
-          <!-- <button mat-icon-button (click)="deleteApplicantById(element.id)" color="warn"><mat-icon>delete</mat-icon></button>           -->
+          <button mat-icon-button  color="primary" (click)="approveTimesheet(element.id)"><mat-icon>check_circle</mat-icon></button> 
+          <button mat-icon-button (click)="modifyAndApproveTimesheet(element.id)"><mat-icon>add_circle</mat-icon></button>          
+          <button mat-icon-button  color="warn" (click)="disapproveTimesheet(element.id)"><mat-icon>cancel</mat-icon></button>          
       </td>
   
         </ng-container>
@@ -103,5 +105,4 @@
         </div>
       </div>
     </div>
-    </div>
- 
+  </div>

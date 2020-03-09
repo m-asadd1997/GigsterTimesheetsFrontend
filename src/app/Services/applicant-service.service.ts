@@ -14,11 +14,11 @@ export class ApplicantServiceService {
    url:any = environment.baseUrl;
 
   saveUserForm(adduserObj:any):Observable<any>{
-  return this.http.post("http://localhost:3000/userData",adduserObj)
+  return this.http.post(this.url+"token/user",adduserObj)
   }
 
   saveCompanyProfile(addCompanyProfile:any):Observable<any>{
-    return this.http.post("http://localhost:3000/companyProfile",addCompanyProfile)
+    return this.http.post(this.url+"api/companyprofile/",addCompanyProfile)
   }
 
   saveApplicantForm(appObj: any):Observable<any>{
@@ -55,5 +55,35 @@ export class ApplicantServiceService {
 
   getSupervisors(organizationName):Observable<any>{
     return this.http.get(this.url+"token/"+organizationName);
+  }
+
+  registerUser(registerObj:any):Observable<any>{
+    return this.http.post(this.url+"token/user",registerObj);
+  }
+
+  saveTimesheets(timesheetObj):Observable<any>{
+    return this.http.post(this.url+"api/timesheets/",timesheetObj)
+  }
+
+  getTimesheetsForUser(id):Observable<any>{
+    return this.http.get(this.url+"api/timesheets/employee/"+id)
+  }
+
+  getTimesheetById(id):Observable<any>
+  {
+    return this.http.get(this.url+"api/timesheets/"+id);
+  }
+
+  getTimesheetsForSupervisor(id):Observable<any>{
+    return this.http.get(this.url+"api/timesheets/supervisor/"+id)
+  }
+
+  changeTimesheetStatus(id,status):Observable<any>
+  {
+    return this.http.get(this.url+"api/timesheets/"+status+"/"+id);
+  }
+
+  modifyAndApprove(id,obj):Observable<any>{
+    return this.http.put(this.url+"api/timesheets/"+id,obj)
   }
 }

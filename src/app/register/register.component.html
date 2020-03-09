@@ -1,0 +1,164 @@
+<!-- <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-2"></div>
+      <div class="col-lg-6 col-md-8 login-box">
+        <br />
+        <br />
+        <br />
+        <div class="col-lg-12" style="margin-top: 0px;">
+          <img src="assets/logo.jpeg" height="100" width="170" />
+        </div>
+        <br>
+        <div>
+          Already have an account? <a style="color: steelblue;" (click)="routeToLogin()">Login now.</a>
+        </div>
+        <div class="col-lg-12 login-form">
+          <div class="col-lg-12 login-form">
+            <form>
+              <div class="col-12" style="margin-left: 30%;">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Email</mat-label>
+                  <input
+                    #email
+                    type="text"
+                    style="width: 100%;"
+                    matInput
+                    placeholder="Enter Email"
+                    name="email"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-12" style="margin-left: 30%;">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Password</mat-label>
+                  <input
+                    #password
+                    type="password"
+                    style="width: 100%;"
+                    matInput
+                    placeholder="Enter Password"
+                    name="password"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-12" style="margin-left: 30%;">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Repeat Password</mat-label>
+                  <input
+                    #password
+                    type="password"
+                    style="width: 100%;"
+                    matInput
+                    placeholder="Repeat Password"
+                    name="password"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-12" style="margin-left: 30%;">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Organization Name</mat-label>
+                  <input
+                    #email
+                    type="text"
+                    style="width: 100%;"
+                    matInput
+                    placeholder="Enter Organization Name"
+                    name="OrganizationName"
+                  />
+                </mat-form-field>
+              </div>
+              
+              
+              <div class="col-lg-12 loginbttm">
+                <div class="col-lg-6 login-btm login-text">
+                </div>
+                <div class="col-lg-6 login-btm login-button">
+                  <button
+                    type="submit"
+                    mat-stroked-button
+                    style="margin-left: 150%;color: grey;"
+                    
+                  >
+                    REGISTER
+                  </button>
+                 
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-2"></div>
+      </div>
+    </div>
+    <br />
+  </div>
+   -->
+
+<div class="bg-img">
+  <form action="/action_page.php" class="container">
+    <div class="col-lg-12" style="margin-top: 5px;margin-left: 18%;">
+      <img src="assets/login.PNG" height="43" width="170" />
+    </div>
+    <br />
+    <div style="margin-left: 12%;">
+      Already have an account?
+      <a style="color: steelblue;" (click)="routeToLogin()">Login now.</a>
+    </div>
+    <br />
+
+    <label for="email"><b>Email</b></label>
+    <input
+      type="text"
+      #email
+      placeholder="Enter Email"
+      name="email"
+      [(ngModel)]="registerObj.email"
+      required
+    />
+
+    <label for="psw"><b>Password</b></label>
+    <input
+      type="password"
+      #password
+      placeholder="Enter Password"
+      [(ngModel)]="registerObj.password"
+      name="psw"
+      required
+    />
+    <label for="psw"><b>Repeat Password</b></label>
+    <input
+      type="password"
+      #password
+      placeholder="Repeat Password"
+      [(ngModel)]="repeatPassword"
+      name="psw"
+      required
+    />
+    <label for="email"><b>Organization Name</b></label>
+    <input
+      type="password"
+      #password
+      placeholder="Enter Organization Name"
+      [(ngModel)]="registerObj.organizationName"
+      name="psw"
+      required
+    />
+    <br />
+    <br />
+    <!-- <button type="submit" class="btn">Login</button> -->
+
+    <button
+      type="submit"
+      mat-stroked-button
+      style="color: whitesmoke; background-color: black;font-weight: lighter;margin-left: 2%;"
+      (click)="registerUser()"
+    >
+      Register
+    </button>
+    <div *ngIf="showLoading" style="margin-left: 50%;margin-top: 5%;">
+      <div class="spinner-grow text-dark" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </form>
+</div>

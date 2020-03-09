@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { company } from './company';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-profile',
@@ -12,7 +13,20 @@ export class CompanyProfileComponent implements OnInit {
 
    companyObj: company= new company();
    disableSaveButton=false;
-  constructor(private applicantService:ApplicantServiceService) { }
+   days: any[] = [
+     
+     {value:"Monday",viewValue:"Monday"},
+     {value:"Tuesday",viewValue:"Tuesday"},
+     {value:"Wednesday",viewValue:"Wednesday"},
+     {value:"Thursday",viewValue:"Thursday"},
+     {value:"Friday",viewValue:"Friday"},
+     {value:"Saturday",viewValue:"Saturday"},
+     {value:"Sunday",viewValue:"Sunday"},
+
+
+   
+  ]
+  constructor(private applicantService:ApplicantServiceService,private router:Router) { }
 
   ngOnInit() {
   }
@@ -25,6 +39,14 @@ export class CompanyProfileComponent implements OnInit {
       console.log(d);
       myForm.reset();
     })
+  }
+
+  goToOrganizationConfig(){
+    this.router.navigate(['companyprofile'])
+  }
+
+  goToAddNewUser(){
+    this.router.navigate(['adduser'])
   }
 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { adduser } from './adduser';
 import { NgForm } from '@angular/forms';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
+import { Router } from '@angular/router';
 
 
 
@@ -17,7 +18,7 @@ export class AdduserComponent implements OnInit {
 
   adduserobj: adduser= new adduser();
 
-  constructor(private applicantService:ApplicantServiceService) { }
+  constructor(private applicantService:ApplicantServiceService,private router:Router) { }
 
   ngOnInit() {
   }
@@ -31,6 +32,14 @@ export class AdduserComponent implements OnInit {
       myForm.reset();
     })
 
+  }
+
+  goToOrganizationConfig(){
+    this.router.navigate(['companyprofile'])
+  }
+
+  goToAddNewUser(){
+    this.router.navigate(['adduser'])
   }
 
 }
