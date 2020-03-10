@@ -36,6 +36,10 @@ export class AddCurrentTimesheetsComponent implements OnInit {
     
   }
 
+  logout(){
+    this.service.logout(this.router);
+  }
+
   log(time: Date): void {
     // console.log(time && time.toTimeString());
   }
