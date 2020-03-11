@@ -24,6 +24,10 @@ export class SupervisorViewComponent implements OnInit {
   ngOnInit(): void {
     this.getTimesheets();
   }
+  
+  logout(){
+    this.service.logout(this.router);
+  }
 
   modifyAndApproveTimesheet(id){
     this.router.navigate(['modifytimesheets/'+id])

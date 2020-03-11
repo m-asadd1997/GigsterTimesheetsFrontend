@@ -19,6 +19,9 @@ export class SupervisorEditComponent implements OnInit {
     this.id = this.activateRoute.snapshot.params['id'];
     this.getTimeSheetById();
   }
+  logout(){
+    this.service.logout(this.router);
+  }
 
   log(time: Date): void {
     // console.log(time && time.toTimeString());

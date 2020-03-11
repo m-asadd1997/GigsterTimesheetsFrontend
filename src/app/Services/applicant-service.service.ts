@@ -13,6 +13,16 @@ export class ApplicantServiceService {
   constructor(private http: HttpClient) { }
    url:any = environment.baseUrl;
 
+   logout(router){
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('userType');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('organizationName');
+     router.navigate(['']);
+  }
+
   saveUserForm(adduserObj:any):Observable<any>{
   return this.http.post(this.url+"token/user",adduserObj)
   }
@@ -86,4 +96,5 @@ export class ApplicantServiceService {
   modifyAndApprove(id,obj):Observable<any>{
     return this.http.put(this.url+"api/timesheets/"+id,obj)
   }
+  
 }

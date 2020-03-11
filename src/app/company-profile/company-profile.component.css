@@ -10,3 +10,21 @@ example-form {
   .mat-radio-button ~ .mat-radio-button {
     margin-left: 16px;
   }
+
+  .avatar {
+    vertical-align: middle;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  #imgFile{
+    display: none;
+} 
+
+label{
+  padding: 5px;
+  background: grey; 
+  display: table;
+  color: #fff;
+   }
