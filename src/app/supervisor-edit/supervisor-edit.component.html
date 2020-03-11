@@ -7,21 +7,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
 <img src="assets/Capture.PNG" width="120" height="30">
 </div>
 <div style="margin-right: 50%;">
-  <!-- <button
-    mat-stroked-button
-    (click)="goToNewTimesheet()"
-    style=" font-size: 1.1em;font-weight: 600;"
-  >
-    Create Timesheet
-  </button>
-  &nbsp;
-  <button
-    mat-stroked-button
-    (click)="goToMyTimeSheets()"
-    style="font-size: 1.1em;font-weight: 600;"
-  >
-  My Timesheets
-  </button> -->
+
 </div>
 <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()">
   <img src="assets/icons8-logout-rounded-left-24.png" alt="">
@@ -31,6 +17,14 @@ style="background-color: white !important;border-top-color: black;border-top-sty
 <br>
 
 <div class="container">
+    <button
+    mat-stroked-button
+    (click)="goToRecievedTimesheets()"
+    style="font-size: 1.1em;font-weight: 600; margin-bottom: 1%;"
+    >
+    Back
+    </button>
+    
   <mat-card>
       <div class="row" >
       <div class="col-6">
@@ -39,7 +33,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
               
           </h2>
           <p style="color: #6E6F6D; margin-top: -3%;">
-              Mon Feb 10 2020 to Sun Feb 16 2020
+            {{showRange}} , Week No. {{weekId}}
           </p>
           
       </div>
@@ -52,6 +46,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                       <th scope="col">Day</th>
                       <th scope="col">Start Time</th>
                       <th scope="col">End Time</th>
+                      <th scope="col">Hours</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -59,36 +54,49 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                       <td>MONDAY</td>
                      <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.mondayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                      <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                     <td>{{mondayHrs}}</td>
                     </tr>
                     <tr>
                       <td>TUESDAY</td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.tuesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                      <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                     <td>{{tuesdayHrs}}</td>
+
                     </tr>
                     <tr>
                       <td>WEDNESDAY</td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.wednesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                      <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                     <td>{{wednesdayHrs}}</td>
+
                     </tr>
                     <tr>
                       <td>THURSDAY</td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.thursdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.thursdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                      <td>{{thursdayHrs}}</td>
+
                     </tr>
                     <tr>
                       <td>FRIDAY</td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.fridayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                      <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.fridayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                     <td>{{fridayHrs}}</td>
+
                     </tr>
                     <tr>
                       <td>SATURDAY</td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.saturdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                      <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.saturdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                     <td>{{saturdayHrs}}</td>
+
                     </tr>
                     <tr>
                       <td>SUNDAY</td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.sundayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                       <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.sundayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                      <td>{{sundayHrs}}</td>
+
                     </tr>
                   </tbody>
                 </table>

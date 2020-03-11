@@ -14,7 +14,7 @@ export class SupervisorViewComponent implements OnInit {
 
   tableData:any[] = [];
   showLoader = false;
-  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy', 'sentBy','action'];
+  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy', 'sentBy', 'Date','action'];
   dataSource: MatTableDataSource<any>;
   //@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild('scheduledOrdersPaginator') paginator: MatPaginator;

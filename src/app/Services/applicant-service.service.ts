@@ -96,5 +96,12 @@ export class ApplicantServiceService {
   modifyAndApprove(id,obj):Observable<any>{
     return this.http.put(this.url+"api/timesheets/"+id,obj)
   }
+
+
+  getTimesheetByWeekId(id,userId):Observable<any>{
+    return this.http.get(this.url+"api/timesheets/weekid/"+id+"/"+userId);
+  }
+
   
+
 }
