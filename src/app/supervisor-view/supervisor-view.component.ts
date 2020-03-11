@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+import { concatAll } from 'rxjs/operators';
 
 @Component({
   selector: 'app-supervisor-view',
@@ -14,15 +15,20 @@ export class SupervisorViewComponent implements OnInit {
 
   tableData:any[] = [];
   showLoader = false;
-  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy', 'sentBy', 'Date','action'];
+  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy', 'week','sentBy','action'];
   dataSource: MatTableDataSource<any>;
   //@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild('scheduledOrdersPaginator') paginator: MatPaginator;
   supId: any;
+  weekIdforView: any;
+  showRangeForView: string;
+  userImage:any;
   constructor(private service: ApplicantServiceService, private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
     this.getTimesheets();
+    this.userImage = sessionStorage.getItem("userImage");
+    console.log(this.userImage)
   }
   
   logout(){
@@ -34,17 +40,21 @@ export class SupervisorViewComponent implements OnInit {
   }
 
   getTimesheets(){
+    this.showLoader = true;
     this.tableData = [];
     this.supId = sessionStorage.getItem("userId");
     this.service.getTimesheetsForSupervisor(this.supId).subscribe(d=>{
       console.log("supervisor Timesheets======>",d)
       // this.tableData = d.result;
     d.result.map(d=>{
+      this.weekIdforView = d.weekId;
+      this.getRangeForView();
       this.tableData.push({
         id:d.id,
         status:d.status,
         modifiedBy:d.modifiedBy,
-        sentBy:d.user.name
+        sentBy:d.user.name,
+        week:this.showRangeForView
       })
     })
       
@@ -61,21 +71,21 @@ export class SupervisorViewComponent implements OnInit {
   }
 
   approveTimesheet(id){
-    
+    this.showLoader = true
     this.service.changeTimesheetStatus(id,"Approved").subscribe(d=>{
       if(d.status == 200){
-        let index = this.tableData.findIndex(p => p.id == id);
-        this.tableData.splice(index,1)
-        console.log("sppppppp",d.result)
-        this.showLoader = false;
+        // let index = this.tableData.findIndex(p => p.id == id);
+        // this.tableData.splice(index,1)
+        // console.log("sppppppp",d.result)
+        // this.showLoader = false;
         
-          this.tableData.push({
-            id:d.result.id,
-            status:d.result.status,
-            modifiedBy:d.result.modifiedBy,
-            sentBy:d.result.user.name
-          })
-        
+        //   this.tableData.push({
+        //     id:d.result.id,
+        //     status:d.result.status,
+        //     modifiedBy:d.result.modifiedBy,
+        //     sentBy:d.result.user.name
+        //   })
+        this.getTimesheets();
         
        // this.showLoading = false;
         this.message.success("Approved Succesfully", {
@@ -94,20 +104,21 @@ export class SupervisorViewComponent implements OnInit {
 }
 
 disapproveTimesheet(id){
-  
+  this.showLoader = true
   this.service.changeTimesheetStatus(id,"Disapproved").subscribe(d=>{
     if(d.status == 200){
-      let index = this.tableData.findIndex(p => p.id == id);
-        this.tableData.splice(index,1)
-      console.log("sppppppp",d.result)
-      this.showLoader = false;
+      // let index = this.tableData.findIndex(p => p.id == id);
+      //   this.tableData.splice(index,1)
+      // console.log("sppppppp",d.result)
+      // this.showLoader = false;
       
-        this.tableData.push({
-          id:d.result.id,
-          status:d.result.status,
-          modifiedBy:d.result.modifiedBy,
-          sentBy:d.result.user.name
-        })
+      //   this.tableData.push({
+      //     id:d.result.id,
+      //     status:d.result.status,
+      //     modifiedBy:d.result.modifiedBy,
+      //     sentBy:d.result.user.name
+      //   })
+      this.getTimesheets();
       
       
      // this.showLoading = false;
@@ -125,5 +136,37 @@ disapproveTimesheet(id){
     this.dataSource.paginator = this.paginator;
 })
 }
+getRangeForView(){
+  console.log(this.weekIdforView)
+  this.showRangeForView =  (this.dateFormatedDate(this.getStartingDay(this.weekIdforView,new Date().getFullYear())) + " to " + this.dateFormatedDate(this.getEndingDay(this.weekIdforView,new Date().getFullYear())))
+}
+dateFormatedDate(date){
+  return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+}
+getStartingDay( weeks, year ) {
+  var d = new Date(year, 0, 1);
+  var dayNum = d.getDay();
+  var requiredDate = --weeks * 7;
+  if (((dayNum!=0) || dayNum > 4)) {
+      var start = requiredDate;
+      requiredDate += 6;
+   }
+  d.setDate(1 - d.getDay() + ++start );
+  return d;
+}
+getEndingDay( weeks, year ) {
+  var d = new Date(year, 0, 1);
+  var dayNum = d.getDay();
+  var requiredDate = --weeks * 7;
+  if (((dayNum!=0) || dayNum > 4)) {
+     
+      requiredDate += 6;
+   }
 
+  d.setDate(1 - d.getDay() + ++requiredDate );
+  return d;
+}
+goToProfiles(){
+  this.router.navigate(['applicantForm'])
+}
 }

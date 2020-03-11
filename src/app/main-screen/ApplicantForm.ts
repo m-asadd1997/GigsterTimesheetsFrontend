@@ -21,6 +21,7 @@ export interface ApplicantForm {
     medicalClearance?: boolean;
     employeeWellness?: boolean;
     emergencyContact?: boolean;
+    checkEmail: string;
   }
   
   export class ApplicantForm implements ApplicantForm {

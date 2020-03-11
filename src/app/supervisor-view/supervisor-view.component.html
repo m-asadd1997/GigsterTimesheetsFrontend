@@ -6,22 +6,23 @@ style="background-color: white !important;border-top-color: black;border-top-sty
 <div>
 <img src="assets/Capture.PNG" width="120" height="30">
 </div>
-<div style="margin-right: 50%;">
-  <!-- <button
-    mat-stroked-button
-    (click)="goToNewTimesheet()"
-    style=" font-size: 1.1em;font-weight: 600;"
-  >
-    Create Timesheet
-  </button>
-  &nbsp;
-  <button
-    mat-stroked-button
-    (click)="goToMyTimeSheets()"
-    style="font-size: 1.1em;font-weight: 600;"
-  >
-    My Timesheets
-  </button> -->
+
+    <button
+      mat-stroked-button
+      (click)="goToProfiles()"
+      style="font-size: 1.1em;font-weight: 600;margin-left:-2%;"
+    >
+    Profiles
+    </button>
+
+<div style="margin-left: 70%;">
+  <nz-badge nzStatus="success">
+    <nz-avatar nzIcon="user" [nzSrc]="userImage != null
+    ? 'data:image/jpeg;base64,' + userImage
+    : 'assets/user.png'
+"></nz-avatar>
+  </nz-badge>
+   
 </div>
 <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()" >
   <img src="assets/icons8-logout-rounded-left-24.png" alt="">
@@ -63,6 +64,10 @@ style="background-color: white !important;border-top-color: black;border-top-sty
           <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Sent By </th>
           <td mat-cell *matCellDef="let element"> {{element.sentBy}} </td>
         </ng-container>
+        <ng-container matColumnDef="week">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Week </th>
+            <td mat-cell *matCellDef="let element"> {{element.week}} </td>
+          </ng-container>
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action </th>
           <!-- <td mat-cell *matCellDef="let element"> {{element.address}} </td> -->
