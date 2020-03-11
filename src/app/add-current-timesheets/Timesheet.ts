@@ -14,6 +14,7 @@ export class Timesheet {
   sundayStartTime:String;
   sundayEndTime:String;
 //   status:String;
+ weekId: Number;
   user:any;
   supervisor:any;
 }

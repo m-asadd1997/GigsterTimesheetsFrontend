@@ -29,9 +29,22 @@
 
 <br>
 
+
 <div class="container">
     <mat-card>
-        <div class="row" >
+        <div class="row"  *ngIf="!hideSection">
+            <div class="col-6">
+                <h2 style="color: #6E6F6D; font-weight: 500;">
+                    Current Timesheet
+                    
+                </h2>
+                <p style="color: #6E6F6D; margin-top: -3%;">
+                  {{showRangeForView}} , Week No. {{weekIdforView}}
+                </p>
+                
+            </div>
+        </div>
+        <div class="row" *ngIf="hideSection">
         <div class="col-6">
             <h2 style="color: #6E6F6D; font-weight: 500;">
                 Current Timesheet
@@ -39,16 +52,33 @@
             </h2>
 
             <div style="color: #6E6F6D; margin-top: -3%;">
-                <button mat-icon-button  color="primary" ><mat-icon>keyboard_arrow_left</mat-icon></button>          
+                <button mat-icon-button  color="primary" (click)="goToPreviousWeek()"  ><mat-icon>keyboard_arrow_left</mat-icon></button>          
 
-                Mon Feb 10 2020 to Sun Feb 16 2020
+                {{showRange}}  , Week No. {{weekId}}
 
-                <button mat-icon-button  color="primary" ><mat-icon>keyboard_arrow_right</mat-icon></button>          
+                <button mat-icon-button  color="primary" (click)="goToNextWeek()" [disabled]="checkWeek()" ><mat-icon>keyboard_arrow_right</mat-icon></button>          
 
             </div>
             
         </div>
     </div>
+    <div class="row" *ngIf="showLoader" style="margin-left: 50%;">
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="spinner-grow text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+         
+    </div>
+    <div class="row" *ngIf="!hideForm">
+        <nz-result [nzIcon]="'smile-twotone'" [nzTitle]="'Timesheet Submitted!'" style="margin-left: 35%;">
+            <!-- <div nz-result-extra>
+              <button nz-button nzType="primary">Next</button>
+            </div> -->
+          </nz-result>
+        </div>
+    <div *ngIf="hideForm">
         <div class="row">
             <div class="col-12">
                 <table class="table" style="text-align: center;">
@@ -57,6 +87,7 @@
                         <th scope="col">Day</th>
                         <th scope="col">Start Time</th>
                         <th scope="col">End Time</th>
+                        <th scope="col">Hours<th>
                       </tr>
                     </thead>
                     <tbody>
@@ -64,36 +95,43 @@
                         <td>MONDAY</td>
                        <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.mondayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                        <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                       <td>{{mondayHrs}}</td>
                       </tr>
                       <tr>
                         <td>TUESDAY</td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.tuesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                        <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                       <td>{{tuesdayHrs}}</td>
                       </tr>
                       <tr>
                         <td>WEDNESDAY</td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.wednesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                        <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                       <td>{{wednesdayHrs}}</td>
                       </tr>
                       <tr>
                         <td>THURSDAY</td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.thursdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.thursdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                        <td>{{thursdayHrs}}</td>
                       </tr>
                       <tr>
                         <td>FRIDAY</td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.fridayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                        <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.fridayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                       <td>{{fridayHrs}}</td>
                       </tr>
                       <tr>
                         <td>SATURDAY</td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.saturdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                        <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.saturdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                       <td>{{saturdayHrs}}</td>
                       </tr>
                       <tr>
                         <td>SUNDAY</td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.sundayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
                         <td><nz-time-picker nzSize="small" [(ngModel)]="timesheetsObj.sundayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
+                        <td>{{sundayHrs}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -132,6 +170,7 @@
         </div>
       
 
+    </div>
     </div>
     </div>
     </mat-card>

@@ -49,6 +49,7 @@ import { SupervisorViewComponent } from './supervisor-view/supervisor-view.compo
 import { SupervisorEditComponent } from './supervisor-edit/supervisor-edit.component';
 import { RegisterComponent } from './register/register.component';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzResultModule } from 'ng-zorro-antd/result';
 
 
 
@@ -105,6 +106,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     NzTimePickerModule,
     NzButtonModule,
     NzMessageModule,
+    NzResultModule
     // MatGridListModule
   ],
   providers: [
