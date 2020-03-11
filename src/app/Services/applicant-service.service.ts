@@ -20,6 +20,7 @@ export class ApplicantServiceService {
     sessionStorage.removeItem('userType');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('organizationName');
+    sessionStorage.removeItem('userImage');
      router.navigate(['']);
   }
 

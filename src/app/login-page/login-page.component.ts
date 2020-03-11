@@ -44,6 +44,7 @@ export class LoginPageComponent implements OnInit {
           sessionStorage.setItem("email", res.result.email);
           sessionStorage.setItem("username", res.result.username);
           sessionStorage.setItem("userType", res.result.userType);
+          sessionStorage.setItem("userImage",res.result.userImage);
           sessionStorage.setItem(
             "organizationName",
             res.result.organizationName

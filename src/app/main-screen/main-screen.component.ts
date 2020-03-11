@@ -6,6 +6,9 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgForm } from '@angular/forms';
 
+import {Location} from '@angular/common';
+
+
 @Component({
   selector: 'app-main-screen',
   templateUrl: './main-screen.component.html',
@@ -37,7 +40,7 @@ export class MainScreenComponent implements OnInit {
   showloading = false;
   showSaveLoading = false;
   disableSaveButton: boolean = false;
-  constructor(private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal) { }
+  constructor(private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
 
@@ -48,6 +51,7 @@ export class MainScreenComponent implements OnInit {
     this.responseStatus = true;
       this.getApplicantById(this.id)
     }
+    this.appFormObj.checkEmail = sessionStorage.getItem("email")
       
   }
   open(content) {
@@ -140,6 +144,7 @@ export class MainScreenComponent implements OnInit {
       this.applicantService.updateApplicantForm(this.id,this.appFormObj).subscribe(d=>{
         if(d['status']===200){
           
+         
           this.showSaveLoading = false;
           this.responseId = d['result'].id;
           
@@ -158,6 +163,7 @@ export class MainScreenComponent implements OnInit {
       this.showSaveLoading = true;
       this.applicantService.saveApplicantForm(this.appFormObj).subscribe(d=>{
         if(d['status']===200){
+         
           this.showSaveLoading = false;
           this.responseId = d['result'].id;
           myForm.reset();
@@ -285,6 +291,10 @@ _handleReaderLoaded(readerEvt) {
   }
 
 
+  goBack()
+  {
+    this._location.back();
+  }
 }
 
 

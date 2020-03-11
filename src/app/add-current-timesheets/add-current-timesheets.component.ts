@@ -37,12 +37,15 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   hideSection = false;
   weekIdforView: any;
   showRangeForView: string;
+  userImage: string;
+  totalHrs = 0;
   
 
 
   constructor(private service: ApplicantServiceService,private router:Router,private message: NzMessageService,private activateRoute: ActivatedRoute) {}
   
   ngOnInit(): void {
+    this.userImage = sessionStorage.getItem("userImage");
     console.log("current week",this.getWeek());
     this.id = this.activateRoute.snapshot.params['id'];
     if(this.id){
@@ -142,7 +145,7 @@ export class AddCurrentTimesheetsComponent implements OnInit {
       this.fridayHrs = Math.round(Math.abs(Date.parse(d.result.fridayEndTime) - Date.parse(d.result.fridayStartTime)) / 36e5);
       this.saturdayHrs = Math.round(Math.abs(Date.parse(d.result.saturdayEndTime) - Date.parse(d.result.saturdayStartTime)) / 36e5);
       this.sundayHrs = Math.round(Math.abs(Date.parse(d.result.sundayEndTime) - Date.parse(d.result.sundayStartTime)) / 36e5);
-
+      this.totalHrs = (this.mondayHrs+this.tuesdayHrs+this.wednesdayHrs+this.thursdayHrs+this.fridayHrs+this.saturdayHrs+this.sundayHrs)
       console.log( "this is monday hrs",(this.mondayHrs));
       if(this.timesheetsObj){
         this.showLoader = false;
@@ -261,4 +264,7 @@ getStartingDay( weeks, year ) {
     this.showRangeForView =  (this.dateFormatedDate(this.getStartingDay(this.weekIdforView,new Date().getFullYear())) + " to " + this.dateFormatedDate(this.getEndingDay(this.weekIdforView,new Date().getFullYear())))
   }
   
+  goToProfiles(){
+    this.router.navigate(['applicantForm'])
+  }
 }

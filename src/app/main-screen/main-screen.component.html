@@ -9,29 +9,30 @@
   >
     PROFILES</a
   >
-  <div style="margin-right: 50%;">
-    <button
+  <button
       mat-stroked-button
-      (click)="goToNewProfiles()"
-      style=" font-size: 1.1em;font-weight: 600;"
+      (click)="goBack()"
+      style=" font-size: 1.1em;font-weight: 600;margin-left: -12%;"
     >
-      Create New Profile
+      Back
     </button>
-    &nbsp;
+  <div style="margin-right: 50%;">
+    
+    <!-- &nbsp;
     <button
       mat-stroked-button
       (click)="goToapplicantTable()"
       style="font-size: 1.1em;font-weight: 600;"
     >
       Browse Profiles
-    </button>
+    </button> -->
   </div>
   <div style="margin-right: 10%;" style="cursor: pointer;" (click)="logout()">
     <img src="assets/icons8-logout-rounded-left-24.png" alt="">
   </div>
-  <div class="row" style="float: right; margin-right: 0%;">
+  <!-- <div class="row" style="float: right; margin-right: 0%;">
     <img src="assets/logo.jpeg" height="33" width="57" />
-    </div>
+    </div> -->
 </nav>
 
 <br />
@@ -287,7 +288,7 @@
           <div class="row">
             <div class="col-md-2">
               <button
-              [disabled]="formValidation() || disableSaveButton"
+              [disabled]="formValidation() "
               (click)="saveApplicantForm(myForm)"
                 mat-raised-button
                 color="warn"
@@ -299,12 +300,10 @@
             <div *ngIf="showSaveLoading" class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
             </div>
-            <div class="col-md-2">
+            <!-- <div class="col-md-2">
               <ng-template #content let-modal>
                 <div class="modal-header">
-                  <!-- <h4 class="modal-title" id="modal-basic-title">
-                    Profile update
-                  </h4> -->
+                  
                   <button
                     type="button"
                     class="close"
@@ -317,7 +316,6 @@
                 <div class="modal-body">
                   <form>
                     <div class="form-group">
-                      <!-- <label for="dateOfBirth">Reciever Email</label> -->
                       <div class="input-group">
                         <input
                           class="form-control"
@@ -350,7 +348,7 @@
                   Email
                 </button>
               </div>
-            </div>
+            </div> -->
             <div *ngIf="showloading" class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
             </div>

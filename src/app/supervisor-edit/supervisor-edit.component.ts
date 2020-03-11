@@ -22,11 +22,14 @@ export class SupervisorEditComponent implements OnInit {
   sundayHrs = 0;
   showRange: string;
   weekId: any;
+  userImage: string;
+  totalHrs: number = 0;
   constructor(private activateRoute: ActivatedRoute,private service: ApplicantServiceService,private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
     this.id = this.activateRoute.snapshot.params['id'];
     this.getTimeSheetById();
+    this.userImage = sessionStorage.getItem("userImage");
   }
   logout(){
     this.service.logout(this.router);
@@ -49,6 +52,8 @@ export class SupervisorEditComponent implements OnInit {
       this.fridayHrs = Math.round(Math.abs(Date.parse(d.result.fridayEndTime) - Date.parse(d.result.fridayStartTime)) / 36e5);
       this.saturdayHrs = Math.round(Math.abs(Date.parse(d.result.saturdayEndTime) - Date.parse(d.result.saturdayStartTime)) / 36e5);
       this.sundayHrs = Math.round(Math.abs(Date.parse(d.result.sundayEndTime) - Date.parse(d.result.sundayStartTime)) / 36e5);
+      this.totalHrs = (this.mondayHrs+this.tuesdayHrs+this.wednesdayHrs+this.thursdayHrs+this.fridayHrs+this.saturdayHrs+this.sundayHrs)
+
     })
     
   }
@@ -106,6 +111,10 @@ export class SupervisorEditComponent implements OnInit {
 
     goToRecievedTimesheets(){
       this.router.navigate(['supervisorview'])
+    }
+
+    goToProfiles(){
+      this.router.navigate(['applicantForm'])
     }
   
 }
