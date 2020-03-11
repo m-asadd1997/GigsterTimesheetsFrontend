@@ -6,4 +6,5 @@ export class company{
     contactTitle:string;
     roles:string;
     startingDayOfWeek:String;
+    companyimage:any;
 }

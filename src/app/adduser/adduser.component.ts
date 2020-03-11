@@ -3,6 +3,8 @@ import { adduser } from './adduser';
 import { NgForm } from '@angular/forms';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd';
+
 
 
 
@@ -18,9 +20,13 @@ export class AdduserComponent implements OnInit {
 
   adduserobj: adduser= new adduser();
 
-  constructor(private applicantService:ApplicantServiceService,private router:Router) { }
+  constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
+  }
+
+  logout(){
+    this.applicantService.logout(this.router);
   }
 
   submit(myForm:NgForm){
@@ -28,6 +34,18 @@ export class AdduserComponent implements OnInit {
     console.log(this.adduserobj);
 
     this.applicantService.saveUserForm(this.adduserobj).subscribe(d=>{
+      if(d.status == 200){
+        this.message.success(d.message, {
+          nzDuration: 3000
+        });
+      }
+      else{
+        
+          this.message.error(d.message, {
+            nzDuration: 3000
+          });
+       
+      }
       console.log(d);
       myForm.reset();
     })

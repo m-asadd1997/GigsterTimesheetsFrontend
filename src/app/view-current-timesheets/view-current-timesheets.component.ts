@@ -29,6 +29,9 @@ export class ViewCurrentTimesheetsComponent implements OnInit {
       this.getTimesheets();
     }
   }
+  logout(){
+    this.service.logout(this.router);
+  }
  
   goToNewTimesheet(){
     this.router.navigate(['addcurrenttimesheets'])

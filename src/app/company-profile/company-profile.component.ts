@@ -3,6 +3,8 @@ import { company } from './company';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd';
+
 
 @Component({
   selector: 'app-company-profile',
@@ -26,16 +28,30 @@ export class CompanyProfileComponent implements OnInit {
 
    
   ]
-  constructor(private applicantService:ApplicantServiceService,private router:Router) { }
+  constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
   }
 
+  logout(){
+    this.applicantService.logout(this.router);
+  }
+
   submit(myForm:NgForm){
-
     console.log(this.companyObj);
-
     this.applicantService.saveCompanyProfile(this.companyObj).subscribe(d=>{
+      if(d.status == 200){
+        this.message.success(d.message, {
+          nzDuration: 3000
+        });
+      }
+      else{
+        
+          this.message.error(d.message, {
+            nzDuration: 3000
+          });
+       
+      }
       console.log(d);
       myForm.reset();
     })
@@ -49,4 +65,27 @@ export class CompanyProfileComponent implements OnInit {
     this.router.navigate(['adduser'])
   }
 
+  _handleReaderImageLoaded(readerEvt) {
+    var binaryString = readerEvt.target.result;
+           let base64textString= btoa(binaryString);
+           //console.log(btoa(binaryString));
+           this.companyObj.companyimage = base64textString;
+          // console.log(this.appFormObj.resume)
+          console.log(this.companyObj.companyimage) 
+           
+   }
+   onImageChange(event) {
+    let reader = new FileReader();
+    if(event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.onload =this._handleReaderImageLoaded.bind(this);
+
+      this.companyObj.companyimage = file.type
+      console.log( this.companyObj.companyimage)
+      //console.log("1"+this.appFormObj.resumeContentType)
+      reader.readAsBinaryString(file);
+      
+    }
+
+  }
 }

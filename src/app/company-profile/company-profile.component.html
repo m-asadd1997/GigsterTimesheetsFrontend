@@ -22,7 +22,7 @@
       Organization configuration
     </button>
   </div>
-  <div style="margin-right: 5%;" style="cursor: pointer;" ><!-- (click)="logout() -->
+  <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()" >
     <img src="assets/icons8-logout-rounded-left-24.png" alt="">
   </div>
 </nav>
@@ -31,6 +31,31 @@
     <div style="font-size: large;">
       <img src = "assets/icons8-contacts-30.png" > 
       <b>Company Profile</b>
+      <div class="row">
+      <div class="col-md-8" >
+      <img
+      style="margin-left: 60%;"
+      [src]="
+        companyObj.companyimage != null
+          ? 'data:image/jpeg;base64,' + companyObj.companyimage
+          : 'assets/user.png'
+      "
+      alt="Avatar"
+      class="avatar"
+    />
+    <label
+      style="margin-left: 63%; font-size: 0.6em;margin-top: 5%;cursor: pointer;"
+      >Select Picture
+      <input
+        type="file"
+        id="imgFile"
+        (change)="onImageChange($event)"
+        style="margin-left: 40%; "
+      />
+    </label>
+    </div>
+  </div>
+     
     </div>
     <hr />
     <form class="example-form" #myForm="ngForm">
