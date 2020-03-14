@@ -42,6 +42,8 @@ export class AdduserComponent implements OnInit {
 
     this.applicantService.saveUserForm(this.adduserobj).subscribe(d=>{
       if(d.status == 200){
+        this.reset();
+        // this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
         this.message.success(d.message, {
           nzDuration: 3000
         });
@@ -54,8 +56,16 @@ export class AdduserComponent implements OnInit {
        
       }
       console.log(d);
-      myForm.reset();
+     
     })
+
+  }
+  reset() {
+    this.adduserobj.email = null;
+    this.adduserobj.name = null;
+    this.adduserobj.password = null;
+    this.adduserobj.userType = null;
+   
 
   }
 
