@@ -336,6 +336,7 @@ getDurationHours(d1, d2) {
 }
 
   calulateHours(){
+    //hours
     if(!this.validateButton()){
       this.getSumOfHours(this.timesheetsObj.mondayStartTime,this.timesheetsObj.mondayEndTime)
       this.getSumOfHours(this.timesheetsObj.tuesdayStartTime,this.timesheetsObj.tuesdayEndTime)
