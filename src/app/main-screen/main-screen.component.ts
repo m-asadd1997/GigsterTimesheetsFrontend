@@ -50,7 +50,7 @@ export class MainScreenComponent implements OnInit {
     this.id = this.activateRoute.snapshot.params['id'];
     this.checkEmail = sessionStorage.getItem("email");
     if(this.checkEmail){
-      this.getProfiles();
+      this.getProfiles()
     }
     console.log(this.id)
 
@@ -71,7 +71,12 @@ export class MainScreenComponent implements OnInit {
 
   getProfiles(){
     this.applicantService.getProfilesByCheckEmail(this.checkEmail).subscribe(d=>{
-      this.appFormObj = d.result;
+      if(d.status ==200){
+        this.appFormObj = d.result;
+       
+      }
+      
+      
     })
   }
 
@@ -145,6 +150,7 @@ export class MainScreenComponent implements OnInit {
   }
 
   saveApplicantForm(myForm : NgForm){
+    sessionStorage.setItem("userImage",this.appFormObj.userImage);
     this.appFormObj.checkEmail = this.checkEmail;
     this.disableSaveButton = true;
     // this.responseStatus = true;
@@ -292,7 +298,7 @@ _handleReaderLoaded(readerEvt) {
   }
 
   formValidation(){
-    if(this.appFormObj.name && this.appFormObj.phone  && this.appFormObj.resume && this.appFormObj.visaDetails && this.appFormObj.gender && this.appFormObj.dateOfBirth && this.appFormObj.address){
+    if(this.appFormObj.name && this.appFormObj.phone &&  this.appFormObj.gender &&  this.appFormObj.email){
       return false;
     }
     else{
