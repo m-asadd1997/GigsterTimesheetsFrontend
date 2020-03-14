@@ -66,57 +66,222 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                   <tbody>
                     <tr>
                       <td>MONDAY</td>
-                     <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td>{{mondayHrs}}</td>
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.mondayStartTime"
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default1"
+                          readonly
+                      
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker  #default1></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.mondayEndTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default2"
+                          readonly
+                          [format]="24"
+                          
+                        />
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.mondayStartTime,$event)" #default2></ngx-material-timepicker>
+                      </td>
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                     
+                    
+                      <td>{{ getHours(timesheetsObj.mondayStartTime,timesheetsObj.mondayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td>TUESDAY</td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td>{{tuesdayHrs}}</td>
-
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.tuesdayStartTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default3"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker #default3></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.tuesdayEndTime"
+                         
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default4"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker  (timeSet)="getDuration(timesheetsObj.tuesdayStartTime,$event)" #default4></ngx-material-timepicker>
+                      </td>
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>{{ getHours(timesheetsObj.tuesdayStartTime,timesheetsObj.tuesdayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td>WEDNESDAY</td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td>{{wednesdayHrs}}</td>
-
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.wednesdayStartTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default5"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker #default5></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.wednesdayEndTime"
+                         
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default6"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.wednesdayStartTime,$event)" #default6></ngx-material-timepicker>
+                      </td>
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>{{ getHours(timesheetsObj.wednesdayStartTime,timesheetsObj.wednesdayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td>THURSDAY</td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.thursdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.thursdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                      <td>{{thursdayHrs}}</td>
-
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.thursdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <!-- <td><nz-time-picker nzSize="small"  [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.thursdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.thursdayStartTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default7"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker #default7></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.thursdayEndTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default8"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.thursdayStartTime,$event)" #default8></ngx-material-timepicker>
+                      </td>
+                      <td>{{ getHours(timesheetsObj.thursdayStartTime,timesheetsObj.thursdayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td>FRIDAY</td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.fridayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.fridayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td>{{fridayHrs}}</td>
-
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.fridayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.fridayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.fridayStartTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default9"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker #default9></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.fridayEndTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default10"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.fridayStartTime,$event)" #default10></ngx-material-timepicker>
+                      </td>
+                      <td>{{ getHours(timesheetsObj.fridayStartTime,timesheetsObj.fridayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td>SATURDAY</td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.saturdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.saturdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                     <td>{{saturdayHrs}}</td>
-
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.saturdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.saturdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.saturdayStartTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default11"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker #default11></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.saturdayEndTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default12"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.saturdayStartTime,$event)" #default12></ngx-material-timepicker>
+                      </td>
+                      <td>{{ getHours(timesheetsObj.saturdayStartTime,timesheetsObj.saturdayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td>SUNDAY</td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.sundayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                      <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.sundayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td>
-                      <td>{{sundayHrs}}</td>
-
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.sundayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.sundayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.sundayStartTime"
+                         
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default13"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker #default13></ngx-material-timepicker>
+                      </td>
+                      <td>
+                        <input
+                          placeholder="Select time"
+                          [(ngModel)]="timesheetsObj.sundayEndTime"
+                          
+                          aria-label="12hr format"
+                          [ngxTimepicker]="default14"
+                          readonly
+                          [format]="24"
+                        />
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.sundayStartTime,$event)" #default14></ngx-material-timepicker>
+                      </td>
+                      <td>{{ getHours(timesheetsObj.sundayStartTime,timesheetsObj.sundayEndTime) }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td></td>
                       <td></td>
-                      <td>Total Hours : {{totalHrs}}</td>
+                      <td>Total Hours : {{ totalHrs }}</td>
                     </tr>
                   </tbody>
                 </table>

@@ -27,18 +27,13 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   weekId : any = this.getWeek();
   hideForm: boolean;
   showLoader = false;
-  mondayHrs = 0;
-  tuesdayHrs = 0;
-  wednesdayHrs = 0;
-  thursdayHrs = 0;
-  fridayHrs= 0;
-  saturdayHrs = 0;
-  sundayHrs = 0;
   hideSection = false;
   weekIdforView: any;
   showRangeForView: string;
   userImage: string;
   totalHrs = 0;
+  totalMins = 0;
+  disableInputFields = false;
   
 
 
@@ -53,6 +48,7 @@ export class AddCurrentTimesheetsComponent implements OnInit {
       this.hideSection = false;
       this.getTimesheetById();
       this.disableButton = false;
+      this.disableInputFields =  true;
 
     }
     else{
@@ -138,15 +134,8 @@ export class AddCurrentTimesheetsComponent implements OnInit {
       this.timesheetsObj = d.result;
       this.weekIdforView = d.result.weekId;
       this.getRangeForView()
-      this.mondayHrs = Math.round(Math.abs(Date.parse(d.result.mondayEndTime) - Date.parse(d.result.mondayStartTime)) / 36e5);
-      this.tuesdayHrs = Math.round(Math.abs(Date.parse(d.result.tuesdayEndTime) - Date.parse(d.result.tuesdayStartTime)) / 36e5);
-      this.wednesdayHrs = Math.round(Math.abs(Date.parse(d.result.wednesdayEndTime) - Date.parse(d.result.wednesdayStartTime)) / 36e5);
-      this.thursdayHrs = Math.round(Math.abs(Date.parse(d.result.thursdayEndTime) - Date.parse(d.result.thursdayStartTime)) / 36e5);
-      this.fridayHrs = Math.round(Math.abs(Date.parse(d.result.fridayEndTime) - Date.parse(d.result.fridayStartTime)) / 36e5);
-      this.saturdayHrs = Math.round(Math.abs(Date.parse(d.result.saturdayEndTime) - Date.parse(d.result.saturdayStartTime)) / 36e5);
-      this.sundayHrs = Math.round(Math.abs(Date.parse(d.result.sundayEndTime) - Date.parse(d.result.sundayStartTime)) / 36e5);
-      this.totalHrs = (this.mondayHrs+this.tuesdayHrs+this.wednesdayHrs+this.thursdayHrs+this.fridayHrs+this.saturdayHrs+this.sundayHrs)
-      console.log( "this is monday hrs",(this.mondayHrs));
+      // console.log(parseFloat(d.result.mondayEndTime.s))
+     
       if(this.timesheetsObj){
         this.showLoader = false;
       }
@@ -201,6 +190,7 @@ getStartingDay( weeks, year ) {
   }
 
   goToPreviousWeek(){
+    this.emptyTimesheetObj();
     this.showLoader = true;
    this.weekId = this.weekId - 1;
     this.service.getTimesheetByWeekId(this.weekId,this.userId).subscribe(d=>{
@@ -218,6 +208,7 @@ getStartingDay( weeks, year ) {
   }
 
  goToNextWeek(){
+   this.emptyTimesheetObj();
     this.showLoader = true;
       this.weekId = this.weekId + 1;
       this.service.getTimesheetByWeekId(this.weekId,this.userId).subscribe(d=>{
@@ -267,4 +258,88 @@ getStartingDay( weeks, year ) {
   goToProfiles(){
     this.router.navigate(['applicantForm'])
   }
+ 
+  getFormattedDate(time){
+    let date = new Date();
+    //" 11:13:00"
+     return (date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+time);
+
+  }
+
+
+  getDuration(startTime,event) {
+    
+    let d1 = new Date(this.getFormattedDate(startTime))
+    if(!d1)
+    return;
+
+    let d2 = new Date(this.getFormattedDate(event))
+   
+
+    return (this.getDurationHours(d1,d2).toString())
+}
+
+getHours(start,end){
+  if(!start || !end){
+    return "Fields cannot be null!!"
+  }
+  else{
+  return this.getDuration(start,end);
+  }
+}
+
+getDurationHours(d1, d2) {
+  let d3 = new Date(d2 - d1);
+  let d0 = new Date(0);
+
+  
+  return {
+      getHours: function(){
+          return d3.getHours() - d0.getHours();
+      },
+      getMinutes: function(){
+          return d3.getMinutes() - d0.getMinutes();
+      },
+      getMilliseconds: function() {
+          return d3.getMilliseconds() - d0.getMilliseconds();
+      },
+      toString: function(){
+        
+          return this.getHours() + " Hours , " +
+                 this.getMinutes() + " Minutes" 
+                
+      }
+      
+      
+  };
+}
+
+ validateButton(){
+   if(this.timesheetsObj.mondayStartTime && this.timesheetsObj.mondayEndTime &&this.timesheetsObj.tuesdayStartTime && this.timesheetsObj.tuesdayEndTime && this.timesheetsObj.wednesdayStartTime && this.timesheetsObj.wednesdayEndTime &&
+      this.timesheetsObj.thursdayStartTime && this.timesheetsObj.tuesdayEndTime &&this.timesheetsObj.fridayStartTime && this.timesheetsObj.fridayEndTime && this.timesheetsObj.saturdayStartTime && this.timesheetsObj.saturdayEndTime &&this.timesheetsObj.sundayStartTime && this.timesheetsObj.sundayEndTime && this.timesheetsObj.supervisor )
+      {
+        return false
+      }
+      else{
+        return true;
+      }
+ }
+
+ emptyTimesheetObj(){
+   this.timesheetsObj.mondayStartTime = null;
+   this.timesheetsObj.mondayEndTime = null;
+   this.timesheetsObj.tuesdayStartTime = null;
+   this.timesheetsObj.tuesdayEndTime = null;
+   this.timesheetsObj.wednesdayStartTime = null;
+   this.timesheetsObj.wednesdayEndTime = null;
+   this.timesheetsObj.thursdayStartTime = null;
+   this.timesheetsObj.thursdayEndTime = null;
+   this.timesheetsObj.fridayStartTime = null;
+   this.timesheetsObj.fridayEndTime = null;
+   this.timesheetsObj.saturdayStartTime = null;
+   this.timesheetsObj.saturdayEndTime = null;
+   this.timesheetsObj.sundayStartTime = null;
+   this.timesheetsObj.sundayEndTime = null;
+   this.timesheetsObj.supervisor = null;
+ }
 }

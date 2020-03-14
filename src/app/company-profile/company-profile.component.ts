@@ -28,15 +28,20 @@ export class CompanyProfileComponent implements OnInit {
 
    
   ]
+  userImage: string;
   constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
+    this.userImage = sessionStorage.getItem("userImage");
   }
 
   logout(){
     this.applicantService.logout(this.router);
   }
 
+  goToProfiles(){
+    this.router.navigate(['applicantForm'])
+  }
   submit(myForm:NgForm){
     console.log(this.companyObj);
     this.applicantService.saveCompanyProfile(this.companyObj).subscribe(d=>{

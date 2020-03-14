@@ -40,11 +40,18 @@ export class MainScreenComponent implements OnInit {
   showloading = false;
   showSaveLoading = false;
   disableSaveButton: boolean = false;
+  checkEmail: string;
+  userImage: string;
   constructor(private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
 
+    this.userImage = sessionStorage.getItem("userImage");
     this.id = this.activateRoute.snapshot.params['id'];
+    this.checkEmail = sessionStorage.getItem("email");
+    if(this.checkEmail){
+      this.getProfiles();
+    }
     console.log(this.id)
 
     if(this.id){
@@ -60,6 +67,12 @@ export class MainScreenComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  getProfiles(){
+    this.applicantService.getProfilesByCheckEmail(this.checkEmail).subscribe(d=>{
+      this.appFormObj = d.result;
+    })
   }
 
   private getDismissReason(reason: any): string {
@@ -132,6 +145,7 @@ export class MainScreenComponent implements OnInit {
   }
 
   saveApplicantForm(myForm : NgForm){
+    this.appFormObj.checkEmail = this.checkEmail;
     this.disableSaveButton = true;
     // this.responseStatus = true;
     // this.disableSaveButton = true;
@@ -166,7 +180,7 @@ export class MainScreenComponent implements OnInit {
          
           this.showSaveLoading = false;
           this.responseId = d['result'].id;
-          myForm.reset();
+          this.appFormObj = d.result
           console.log(this.responseId)
           this.responseStatus = true;
           this._snackBar.open("Success","X",{duration: 3000});
@@ -241,11 +255,7 @@ _handleReaderLoaded(readerEvt) {
   }
 
   logout(){
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('userType');
-     this.router.navigate(['']);
+    this.applicantService.logout(this.router);
   }
 
   downloadFile(){
@@ -282,7 +292,7 @@ _handleReaderLoaded(readerEvt) {
   }
 
   formValidation(){
-    if(this.appFormObj.name && this.appFormObj.phone && this.appFormObj.placeOfBirth  && this.appFormObj.resume && this.appFormObj.visaDetails && this.appFormObj.gender && this.appFormObj.dateOfBirth && this.appFormObj.address){
+    if(this.appFormObj.name && this.appFormObj.phone  && this.appFormObj.resume && this.appFormObj.visaDetails && this.appFormObj.gender && this.appFormObj.dateOfBirth && this.appFormObj.address){
       return false;
     }
     else{
