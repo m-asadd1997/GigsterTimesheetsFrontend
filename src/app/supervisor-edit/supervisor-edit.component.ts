@@ -13,13 +13,7 @@ export class SupervisorEditComponent implements OnInit {
 
   timesheetsObj: Timesheet = new Timesheet();
   id: any;
-  mondayHrs = 0;
-  tuesdayHrs = 0;
-  wednesdayHrs = 0;
-  thursdayHrs = 0;
-  fridayHrs= 0;
-  saturdayHrs = 0;
-  sundayHrs = 0;
+
   showRange: string;
   weekId: any;
   userImage: string;
@@ -45,14 +39,8 @@ export class SupervisorEditComponent implements OnInit {
       this.weekId = d.result.weekId;
       console.log(d.result.weekId)
       this.getRange();
-      this.mondayHrs = Math.round(Math.abs(Date.parse(d.result.mondayEndTime) - Date.parse(d.result.mondayStartTime)) / 36e5);
-      this.tuesdayHrs = Math.round(Math.abs(Date.parse(d.result.tuesdayEndTime) - Date.parse(d.result.tuesdayStartTime)) / 36e5);
-      this.wednesdayHrs = Math.round(Math.abs(Date.parse(d.result.wednesdayEndTime) - Date.parse(d.result.wednesdayStartTime)) / 36e5);
-      this.thursdayHrs = Math.round(Math.abs(Date.parse(d.result.thursdayEndTime) - Date.parse(d.result.thursdayStartTime)) / 36e5);
-      this.fridayHrs = Math.round(Math.abs(Date.parse(d.result.fridayEndTime) - Date.parse(d.result.fridayStartTime)) / 36e5);
-      this.saturdayHrs = Math.round(Math.abs(Date.parse(d.result.saturdayEndTime) - Date.parse(d.result.saturdayStartTime)) / 36e5);
-      this.sundayHrs = Math.round(Math.abs(Date.parse(d.result.sundayEndTime) - Date.parse(d.result.sundayStartTime)) / 36e5);
-      this.totalHrs = (this.mondayHrs+this.tuesdayHrs+this.wednesdayHrs+this.thursdayHrs+this.fridayHrs+this.saturdayHrs+this.sundayHrs)
+      
+      
 
     })
     
@@ -116,5 +104,61 @@ export class SupervisorEditComponent implements OnInit {
     goToProfiles(){
       this.router.navigate(['applicantForm'])
     }
+
+    getDurationHours(d1, d2) {
+      let d3 = new Date(d2 - d1);
+      let d0 = new Date(0);
+    
+      
+      return {
+          getHours: function(){
+              return d3.getHours() - d0.getHours();
+          },
+          getMinutes: function(){
+              return d3.getMinutes() - d0.getMinutes();
+          },
+          getMilliseconds: function() {
+              return d3.getMilliseconds() - d0.getMilliseconds();
+          },
+          toString: function(){
+            
+              return this.getHours() + " Hours , " +
+                     this.getMinutes() + " Minutes" 
+                    
+          }
+          
+          
+      };
+    }
+
+
+    getFormattedDate(time){
+      let date = new Date();
+      //" 11:13:00"
+       return (date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+time);
+  
+    }
+  
+  
+    getDuration(startTime,event) {
+      
+      let d1 = new Date(this.getFormattedDate(startTime))
+      if(!d1)
+      return;
+  
+      let d2 = new Date(this.getFormattedDate(event))
+     
+  
+      return (this.getDurationHours(d1,d2).toString())
+  }
+  
+  getHours(start,end){
+    if(!start || !end){
+      return "Fields cannot be null!!"
+    }
+    else{
+    return this.getDuration(start,end);
+    }
+  }
   
 }

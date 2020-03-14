@@ -52,6 +52,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 
 
@@ -110,7 +111,8 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     NzMessageModule,
     NzResultModule,
     NzAvatarModule,
-    NzBadgeModule
+    NzBadgeModule ,
+    NgxMaterialTimepickerModule
 
     
     // MatGridListModule

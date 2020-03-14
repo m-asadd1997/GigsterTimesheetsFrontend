@@ -21,6 +21,26 @@
     >
       Organization configuration
     </button>
+    &nbsp;
+    <button
+      mat-stroked-button
+      (click)="goToProfiles()"
+      style="font-size: 1.1em;font-weight: 600;"
+    >
+      Profiles
+    </button>
+  </div>
+  <div style="margin-left: -10%;">
+    <nz-badge nzStatus="success">
+      <nz-avatar
+        nzIcon="user"
+        [nzSrc]="
+          userImage != null
+            ? 'data:image/jpeg;base64,' + userImage
+            : 'assets/user.png'
+        "
+      ></nz-avatar>
+    </nz-badge>
   </div>
   <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()" >
     <img src="assets/icons8-logout-rounded-left-24.png" alt="">
@@ -64,7 +84,7 @@
     <div>
       <mat-form-field class="example-full-width" style="width: 100%;">
         <!-- <mat-label>Favorite food</mat-label> -->
-        <input matInput="text" placeholder="Organization Name" name="organizationName" [(ngModel)]="adduserobj.organizationName" required
+        <input matInput="text" disabled="true" placeholder="Organization Name" name="organizationName" [(ngModel)]="adduserobj.organizationName" 
 
         />
       </mat-form-field>

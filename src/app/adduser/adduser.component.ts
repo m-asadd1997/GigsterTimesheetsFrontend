@@ -19,12 +19,19 @@ export class AdduserComponent implements OnInit {
   hide = true;
 
   adduserobj: adduser= new adduser();
+  userImage: string;
 
   constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
-  }
 
+    this.userImage = sessionStorage.getItem("userImage");
+    this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
+  }
+  goToProfiles(){
+    this.router.navigate(['applicantForm'])
+  }
+  
   logout(){
     this.applicantService.logout(this.router);
   }
