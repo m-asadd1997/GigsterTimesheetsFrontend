@@ -31,9 +31,13 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   weekIdforView: any;
   showRangeForView: string;
   userImage: string;
-  totalHrs = 0;
+  totalHrs = "0";
   totalMins = 0;
   disableInputFields = false;
+  totalSumOfTimesheet = {
+    hours:0,
+    minutes:0
+  }
   
 
 
@@ -275,15 +279,31 @@ getStartingDay( weeks, year ) {
 
     let d2 = new Date(this.getFormattedDate(event))
    
+    let durationsHours = this.getDurationHours(d1,d2).toString();
+        
+   
+    return durationsHours;
+}
 
-    return (this.getDurationHours(d1,d2).toString())
+getSumOfHours(startTime,event) {
+    
+  let d1 = new Date(this.getFormattedDate(startTime))
+  if(!d1)
+  return;
+
+  let d2 = new Date(this.getFormattedDate(event))
+ 
+  this.totalSumOfTimesheet.hours += this.getDurationHours(d1,d2).getHours();
+  this.totalSumOfTimesheet.minutes += this.getDurationHours(d1,d2).getMinutes();
+  
 }
 
 getHours(start,end){
   if(!start || !end){
-    return "Fields cannot be null!!"
+    return "0"
   }
   else{
+   
   return this.getDuration(start,end);
   }
 }
@@ -295,6 +315,7 @@ getDurationHours(d1, d2) {
   
   return {
       getHours: function(){
+         
           return d3.getHours() - d0.getHours();
       },
       getMinutes: function(){
@@ -314,13 +335,32 @@ getDurationHours(d1, d2) {
   };
 }
 
+  calulateHours(){
+    if(!this.validateButton()){
+      this.getSumOfHours(this.timesheetsObj.mondayStartTime,this.timesheetsObj.mondayEndTime)
+      this.getSumOfHours(this.timesheetsObj.tuesdayStartTime,this.timesheetsObj.tuesdayEndTime)
+      this.getSumOfHours(this.timesheetsObj.wednesdayStartTime,this.timesheetsObj.wednesdayEndTime)
+      this.getSumOfHours(this.timesheetsObj.thursdayStartTime,this.timesheetsObj.thursdayEndTime)
+      this.getSumOfHours(this.timesheetsObj.fridayStartTime,this.timesheetsObj.fridayEndTime)
+      this.getSumOfHours(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
+      this.getSumOfHours(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
+      console.log(this.totalSumOfTimesheet);
+      this.totalHrs = this.totalSumOfTimesheet.hours + "Hours,"+this.totalSumOfTimesheet.minutes+" Minutes";
+    }
+   
+    console.log(this.totalSumOfTimesheet)
+  }
+
  validateButton(){
-   if(this.timesheetsObj.mondayStartTime && this.timesheetsObj.mondayEndTime &&this.timesheetsObj.tuesdayStartTime && this.timesheetsObj.tuesdayEndTime && this.timesheetsObj.wednesdayStartTime && this.timesheetsObj.wednesdayEndTime &&
+   if(this.timesheetsObj.mondayStartTime && this.timesheetsObj.mondayEndTime && this.timesheetsObj.tuesdayStartTime && this.timesheetsObj.tuesdayEndTime && this.timesheetsObj.wednesdayStartTime && this.timesheetsObj.wednesdayEndTime &&
       this.timesheetsObj.thursdayStartTime && this.timesheetsObj.tuesdayEndTime &&this.timesheetsObj.fridayStartTime && this.timesheetsObj.fridayEndTime && this.timesheetsObj.saturdayStartTime && this.timesheetsObj.saturdayEndTime &&this.timesheetsObj.sundayStartTime && this.timesheetsObj.sundayEndTime && this.timesheetsObj.supervisor )
       {
+        //console.log(this.timesheetsObj);
+       
         return false
       }
       else{
+        
         return true;
       }
  }
