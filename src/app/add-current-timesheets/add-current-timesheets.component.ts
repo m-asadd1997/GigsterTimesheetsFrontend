@@ -347,6 +347,10 @@ getDurationHours(d1, d2) {
       this.getSumOfHours(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
       console.log(this.totalSumOfTimesheet);
       this.totalHrs = this.totalSumOfTimesheet.hours + "Hours,"+this.totalSumOfTimesheet.minutes+" Minutes";
+    }else{
+      this.message.error("Please Fill Complete Timesheet To Calculate Hours", {
+        nzDuration: 3000
+      });
     }
    
     console.log(this.totalSumOfTimesheet)
