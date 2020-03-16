@@ -20,6 +20,8 @@ export class AdduserComponent implements OnInit {
 
   adduserobj: adduser= new adduser();
   userImage: string;
+  showLoader = false;
+  regexp: RegExp;
 
   constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
@@ -37,19 +39,21 @@ export class AdduserComponent implements OnInit {
   }
 
   submit(myForm:NgForm){
-
+    this.showLoader = true;
     console.log(this.adduserobj);
 
     this.applicantService.saveUserForm(this.adduserobj).subscribe(d=>{
       if(d.status == 200){
+        
         this.reset();
+        this.showLoader = false;
         // this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
         this.message.success(d.message, {
           nzDuration: 3000
         });
       }
       else{
-        
+        this.showLoader = false;
           this.message.error(d.message, {
             nzDuration: 3000
           });
@@ -76,6 +80,8 @@ export class AdduserComponent implements OnInit {
   goToAddNewUser(){
     this.router.navigate(['adduser'])
   }
+
+  
 
 }
 

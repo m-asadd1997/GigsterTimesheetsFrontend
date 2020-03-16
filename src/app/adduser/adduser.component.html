@@ -70,8 +70,12 @@
       <mat-form-field class="example-full-width" style="width: 100%;">
         <!-- <mat-label>Favorite food</mat-label> -->
         <input matInput="email" placeholder="Email" name="email" [(ngModel)]="adduserobj.email" required
-
+        email #email="ngModel" [ngClass]="{ 'is-invalid':email.invalid }"
         />
+        <div *ngIf="email.invalid" class="invalid-feedback">
+          
+          <div *ngIf="email.errors.email">Email must be a valid email address</div>
+      </div>
       </mat-form-field>
     </div>
     <div>
@@ -97,7 +101,7 @@
     </div>
     <hr>
     <br>
-    <div>
+    <div class="row">
       <button
         [disabled]="disableSaveButton"
         mat-raised-button
@@ -107,6 +111,9 @@
       >
         Submit
       </button>
+      <div *ngIf="showLoader" class="spinner-border" style="margin-left: 1%;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
   </form>
 </mat-card>
