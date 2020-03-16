@@ -36,6 +36,7 @@ export class RegisterComponent implements OnInit {
         this.message.success(d.message, {
          nzDuration: 3000
        });
+       this.router.navigate(['']);
       }
       else{
         this.showLoading = false;

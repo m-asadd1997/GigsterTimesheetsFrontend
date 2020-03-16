@@ -38,6 +38,7 @@ export class AddCurrentTimesheetsComponent implements OnInit {
     hours:0,
     minutes:0
   }
+  showButton = true;
   
 
 
@@ -50,9 +51,11 @@ export class AddCurrentTimesheetsComponent implements OnInit {
     if(this.id){
       this.hideForm = true;
       this.hideSection = false;
+      
       this.getTimesheetById();
       this.disableButton = false;
       this.disableInputFields =  true;
+      
 
     }
     else{
@@ -141,6 +144,8 @@ export class AddCurrentTimesheetsComponent implements OnInit {
       // console.log(parseFloat(d.result.mondayEndTime.s))
      
       if(this.timesheetsObj){
+        this.showButton = false;
+        this.calulateHours()
         this.showLoader = false;
       }
       else{

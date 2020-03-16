@@ -109,12 +109,16 @@
     <label for="email"><b>Email</b></label>
     <input
       type="text"
-      #email
       placeholder="Enter Email"
       name="email"
       [(ngModel)]="registerObj.email"
       required
+      email #email="ngModel" [ngClass]="{ 'is-invalid':email.invalid }"
     />
+    <div *ngIf="email.invalid" class="invalid-feedback">
+      
+      <div *ngIf="email.errors.email">Email must be a valid email address</div>
+  </div>
 
     <label for="psw"><b>Password</b></label>
     <input

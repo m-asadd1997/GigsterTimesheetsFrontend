@@ -332,7 +332,7 @@
                 <td>{{ getHours(timesheetsObj.sundayStartTime,timesheetsObj.sundayEndTime) }}</td>
               </tr>
               <tr>
-                <td><button (click)="calulateHours()">Calculate Hours</button></td>
+                <td><div *ngIf="showButton"><button  mat-raised-button color="primary" (click)="calulateHours()">Calculate Hours</button></div></td>
                 <td></td>
                 <td></td>
                 <td>Total Hours : {{ totalHrs }}</td>
