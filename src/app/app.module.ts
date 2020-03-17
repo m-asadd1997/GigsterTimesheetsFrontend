@@ -53,6 +53,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { UserTableComponent } from './user-table/user-table.component';
 
 
 
@@ -74,7 +75,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     CompanyProfileComponent,
     SupervisorViewComponent,
     SupervisorEditComponent,
-    RegisterComponent
+    RegisterComponent,
+    UserTableComponent
     
   ],
   imports: [

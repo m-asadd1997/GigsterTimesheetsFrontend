@@ -69,7 +69,7 @@ export class ApplicantServiceService {
   }
 
   registerUser(registerObj:any):Observable<any>{
-    return this.http.post(this.url+"token/user",registerObj);
+    return this.http.post(this.url+"token/registeradmin",registerObj);
   }
 
   saveTimesheets(timesheetObj):Observable<any>{
@@ -105,6 +105,22 @@ export class ApplicantServiceService {
 
   getProfilesByCheckEmail(checkEmail):Observable<any>{
     return this.http.get(this.url+"api/checkemail/"+checkEmail)
+  }
+
+  getUsersByOrganizationName(organizationName):Observable<any>{
+    return this.http.get(this.url+"token/getusers/"+organizationName);
+  }
+
+  deleteusers(id):Observable<any>{
+    return this.http.delete(this.url+"token/deleteusers/"+id);
+  }
+
+  editUser(id,user):Observable<any>{
+    return this.http.put(this.url+"token/update/"+id,user);
+  }
+
+  getUserById(id):Observable<any>{
+    return this.http.get(this.url+"token/getbyid/"+id);
   }
 
 }

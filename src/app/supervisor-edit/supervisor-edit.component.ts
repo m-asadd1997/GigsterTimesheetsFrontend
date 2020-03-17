@@ -191,6 +191,10 @@ export class SupervisorEditComponent implements OnInit {
       this.getSumOfHours(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
       this.getSumOfHours(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
       console.log(this.totalSumOfTimesheet);
+      while(this.totalSumOfTimesheet.minutes > 60){
+        this.totalSumOfTimesheet.hours++;
+        this.totalSumOfTimesheet.minutes -= 60;
+      }
       this.totalHrs = this.totalSumOfTimesheet.hours + "Hours,"+this.totalSumOfTimesheet.minutes+" Minutes";
     
    
