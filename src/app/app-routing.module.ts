@@ -12,6 +12,7 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { SupervisorViewComponent } from './supervisor-view/supervisor-view.component';
 import { SupervisorEditComponent } from './supervisor-edit/supervisor-edit.component';
 import { RegisterComponent } from './register/register.component';
+import { UserTableComponent } from './user-table/user-table.component';
 
 
 const routes: Routes = [
@@ -58,6 +59,12 @@ const routes: Routes = [
 
   },{
     path:"register",component:RegisterComponent
+  },
+  {
+    path:"viewusers",component:UserTableComponent
+  },
+  {
+    path:"edituser/:id",component:AdduserComponent
   }
 ];
 

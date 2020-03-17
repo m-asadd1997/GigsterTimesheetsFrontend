@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { adduser } from './adduser';
 import { NgForm } from '@angular/forms';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 
 
@@ -22,16 +22,24 @@ export class AdduserComponent implements OnInit {
   userImage: string;
   showLoader = false;
   regexp: RegExp;
+  id: any;
 
-  constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
+  constructor(private activateRoute: ActivatedRoute,private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
 
+    this.id = this.activateRoute.snapshot.params['id'];
+    if(this.id){
+      this.getUserById()
+    }
     this.userImage = sessionStorage.getItem("userImage");
     this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
   }
   goToProfiles(){
     this.router.navigate(['applicantForm'])
+  }
+  goToUserTable(){
+    this.router.navigate(['viewusers'])
   }
   
   logout(){
@@ -42,26 +50,50 @@ export class AdduserComponent implements OnInit {
     this.showLoader = true;
     console.log(this.adduserobj);
 
-    this.applicantService.saveUserForm(this.adduserobj).subscribe(d=>{
-      if(d.status == 200){
-        
-        this.reset();
-        this.showLoader = false;
-        // this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
-        this.message.success(d.message, {
-          nzDuration: 3000
-        });
-      }
-      else{
-        this.showLoader = false;
-          this.message.error(d.message, {
+    if(this.id){
+
+      this.applicantService.editUser(this.id,this.adduserobj).subscribe(d=>{
+        if(d.status == 200){
+          
+          this.getUserById();
+          this.showLoader = false;
+          // this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
+          this.message.success("User updated successfully", {
             nzDuration: 3000
           });
+        }
+        else{
+          this.showLoader = false;
+            this.message.error("Error updating user", {
+              nzDuration: 3000
+            });
+         
+        }
+      })
+    }
+    else{
+      this.applicantService.saveUserForm(this.adduserobj).subscribe(d=>{
+        if(d.status == 200){
+          
+          this.reset();
+          this.showLoader = false;
+          // this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
+          this.message.success(d.message, {
+            nzDuration: 3000
+          });
+        }
+        else{
+          this.showLoader = false;
+            this.message.error(d.message, {
+              nzDuration: 3000
+            });
+         
+        }
+        console.log(d);
        
-      }
-      console.log(d);
-     
-    })
+      })
+    }
+    
 
   }
   reset() {
@@ -79,6 +111,12 @@ export class AdduserComponent implements OnInit {
 
   goToAddNewUser(){
     this.router.navigate(['adduser'])
+  }
+
+  getUserById(){
+    this.applicantService.getUserById(this.id).subscribe(d=>{
+      this.adduserobj = d.result;
+    })
   }
 
   

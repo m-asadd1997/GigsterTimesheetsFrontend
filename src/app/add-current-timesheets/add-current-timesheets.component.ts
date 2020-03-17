@@ -39,6 +39,7 @@ export class AddCurrentTimesheetsComponent implements OnInit {
     minutes:0
   }
   showButton = true;
+  showLoader2 = false;
   
 
 
@@ -92,17 +93,20 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   }
 
   saveTimesheets(){
+    this.showLoader2 = true;
     // this.timesheetsObj.status = "Pending"
     this.timesheetsObj.weekId = this.weekId;
     this.service.saveTimesheets(this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
+        this.showLoader2 = false;
         this.hideForm = false;
+
         this.message.success(d.message, {
           nzDuration: 3000
         });
       }
       else{
-        
+        this.showLoader2 = false;
           this.message.error(d.message, {
             nzDuration: 3000
           });
@@ -342,7 +346,7 @@ getDurationHours(d1, d2) {
 
   calulateHours(){
     //hours
-    if(!this.validateButton()){
+    if(!this.validateButton2()){
       this.getSumOfHours(this.timesheetsObj.mondayStartTime,this.timesheetsObj.mondayEndTime)
       this.getSumOfHours(this.timesheetsObj.tuesdayStartTime,this.timesheetsObj.tuesdayEndTime)
       this.getSumOfHours(this.timesheetsObj.wednesdayStartTime,this.timesheetsObj.wednesdayEndTime)
@@ -351,6 +355,10 @@ getDurationHours(d1, d2) {
       this.getSumOfHours(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
       this.getSumOfHours(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
       console.log(this.totalSumOfTimesheet);
+      while(this.totalSumOfTimesheet.minutes > 60){
+        this.totalSumOfTimesheet.hours++;
+        this.totalSumOfTimesheet.minutes -= 60;
+      }
       this.totalHrs = this.totalSumOfTimesheet.hours + "Hours,"+this.totalSumOfTimesheet.minutes+" Minutes";
     }else{
       this.message.error("Please Fill Complete Timesheet To Calculate Hours", {
@@ -374,6 +382,20 @@ getDurationHours(d1, d2) {
         return true;
       }
  }
+
+ validateButton2(){
+  if(this.timesheetsObj.mondayStartTime && this.timesheetsObj.mondayEndTime && this.timesheetsObj.tuesdayStartTime && this.timesheetsObj.tuesdayEndTime && this.timesheetsObj.wednesdayStartTime && this.timesheetsObj.wednesdayEndTime &&
+     this.timesheetsObj.thursdayStartTime && this.timesheetsObj.tuesdayEndTime &&this.timesheetsObj.fridayStartTime && this.timesheetsObj.fridayEndTime && this.timesheetsObj.saturdayStartTime && this.timesheetsObj.saturdayEndTime &&this.timesheetsObj.sundayStartTime && this.timesheetsObj.sundayEndTime)
+     {
+       //console.log(this.timesheetsObj);
+      
+       return false
+     }
+     else{
+       
+       return true;
+     }
+}
 
  emptyTimesheetObj(){
    this.timesheetsObj.mondayStartTime = null;

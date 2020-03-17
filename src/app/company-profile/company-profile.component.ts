@@ -38,6 +38,9 @@ export class CompanyProfileComponent implements OnInit {
   logout(){
     this.applicantService.logout(this.router);
   }
+  goToUserTable(){
+    this.router.navigate(['viewusers'])
+  }
 
   goToProfiles(){
     this.router.navigate(['applicantForm'])
