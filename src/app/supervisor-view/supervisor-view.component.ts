@@ -28,7 +28,6 @@ export class SupervisorViewComponent implements OnInit {
   ngOnInit(): void {
     this.getTimesheets();
     this.userImage = sessionStorage.getItem("userImage");
-    console.log(this.userImage)
   }
   
   logout(){
@@ -44,7 +43,7 @@ export class SupervisorViewComponent implements OnInit {
     this.tableData = [];
     this.supId = sessionStorage.getItem("userId");
     this.service.getTimesheetsForSupervisor(this.supId).subscribe(d=>{
-      console.log("supervisor Timesheets======>",d)
+      
       // this.tableData = d.result;
     d.result.map(d=>{
       this.weekIdforView = d.weekId;
@@ -137,7 +136,7 @@ disapproveTimesheet(id){
 })
 }
 getRangeForView(){
-  console.log(this.weekIdforView)
+ 
   this.showRangeForView =  (this.dateFormatedDate(this.getStartingDay(this.weekIdforView,new Date().getFullYear())) + " to " + this.dateFormatedDate(this.getEndingDay(this.weekIdforView,new Date().getFullYear())))
 }
 dateFormatedDate(date){

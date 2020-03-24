@@ -43,7 +43,7 @@ export class SupervisorEditComponent implements OnInit {
       this.timesheetsObj = d.result;
       this.calulateHours()
       this.weekId = d.result.weekId;
-      console.log(d.result.weekId)
+     
       this.getRange();
       
       
@@ -99,7 +99,7 @@ export class SupervisorEditComponent implements OnInit {
     }
 
     getRange(){
-      console.log(this.weekId)
+      
       this.showRange =  (this.dateFormatedDate(this.getStartingDay(this.weekId,new Date().getFullYear())) + " to " + this.dateFormatedDate(this.getEndingDay(this.weekId,new Date().getFullYear())))
     }
 
@@ -190,7 +190,7 @@ export class SupervisorEditComponent implements OnInit {
       this.getSumOfHours(this.timesheetsObj.fridayStartTime,this.timesheetsObj.fridayEndTime)
       this.getSumOfHours(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
       this.getSumOfHours(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
-      console.log(this.totalSumOfTimesheet);
+     
       while(this.totalSumOfTimesheet.minutes > 60){
         this.totalSumOfTimesheet.hours++;
         this.totalSumOfTimesheet.minutes -= 60;
@@ -198,7 +198,7 @@ export class SupervisorEditComponent implements OnInit {
       this.totalHrs = this.totalSumOfTimesheet.hours + "Hours,"+this.totalSumOfTimesheet.minutes+" Minutes";
     
    
-    console.log(this.totalSumOfTimesheet)
+   
   }
   
 }

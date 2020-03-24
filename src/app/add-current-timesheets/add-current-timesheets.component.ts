@@ -40,6 +40,8 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   }
   showButton = true;
   showLoader2 = false;
+  showErrorDiv: boolean = false;
+  disableSaveButton = true;
   
 
 
@@ -47,7 +49,6 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   
   ngOnInit(): void {
     this.userImage = sessionStorage.getItem("userImage");
-    console.log("current week",this.getWeek());
     this.id = this.activateRoute.snapshot.params['id'];
     if(this.id){
       this.hideForm = true;
@@ -112,8 +113,16 @@ export class AddCurrentTimesheetsComponent implements OnInit {
           });
        
       }
-    })
-    console.log(this.timesheetsObj);
+
+      
+    },error=>{
+      this.showLoader2 = false;
+          this.message.error(error, {
+            nzDuration: 3000
+          });
+    }
+    )
+    
   }
 
   getSupervisorsOfSameOrganization(){
@@ -155,7 +164,6 @@ export class AddCurrentTimesheetsComponent implements OnInit {
       else{
         this.showLoader = true;
       }
-      console.log("hello",d.result)
     })
   }
 
@@ -207,7 +215,7 @@ getStartingDay( weeks, year ) {
     this.showLoader = true;
    this.weekId = this.weekId - 1;
     this.service.getTimesheetByWeekId(this.weekId,this.userId).subscribe(d=>{
-      console.log("onprevious",d);
+      
       if(d.status == 200){
         this.showLoader = false;
         this.hideForm = false;
@@ -225,7 +233,6 @@ getStartingDay( weeks, year ) {
     this.showLoader = true;
       this.weekId = this.weekId + 1;
       this.service.getTimesheetByWeekId(this.weekId,this.userId).subscribe(d=>{
-        console.log("onnext",d);
         if(d.status == 200){
           this.showLoader = false;
           this.hideForm = false;
@@ -250,7 +257,6 @@ getStartingDay( weeks, year ) {
   checkTimesheet(){
     let id = sessionStorage.getItem("userId")
     this.service.getTimesheetByWeekId(this.weekId,id).subscribe(d=>{
-      console.log("onnext",d);
       if(d.status == 200){
        
         this.hideForm = false;
@@ -260,11 +266,10 @@ getStartingDay( weeks, year ) {
         this.hideForm = true;
       }
     })
-    console.log(this.hideForm)
+  
   }
   
   getRangeForView(){
-    console.log(this.weekIdforView)
     this.showRangeForView =  (this.dateFormatedDate(this.getStartingDay(this.weekIdforView,new Date().getFullYear())) + " to " + this.dateFormatedDate(this.getEndingDay(this.weekIdforView,new Date().getFullYear())))
   }
   
@@ -320,20 +325,23 @@ getHours(start,end){
 getDurationHours(d1, d2) {
   let d3 = new Date(d2 - d1);
   let d0 = new Date(0);
-
+  
   
   return {
       getHours: function(){
-         
+        
           return d3.getHours() - d0.getHours();
       },
       getMinutes: function(){
+        
           return d3.getMinutes() - d0.getMinutes();
       },
       getMilliseconds: function() {
           return d3.getMilliseconds() - d0.getMilliseconds();
       },
       toString: function(){
+        
+        
         
           return this.getHours() + " Hours , " +
                  this.getMinutes() + " Minutes" 
@@ -354,7 +362,6 @@ getDurationHours(d1, d2) {
       this.getSumOfHours(this.timesheetsObj.fridayStartTime,this.timesheetsObj.fridayEndTime)
       this.getSumOfHours(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
       this.getSumOfHours(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
-      console.log(this.totalSumOfTimesheet);
       while(this.totalSumOfTimesheet.minutes > 60){
         this.totalSumOfTimesheet.hours++;
         this.totalSumOfTimesheet.minutes -= 60;
@@ -366,7 +373,6 @@ getDurationHours(d1, d2) {
       });
     }
    
-    console.log(this.totalSumOfTimesheet)
   }
 
  validateButton(){
@@ -413,5 +419,23 @@ getDurationHours(d1, d2) {
    this.timesheetsObj.sundayStartTime = null;
    this.timesheetsObj.sundayEndTime = null;
    this.timesheetsObj.supervisor = null;
+ }
+
+ checkNegativeValue(start,end){
+   if(start && end){
+    if(start > end){
+      this.showErrorDiv = true;
+      this.disableSaveButton = true;    
+    }
+    else
+    {
+      this.showErrorDiv = false;
+      this.disableSaveButton = false;
+    }
+ 
+   }
+   else{
+     this.showErrorDiv = false;
+   }
  }
 }
