@@ -107,6 +107,11 @@
     <div *ngIf="hideForm">
       <div class="row">
         <div class="col-12">
+          
+            <div class="alert alert-danger" style="text-align: center;" *ngIf="showErrorDiv">
+              <strong>Error!</strong> End time must be greater than start time else you can't save the timesheet.
+            </div>
+          
           <table class="table" style="text-align: center;">
             <thead>
               <tr>
@@ -131,7 +136,7 @@
                     [disabled]="disableInputFields"
                     [format]="24"
                   />
-                  <ngx-material-timepicker  #default1></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.mondayEndTime)"  #default1></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -144,12 +149,15 @@
                     [format]="24"
                     
                   />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.mondayStartTime,$event)" #default2></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.mondayStartTime,$event);checkNegativeValue(timesheetsObj.mondayStartTime,$event)" #default2></ngx-material-timepicker>
                 </td>
                 <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                
               
-                <td>{{ getHours(timesheetsObj.mondayStartTime,timesheetsObj.mondayEndTime) }}</td>
+                <td>{{ getHours(timesheetsObj.mondayStartTime,timesheetsObj.mondayEndTime) }}
+                  
+                </td>
+               
               </tr>
               <tr>
                 <td>TUESDAY</td>
@@ -164,7 +172,7 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker #default3></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.tuesdayEndTime)" #default3></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -176,10 +184,11 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker  (timeSet)="getDuration(timesheetsObj.tuesdayStartTime,$event)" #default4></ngx-material-timepicker>
+                  <ngx-material-timepicker  (timeSet)="getDuration(timesheetsObj.tuesdayStartTime,$event);checkNegativeValue(timesheetsObj.tuesdayStartTime,$event)" #default4></ngx-material-timepicker>
                 </td>
                 <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <td>{{ getHours(timesheetsObj.tuesdayStartTime,timesheetsObj.tuesdayEndTime) }}</td>
+                <td >{{ getHours(timesheetsObj.tuesdayStartTime,timesheetsObj.tuesdayEndTime) }}</td>
+                
               </tr>
               <tr>
                 <td>WEDNESDAY</td>
@@ -194,7 +203,7 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker #default5></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.wednesdayEndTime)" #default5></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -206,10 +215,11 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.wednesdayStartTime,$event)" #default6></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.wednesdayStartTime,$event);checkNegativeValue(timesheetsObj.wednesdayStartTime,$event)" #default6></ngx-material-timepicker>
                 </td>
                 <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <td>{{ getHours(timesheetsObj.wednesdayStartTime,timesheetsObj.wednesdayEndTime) }}</td>
+                <td >{{ getHours(timesheetsObj.wednesdayStartTime,timesheetsObj.wednesdayEndTime) }}</td>
+                
               </tr>
               <tr>
                 <td>THURSDAY</td>
@@ -225,7 +235,7 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker #default7></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.thursdayEndTime)" #default7></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -237,9 +247,10 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.thursdayStartTime,$event)" #default8></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.thursdayStartTime,$event);checkNegativeValue(timesheetsObj.thursdayStartTime,$event)" #default8></ngx-material-timepicker>
                 </td>
-                <td>{{ getHours(timesheetsObj.thursdayStartTime,timesheetsObj.thursdayEndTime) }}</td>
+                <td >{{ getHours(timesheetsObj.thursdayStartTime,timesheetsObj.thursdayEndTime) }}</td>
+                
               </tr>
               <tr>
                 <td>FRIDAY</td>
@@ -255,7 +266,7 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker #default9></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.fridayEndTime)" #default9></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -267,9 +278,10 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.fridayStartTime,$event)" #default10></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.fridayStartTime,$event);checkNegativeValue(timesheetsObj.fridayStartTime,$event)" #default10></ngx-material-timepicker>
                 </td>
-                <td>{{ getHours(timesheetsObj.fridayStartTime,timesheetsObj.fridayEndTime) }}</td>
+                <td >{{ getHours(timesheetsObj.fridayStartTime,timesheetsObj.fridayEndTime) }}</td>
+                
               </tr>
               <tr>
                 <td>SATURDAY</td>
@@ -285,7 +297,7 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker #default11></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.saturdayEndTime)" #default11></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -297,9 +309,10 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.saturdayStartTime,$event)" #default12></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.saturdayStartTime,$event);checkNegativeValue(timesheetsObj.saturdayStartTime,$event)" #default12></ngx-material-timepicker>
                 </td>
-                <td>{{ getHours(timesheetsObj.saturdayStartTime,timesheetsObj.saturdayEndTime) }}</td>
+                <td >{{ getHours(timesheetsObj.saturdayStartTime,timesheetsObj.saturdayEndTime) }}</td>
+               
               </tr>
               <tr>
                 <td>SUNDAY</td>
@@ -315,7 +328,7 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker #default13></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.sundayEndTime)" #default13></ngx-material-timepicker>
                 </td>
                 <td>
                   <input
@@ -327,9 +340,10 @@
                     readonly
                     [format]="24"
                   />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.sundayStartTime,$event)" #default14></ngx-material-timepicker>
+                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.sundayStartTime,$event);checkNegativeValue(timesheetsObj.sundayStartTime,$event)" #default14></ngx-material-timepicker>
                 </td>
-                <td>{{ getHours(timesheetsObj.sundayStartTime,timesheetsObj.sundayEndTime) }}</td>
+                <td >{{ getHours(timesheetsObj.sundayStartTime,timesheetsObj.sundayEndTime) }}</td>
+                
               </tr>
               <tr>
                 <td><div *ngIf="showButton"><button  mat-raised-button color="primary" (click)="calulateHours()">Calculate Hours</button></div></td>
@@ -372,7 +386,7 @@
                 color="primary"
                 style="margin-top: 1%;"
                 (click)="saveTimesheets()"
-                [disabled]="validateButton()"
+                [disabled]="validateButton() || disableSaveButton"
               >
                 Save Timesheet
               </button>

@@ -31,13 +31,11 @@ export class LoginPageComponent implements OnInit {
     // var output = this.service.checkUserandPass(uname, p);
     this.service.checkUserandPass(uname, p).subscribe(
       res => {
-        console.log("this is resp",res)
         if (res.status == 200) {
           this.message.success(res.message, {
             nzDuration: 3000
           });
           this.showLoading = false;
-          console.log("toker", res);
 
           sessionStorage.setItem("userId",res.result.id);
           sessionStorage.setItem("token", res.result.token);
@@ -67,12 +65,17 @@ export class LoginPageComponent implements OnInit {
           }
         }
       else{
-        console.log("error")
         this.message.error(res.message, {
           nzDuration: 3000
         });
       }
         this.showLoading = false;
+      },
+      error=>{
+        this.showLoading = false;
+        this.message.error("unauthorized, try again!", {
+          nzDuration: 3000
+        });
       }
     );
 

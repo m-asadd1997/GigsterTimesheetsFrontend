@@ -42,6 +42,8 @@ export class MainScreenComponent implements OnInit {
   disableSaveButton: boolean = false;
   checkEmail: string;
   userImage: string;
+  showForm: boolean = true;
+  loader = false;
   constructor(private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
@@ -52,7 +54,6 @@ export class MainScreenComponent implements OnInit {
     if(this.checkEmail){
       this.getProfiles()
     }
-    console.log(this.id)
 
     if(this.id){
     this.responseStatus = true;
@@ -70,10 +71,17 @@ export class MainScreenComponent implements OnInit {
   }
 
   getProfiles(){
+    this.showForm = false;
+    this.loader = true;
     this.applicantService.getProfilesByCheckEmail(this.checkEmail).subscribe(d=>{
       if(d.status ==200){
-        this.appFormObj = d.result;
-       
+        this.showForm = true;
+        this.loader = false;
+        this.appFormObj = d.result;     
+      }
+      else{
+        this.loader= false;
+        this.showForm = true;
       }
       
       
@@ -142,11 +150,9 @@ export class MainScreenComponent implements OnInit {
 
 
   openFile(){
-    console.log('hell')
     document.querySelector('input').click()
   }
   handle(e){
-    console.log(e)
   }
 
   saveApplicantForm(myForm : NgForm){
@@ -156,9 +162,7 @@ export class MainScreenComponent implements OnInit {
     // this.responseStatus = true;
     // this.disableSaveButton = true;
     this.responseId = null;
-    console.log("this is form data "+this.appFormObj)
-    console.log(this.resume)
-
+   
     if(this.id){
       this.showSaveLoading = true;
       this.applicantService.updateApplicantForm(this.id,this.appFormObj).subscribe(d=>{
@@ -177,7 +181,7 @@ export class MainScreenComponent implements OnInit {
           this.responseStatus = false;
           this._snackBar.open("Error","X",{duration: 3000});
         }
-        console.log(d);
+       
       })
     }else{
       this.showSaveLoading = true;
@@ -187,7 +191,6 @@ export class MainScreenComponent implements OnInit {
           this.showSaveLoading = false;
           this.responseId = d['result'].id;
           this.appFormObj = d.result
-          console.log(this.responseId)
           this.responseStatus = true;
           this._snackBar.open("Success","X",{duration: 3000});
           
@@ -196,7 +199,6 @@ export class MainScreenComponent implements OnInit {
           this.responseStatus = false;
           this._snackBar.open("Error","X",{duration: 3000});
         }
-        console.log(d);
       })
 
     }
