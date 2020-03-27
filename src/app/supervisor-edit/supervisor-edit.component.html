@@ -29,8 +29,15 @@ style="background-color: white !important;border-top-color: black;border-top-sty
 </nav>
 
 <br>
-
-<div class="container">
+<div *ngIf="showLoader" style="margin-left: 47%; margin-top: 10%;">
+  <div class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div class="container" *ngIf="showForm">
     <button
     mat-stroked-button
     (click)="goToRecievedTimesheets()"
@@ -289,8 +296,13 @@ style="background-color: white !important;border-top-color: black;border-top-sty
           </div>
       </div>
       <hr>
+      <mat-form-field class="example-full-width" style="width: 50%;">
+        <mat-label>Comments</mat-label>
+        <input matInput="text" placeholder="Add Comments" [(ngModel)]="timesheetsObj.comments" name="name" required/>
+      </mat-form-field>
       <div class="row" >
         <div class="col-4"></div>
+
       <!-- <button mat-raised-button color="primary" style="background-color: black;">Save Timesheet</button> -->
       <!-- <button mat-raised-button color="basic" style="background-color: teal;color: whitesmoke;" >Approve</button> -->
       <button mat-raised-button color="primary" style="margin-left: 10%;" (click)="modifyAndApprove()">Modify & Approve</button>

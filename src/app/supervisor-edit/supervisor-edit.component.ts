@@ -23,6 +23,8 @@ export class SupervisorEditComponent implements OnInit {
     minutes:0
   }
   totalHrs = "0";
+  showLoader = false;
+  showForm = true;
   constructor(private activateRoute: ActivatedRoute,private service: ApplicantServiceService,private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
@@ -39,12 +41,22 @@ export class SupervisorEditComponent implements OnInit {
   }
 
   getTimeSheetById(){
+    this.showLoader = true;
+    this.showForm = false;
     this.service.getTimesheetById(this.id).subscribe(d=>{
       this.timesheetsObj = d.result;
       this.calulateHours()
       this.weekId = d.result.weekId;
      
       this.getRange();
+      if(this.timesheetsObj){
+        this.showForm = true;
+        this.showLoader = false
+      }
+      else{
+        this.showLoader = true;
+        this.showForm = false;
+      }
       
       
 
@@ -53,6 +65,7 @@ export class SupervisorEditComponent implements OnInit {
   }
 
   modifyAndApprove(){
+    this.timesheetsObj.status = "Approved"
     this.service.modifyAndApprove(this.id,this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
         // this.showLoading = false;

@@ -157,6 +157,7 @@ export class MainScreenComponent implements OnInit {
 
   saveApplicantForm(myForm : NgForm){
     sessionStorage.setItem("userImage",this.appFormObj.userImage);
+    this.userImage = this.appFormObj.userImage
     this.appFormObj.checkEmail = this.checkEmail;
     this.disableSaveButton = true;
     // this.responseStatus = true;
@@ -227,7 +228,7 @@ _handleReaderLoaded(readerEvt) {
            this.appFormObj.userImage = base64textString;
           // console.log(this.appFormObj.resume)
            
-   }
+   }      
 
 
   onFileChange(event) {

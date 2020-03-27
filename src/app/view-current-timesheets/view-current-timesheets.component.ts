@@ -15,13 +15,15 @@ export class ViewCurrentTimesheetsComponent implements OnInit {
   id : any;
     tableData:any[] = [];
   showLoader = false;
-  displayedColumns: string[] = ['id', 'status', 'modifiedBy','week','action'];
+  displayedColumns: string[] = ['id', 'status', 'modifiedBy','week','comments','action'];
   dataSource: MatTableDataSource<any>;
   //@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild('scheduledOrdersPaginator') paginator: MatPaginator;
   weekIdforView: any;
   showRangeForView: string;
   userImage: string;
+  sendStatus:any;
+  comments;
   constructor(private router:Router,private service: ApplicantServiceService,private activateRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -50,12 +52,27 @@ export class ViewCurrentTimesheetsComponent implements OnInit {
       console.log(d)
 
       d.result.map(d=>{
+        if(d.sendFlag=="YES"){
+          this.sendStatus =" already submitted"
+        }
+        else if(d.sendFlag=="NO")
+        {
+          this.sendStatus =" not submitted"
+        }
+        if(d.comments !== null){
+          this.comments = d.comments
+          
+        }
+        else{
+          this.comments = "-"
+        }
         this.weekIdforView = d.weekId;
         this.getRangeForView();
         this.tableData.push({
           id:d.id,
-          status:d.status,
+          status:d.status + this.sendStatus,
           modifiedBy:d.modifiedBy,
+          comments:this.comments,
           week:this.showRangeForView
 
         })

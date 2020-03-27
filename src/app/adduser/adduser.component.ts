@@ -32,7 +32,7 @@ export class AdduserComponent implements OnInit {
     if(this.id){
       this.getUserById()
     }
-    this.userImage = sessionStorage.getItem("userImage");
+    this.userImage = sessionStorage.getItem("companyImage");
     this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
   }
   goToProfiles(){

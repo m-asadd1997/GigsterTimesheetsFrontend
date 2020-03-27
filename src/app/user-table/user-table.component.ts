@@ -25,7 +25,7 @@ export class UserTableComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.userImage = sessionStorage.getItem("userImage");
+    this.userImage = sessionStorage.getItem("companyImage");
 
     this.getUsersInTable();
   }

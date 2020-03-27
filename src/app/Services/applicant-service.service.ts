@@ -21,6 +21,7 @@ export class ApplicantServiceService {
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('organizationName');
     sessionStorage.removeItem('userImage');
+    sessionStorage.removeItem('companyImage')
      router.navigate(['']);
   }
 
@@ -121,6 +122,18 @@ export class ApplicantServiceService {
 
   getUserById(id):Observable<any>{
     return this.http.get(this.url+"token/getbyid/"+id);
+  }
+
+  sendToSupervisor(id,obj):Observable<any>{
+    return this.http.put(this.url+"api/timesheets/sendtosupervisor/"+id,obj);
+  }
+
+  getCompanyProfiles(organizationName):Observable<any>{
+    return this.http.get(this.url+"api/companyprofile/"+organizationName);
+  }
+
+  editCompanyProfile(id,obj):Observable<any>{
+    return this.http.put(this.url+"api/companyprofile/"+id,obj);
   }
 
 }

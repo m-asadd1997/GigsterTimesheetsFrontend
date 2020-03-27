@@ -62,6 +62,7 @@
       </div>
     </div>
     <div class="row" *ngIf="hideSection">
+     
       <div class="col-6">
         <h2 style="color: #6E6F6D; font-weight: 500;">
           Current Timesheet
@@ -83,6 +84,9 @@
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </div>
+      </div>
+      <div class="alert alert-warning" style="text-align: center; margin-left: 12%;" >
+        <strong>Note!</strong> Default time is set as 24:00 which is same as 00:00.
       </div>
     </div>
     <div class="row" *ngIf="showLoader" style="margin-left: 50%;">
@@ -135,6 +139,7 @@
                     readonly
                     [disabled]="disableInputFields"
                     [format]="24"
+                    
                   />
                   <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.mondayEndTime)"  #default1></ngx-material-timepicker>
                 </td>
@@ -353,6 +358,31 @@
               </tr>
             </tbody>
           </table>
+          <div style="margin-left: 45%;" *ngIf="viewTimesheet">
+          <button
+          *ngIf="!showEditBtn"
+          mat-raised-button
+          color="primary"
+          style="margin-top: 1%;"
+          (click)="saveTimesheets()"
+          [disabled]="disableSaveButton"
+        >
+          Save Timesheet
+        </button>
+        <button
+        *ngIf="showEditBtn"
+        mat-raised-button
+        color="warn"
+        style="margin-top: 1%;"
+        [disabled]="disableSaveButton"
+        (click)="editTimesheet()"
+      >
+        Edit Timesheet
+      </button>
+        <div *ngIf="showLoader2" class="spinner-border" style="margin-left: 1%;" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
         </div>
       </div>
       <div class="row" style="margin-left: 43%;">
@@ -382,17 +412,17 @@
             </div>
             <div class="col-6">
               <button
-                mat-raised-button
-                color="primary"
-                style="margin-top: 1%;"
-                (click)="saveTimesheets()"
-                [disabled]="validateButton() || disableSaveButton"
-              >
-                Save Timesheet
-              </button>
-              <div *ngIf="showLoader2" class="spinner-border" style="margin-left: 1%;" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+          mat-raised-button
+          color="primary"
+          style="margin-top: 1%;"
+          (click)="sendToSupervisor()"
+         
+        >
+          Send Timesheet
+        </button>
+        <div *ngIf="showLoader3" class="spinner-border" style="margin-left: 1%;" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
             </div>
           </div>
         </div>
