@@ -29,10 +29,20 @@ export class CompanyProfileComponent implements OnInit {
    
   ]
   userImage: string;
+  id:any;
+  loader: boolean;
+  showForm: boolean;
+  showLoader: boolean;
+  companyImage:string;
   constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
-    this.userImage = sessionStorage.getItem("userImage");
+    
+    this.companyObj.companyName = sessionStorage.getItem("organizationName")
+
+    if(this.companyObj.companyName){
+      this.getCompanyByCompanyName();
+    }
   }
 
   logout(){
@@ -46,23 +56,50 @@ export class CompanyProfileComponent implements OnInit {
     this.router.navigate(['applicantForm'])
   }
   submit(myForm:NgForm){
+    this.showLoader = true;
+    this.companyImage = this.companyObj.companyimage;
     console.log(this.companyObj);
-    this.applicantService.saveCompanyProfile(this.companyObj).subscribe(d=>{
-      if(d.status == 200){
-        this.message.success(d.message, {
-          nzDuration: 3000
-        });
-      }
-      else{
-        
-          this.message.error(d.message, {
+    if(this.id){
+      this.applicantService.editCompanyProfile(this.id,this.companyObj).subscribe(d=>{
+        if(d.status == 200){
+          this.message.success(d.message, {
             nzDuration: 3000
           });
-       
-      }
-      console.log(d);
-      myForm.reset();
-    })
+          this.getCompanyByCompanyName();
+          this.showLoader = false;
+        }
+        else{
+          
+          this.showLoader = false;
+            this.message.error(d.message, {
+              nzDuration: 3000
+            });
+         
+        }
+      })
+    }
+    else{
+      this.applicantService.saveCompanyProfile(this.companyObj).subscribe(d=>{
+        if(d.status == 200){
+          this.message.success(d.message, {
+            nzDuration: 3000
+          });
+          this.getCompanyByCompanyName();
+          this.showLoader = false;
+        }
+        else{
+          
+          this.showLoader = false;
+            this.message.error(d.message, {
+              nzDuration: 3000
+            });
+         
+        }
+        console.log(d);
+        myForm.reset();
+      })
+    }
+    
   }
 
   goToOrganizationConfig(){
@@ -95,5 +132,26 @@ export class CompanyProfileComponent implements OnInit {
       
     }
 
+  }
+
+  getCompanyByCompanyName(){
+    this.loader = true;
+    this.showForm = false;
+    this.applicantService.getCompanyProfiles(this.companyObj.companyName).subscribe(d=>{
+     
+      if(d.status == 200){
+        this.companyObj = d.result
+        this.id=d.result.id;
+        this.companyImage = d.result.companyimage;
+        sessionStorage.setItem("companyImage",this.companyImage)
+        console.log("haiii")
+        this.loader = false;
+        this.showForm = true;
+      }
+      else{
+        this.loader = false;
+        this.showForm = true;
+      }
+    })
   }
 }

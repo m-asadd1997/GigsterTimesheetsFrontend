@@ -19,7 +19,7 @@
       (click)="goToOrganizationConfig()"
       style="font-size: 1.1em;font-weight: 600;"
     >
-      Organization configuration
+      Profile
     </button>
     &nbsp;
     <button
@@ -30,21 +30,15 @@
       View Users
     </button>
     &nbsp;
-    <button
-      mat-stroked-button
-      (click)="goToProfiles()"
-      style="font-size: 1.1em;font-weight: 600;"
-    >
-      Profiles
-    </button>
+    
   </div>
   <div style="margin-left: -10%;">
     <nz-badge nzStatus="success">
       <nz-avatar
         nzIcon="user"
         [nzSrc]="
-          userImage != null
-            ? 'data:image/jpeg;base64,' + userImage
+          companyImage != null
+            ? 'data:image/jpeg;base64,' + companyImage
             : 'assets/user.png'
         "
       ></nz-avatar>
@@ -54,8 +48,15 @@
     <img src="assets/icons8-logout-rounded-left-24.png" alt="">
   </div>
 </nav>
-
-<mat-card style="width: 40%; margin-left: 30%; margin-top: 2%;">
+<div *ngIf="loader" style="margin-left: 47%; margin-top: 10%;">
+  <div class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<mat-card style="width: 40%; margin-left: 30%; margin-top: 2%;" *ngIf="showForm">
     <div style="font-size: large;">
       <img src = "assets/icons8-contacts-30.png" > 
       <b>Company Profile</b>
@@ -91,7 +92,7 @@
         <div class="col">
           <mat-form-field class="example-full-width" style="width: 100%;">
             <!-- <mat-label>Favorite food</mat-label> -->
-            <input matInput="text" placeholder="Legal Company Name" [(ngModel)]=companyObj.companyName name="companyName" required/>
+            <input matInput="text" placeholder="Company Name" [(ngModel)]=companyObj.companyName name="companyName" required/>
           </mat-form-field>
         </div>
         <div class="col">
@@ -121,12 +122,7 @@
           <input matInput="text" placeholder="Contact Title" name=title [(ngModel)]=companyObj.contactTitle required />
         </mat-form-field>
       </div>
-      <div class = "col">
-        <mat-form-field class="example-full-width" style="width: 100%;">
-          <!-- <mat-label>Favorite food</mat-label> -->
-          <input matInput="text" placeholder="Roles" name=roles [(ngModel)]=companyObj.roles required />
-        </mat-form-field>
-      </div>
+     
       <div class="col">
         <mat-form-field>
           <mat-label style="font-size: 1em;"
@@ -149,8 +145,11 @@
         style="background-color: black;margin-left: 20%;"
         (click)="submit(myForm)"
       >
-        Submit
+        Save
       </button>
+      <div *ngIf="showLoader" class="spinner-border" style="margin-left: 1%;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
       </div>
       <hr>
       <br>
