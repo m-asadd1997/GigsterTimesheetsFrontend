@@ -25,12 +25,15 @@ export class SupervisorEditComponent implements OnInit {
   totalHrs = "0";
   showLoader = false;
   showForm = true;
+  userName: string;
   constructor(private activateRoute: ActivatedRoute,private service: ApplicantServiceService,private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
     this.id = this.activateRoute.snapshot.params['id'];
     this.getTimeSheetById();
     this.userImage = sessionStorage.getItem("userImage");
+    this.userName = sessionStorage.getItem("userName")
+
   }
   logout(){
     this.service.logout(this.router);
@@ -66,6 +69,7 @@ export class SupervisorEditComponent implements OnInit {
 
   modifyAndApprove(){
     this.timesheetsObj.status = "Approved"
+    this.timesheetsObj.dateSubmitted = this.dateFormatedDate(new Date())
     this.service.modifyAndApprove(this.id,this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
         // this.showLoading = false;
@@ -213,5 +217,6 @@ export class SupervisorEditComponent implements OnInit {
    
    
   }
+  
   
 }

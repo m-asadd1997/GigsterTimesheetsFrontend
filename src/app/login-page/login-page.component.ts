@@ -43,10 +43,8 @@ export class LoginPageComponent implements OnInit {
           sessionStorage.setItem("username", res.result.username);
           sessionStorage.setItem("userType", res.result.userType);
           sessionStorage.setItem("userImage",res.result.userImage);
-          sessionStorage.setItem(
-            "organizationName",
-            res.result.organizationName
-          );
+          sessionStorage.setItem("organizationName",res.result.organizationName);
+          sessionStorage.setItem("userName",res.result.username)
 
           if (res.result.userType === "ADMIN") {
             setTimeout(() => {

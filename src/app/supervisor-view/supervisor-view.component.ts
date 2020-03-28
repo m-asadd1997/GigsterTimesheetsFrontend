@@ -15,7 +15,7 @@ export class SupervisorViewComponent implements OnInit {
 
   tableData:any[] = [];
   showLoader = false;
-  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy', 'week','sentBy','action'];
+  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy','modifiedAt', 'week','sentBy','action'];
   dataSource: MatTableDataSource<any>;
   //@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild('scheduledOrdersPaginator') paginator: MatPaginator;
@@ -23,10 +23,12 @@ export class SupervisorViewComponent implements OnInit {
   weekIdforView: any;
   showRangeForView: string;
   userImage:any;
+  userName:string;
   constructor(private service: ApplicantServiceService, private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
     this.getTimesheets();
+    this.userName = sessionStorage.getItem("userName")
     this.userImage = sessionStorage.getItem("userImage");
   }
   
@@ -52,6 +54,7 @@ export class SupervisorViewComponent implements OnInit {
         id:d.id,
         status:d.status,
         modifiedBy:d.modifiedBy,
+        modifiedAt:d.dateSubmitted,
         sentBy:d.user.name,
         week:this.showRangeForView
       })
@@ -73,17 +76,7 @@ export class SupervisorViewComponent implements OnInit {
     this.showLoader = true
     this.service.changeTimesheetStatus(id,"Approved").subscribe(d=>{
       if(d.status == 200){
-        // let index = this.tableData.findIndex(p => p.id == id);
-        // this.tableData.splice(index,1)
-        // console.log("sppppppp",d.result)
-        // this.showLoader = false;
         
-        //   this.tableData.push({
-        //     id:d.result.id,
-        //     status:d.result.status,
-        //     modifiedBy:d.result.modifiedBy,
-        //     sentBy:d.result.user.name
-        //   })
         this.getTimesheets();
         
        // this.showLoading = false;
@@ -106,17 +99,7 @@ disapproveTimesheet(id){
   this.showLoader = true
   this.service.changeTimesheetStatus(id,"Disapproved").subscribe(d=>{
     if(d.status == 200){
-      // let index = this.tableData.findIndex(p => p.id == id);
-      //   this.tableData.splice(index,1)
-      // console.log("sppppppp",d.result)
-      // this.showLoader = false;
       
-      //   this.tableData.push({
-      //     id:d.result.id,
-      //     status:d.result.status,
-      //     modifiedBy:d.result.modifiedBy,
-      //     sentBy:d.result.user.name
-      //   })
       this.getTimesheets();
       
       

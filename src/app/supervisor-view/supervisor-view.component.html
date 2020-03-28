@@ -15,14 +15,16 @@ style="background-color: white !important;border-top-color: black;border-top-sty
     Profiles
     </button>
 
-<div style="margin-left: 70%;">
+<div style="margin-left: 60%;">
+  <strong>{{userName}}</strong>
+  &nbsp;
   <nz-badge nzStatus="success">
     <nz-avatar nzIcon="user" [nzSrc]="userImage != null
     ? 'data:image/jpeg;base64,' + userImage
     : 'assets/user.png'
 "></nz-avatar>
   </nz-badge>
-   
+  
 </div>
 <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()" >
   <img src="assets/icons8-logout-rounded-left-24.png" alt="">
@@ -55,8 +57,13 @@ style="background-color: white !important;border-top-color: black;border-top-sty
     
         <!-- Weight Column -->
         <ng-container matColumnDef="lastModifiedBy">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Last Modified By </th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Modified By </th>
           <td mat-cell *matCellDef="let element"> {{element.modifiedBy}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="modifiedAt">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Modified At </th>
+          <td mat-cell *matCellDef="let element"> {{element.modifiedAt}} </td>
         </ng-container>
     
         <!-- Symbol Column -->
