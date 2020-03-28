@@ -5,7 +5,7 @@
   <div>
     <img src="assets/Capture.PNG" width="120" height="30" />
   </div>
-  <div style="margin-right: 50%;">
+  <div style="margin-right: 40%;">
     <button
       mat-stroked-button
       (click)="goToNewTimesheet()"
@@ -31,6 +31,8 @@
     </button>
   </div>
   <div>
+    <strong>{{userName}}</strong>
+    &nbsp;
     <nz-badge nzStatus="success">
       <nz-avatar
         nzIcon="user"

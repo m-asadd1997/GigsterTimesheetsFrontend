@@ -44,6 +44,7 @@ export class MainScreenComponent implements OnInit {
   userImage: string;
   showForm: boolean = true;
   loader = false;
+  userName: string;
   constructor(private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
@@ -51,6 +52,8 @@ export class MainScreenComponent implements OnInit {
     this.userImage = sessionStorage.getItem("userImage");
     this.id = this.activateRoute.snapshot.params['id'];
     this.checkEmail = sessionStorage.getItem("email");
+    this.userName = sessionStorage.getItem("userName")
+
     if(this.checkEmail){
       this.getProfiles()
     }

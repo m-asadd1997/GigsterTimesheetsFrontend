@@ -18,4 +18,5 @@ export class Timesheet {
  comments:String;
   user:any;
   supervisor:any;
+  dateSubmitted:any;
 }

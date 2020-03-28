@@ -47,12 +47,15 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   showLoader3 = false;
   showEditBtn = true;
   viewTimesheet = true;
+  userName: string;
 
   constructor(private service: ApplicantServiceService,private router:Router,private message: NzMessageService,private activateRoute: ActivatedRoute) {}
   
   ngOnInit(): void {
     this.userImage = sessionStorage.getItem("userImage");
     this.id = this.activateRoute.snapshot.params['id'];
+    this.userName = sessionStorage.getItem("userName")
+
     if(this.id){
       this.hideForm = true;
       this.hideSection = false;
@@ -99,7 +102,8 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   saveTimesheets(){
     this.showLoader2 = true;
     this.timesheetsObj.supervisor = null;
-    // this.timesheetsObj.status = "Pending"
+    this.timesheetsObj.dateSubmitted = this.dateFormatedDate(new Date());
+    this.timesheetsObj.status = "Draft"
     this.timesheetsObj.weekId = this.weekId;
     this.service.saveTimesheets(this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
@@ -485,6 +489,7 @@ getDurationHours(d1, d2) {
 sendToSupervisor(){
 
   this.showLoader3 = true;
+  this.timesheetsObj.status = "Pending"
   this.service.sendToSupervisor(this.sendId,this.timesheetsObj).subscribe(d=>{
     if(d.status == 200){
       this.hideForm = false;
@@ -516,7 +521,8 @@ validateButton3(){
 
 editTimesheet(){
   this.showLoader2 = true;
-  this.timesheetsObj.status = "Pending";
+  this.timesheetsObj.dateSubmitted =this.dateFormatedDate(new Date());
+  this.timesheetsObj.status = "Draft";
   this.service.modifyAndApprove(this.sendId,this.timesheetsObj).subscribe(d=>{
     if(d.status == 200){
       this.showLoader2 = false;

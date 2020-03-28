@@ -13,6 +13,7 @@ import { SupervisorViewComponent } from './supervisor-view/supervisor-view.compo
 import { SupervisorEditComponent } from './supervisor-edit/supervisor-edit.component';
 import { RegisterComponent } from './register/register.component';
 import { UserTableComponent } from './user-table/user-table.component';
+import { AuthGuard } from './auth.guard';
 
 
 const routes: Routes = [
@@ -20,7 +21,7 @@ const routes: Routes = [
     path:'',component: LoginPageComponent
   },
   {
-    path:'applicantForm', component: MainScreenComponent
+    path:'applicantForm', component: MainScreenComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true, "ADMIN":true,"SUPERVISOR":true}
   },
   {
     path:'applicanttable',component:ApplicantTableComponent
@@ -30,41 +31,42 @@ const routes: Routes = [
   },
   {
 
-    path:"editapplicantform/:id",component:MainScreenComponent},
+    path:"editapplicantform/:id",component:MainScreenComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true, "ADMIN":true,"SUPERVISOR":true}
+  },
 
     {path:"viewportfolio/:id",component:ViewportfolioComponent
   },
   {
-    path:"addcurrenttimesheets",component:AddCurrentTimesheetsComponent
+    path:"addcurrenttimesheets",component:AddCurrentTimesheetsComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true}
   },{
-    path:"viewtimesheet/:id",component:AddCurrentTimesheetsComponent
+    path:"viewtimesheet/:id",component:AddCurrentTimesheetsComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true}
   },{
-    path:"modifytimesheets/:id",component:SupervisorEditComponent
+    path:"modifytimesheets/:id",component:SupervisorEditComponent,canActivate:[AuthGuard],data:{"SUPERVISOR":true}
   }
   ,{
-    path:"currenttimesheets/:id",component:ViewCurrentTimesheetsComponent
+    path:"currenttimesheets/:id",component:ViewCurrentTimesheetsComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true}
   },
   {
-    path:"adduser",component:AdduserComponent
+    path:"adduser",component:AdduserComponent,canActivate:[AuthGuard],data:{"ADMIN":true}
   },
   {
-    path:"companyprofile", component:CompanyProfileComponent
+    path:"companyprofile", component:CompanyProfileComponent,canActivate:[AuthGuard],data:{"ADMIN":true}
 
   },
   {
-    path:"supervisorview",component:SupervisorViewComponent
+    path:"supervisorview",component:SupervisorViewComponent,canActivate:[AuthGuard],data:{"SUPERVISOR":true}
   },
   {
-    path:"supervisoredit",component:SupervisorEditComponent
+    path:"supervisoredit",component:SupervisorEditComponent,canActivate:[AuthGuard],data:{"SUPERVISOR":true}
 
   },{
     path:"register",component:RegisterComponent
   },
   {
-    path:"viewusers",component:UserTableComponent
+    path:"viewusers",component:UserTableComponent,canActivate:[AuthGuard],data:{"ADMIN":true}
   },
   {
-    path:"edituser/:id",component:AdduserComponent
+    path:"edituser/:id",component:AdduserComponent,canActivate:[AuthGuard],data:{"ADMIN":true}
   }
 ];
 
