@@ -60,9 +60,15 @@ style="background-color: white !important;border-top-color: black;border-top-sty
           </p>
           
       </div>
+      <div class="alert alert-warning" style="text-align: center; margin-left: 12%;" >
+        <strong>Note!</strong> Default time is set as 24:00 which is same as 00:00.
+      </div>
   </div>
       <div class="row">
           <div class="col-12">
+            <div class="alert alert-danger" style="text-align: center;" *ngIf="showErrorDiv">
+              <strong>Error!</strong> End time must be greater than start time else you can't save the timesheet.
+            </div>
               <table class="table" style="text-align: center;">
                   <thead>
                     <tr>
@@ -86,7 +92,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                       
                           [format]="24"
                         />
-                        <ngx-material-timepicker  #default1></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.mondayEndTime)" #default1></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -99,7 +105,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           [format]="24"
                           
                         />
-                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.mondayStartTime,$event)" #default2></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.mondayStartTime,$event);checkNegativeValue(timesheetsObj.mondayStartTime,$event)" #default2></ngx-material-timepicker>
                       </td>
                       <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                      
@@ -119,7 +125,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker #default3></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.tuesdayEndTime)" #default3></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -131,7 +137,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker  (timeSet)="getDuration(timesheetsObj.tuesdayStartTime,$event)" #default4></ngx-material-timepicker>
+                        <ngx-material-timepicker  (timeSet)="getDuration(timesheetsObj.tuesdayStartTime,$event);checkNegativeValue(timesheetsObj.tuesdayStartTime,$event)" #default4></ngx-material-timepicker>
                       </td>
                       <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                       <td>{{ getHours(timesheetsObj.tuesdayStartTime,timesheetsObj.tuesdayEndTime) }}</td>
@@ -149,7 +155,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker #default5></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.wednesdayEndTime)" #default5></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -161,7 +167,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.wednesdayStartTime,$event)" #default6></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.wednesdayStartTime,$event);checkNegativeValue(timesheetsObj.wednesdayStartTime,$event)" #default6></ngx-material-timepicker>
                       </td>
                       <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                       <td>{{ getHours(timesheetsObj.wednesdayStartTime,timesheetsObj.wednesdayEndTime) }}</td>
@@ -180,7 +186,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker #default7></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.thursdayEndTime)" #default7></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -192,7 +198,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.thursdayStartTime,$event)" #default8></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.thursdayStartTime,$event);checkNegativeValue(timesheetsObj.thursdayStartTime,$event)" #default8></ngx-material-timepicker>
                       </td>
                       <td>{{ getHours(timesheetsObj.thursdayStartTime,timesheetsObj.thursdayEndTime) }}</td>
                     </tr>
@@ -210,7 +216,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker #default9></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.fridayEndTime)" #default9></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -222,7 +228,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.fridayStartTime,$event)" #default10></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.fridayStartTime,$event);checkNegativeValue(timesheetsObj.fridayStartTime,$event)" #default10></ngx-material-timepicker>
                       </td>
                       <td>{{ getHours(timesheetsObj.fridayStartTime,timesheetsObj.fridayEndTime) }}</td>
                     </tr>
@@ -240,7 +246,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker #default11></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.saturdayEndTime)" #default11></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -252,7 +258,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.saturdayStartTime,$event)" #default12></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.saturdayStartTime,$event);checkNegativeValue(timesheetsObj.saturdayStartTime,$event)" #default12></ngx-material-timepicker>
                       </td>
                       <td>{{ getHours(timesheetsObj.saturdayStartTime,timesheetsObj.saturdayEndTime) }}</td>
                     </tr>
@@ -270,7 +276,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker #default13></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.sundayEndTime)" #default13></ngx-material-timepicker>
                       </td>
                       <td>
                         <input
@@ -282,12 +288,12 @@ style="background-color: white !important;border-top-color: black;border-top-sty
                           readonly
                           [format]="24"
                         />
-                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.sundayStartTime,$event)" #default14></ngx-material-timepicker>
+                        <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.sundayStartTime,$event);checkNegativeValue(timesheetsObj.sundayStartTime,$event)" #default14></ngx-material-timepicker>
                       </td>
                       <td>{{ getHours(timesheetsObj.sundayStartTime,timesheetsObj.sundayEndTime) }}</td>
                     </tr>
                     <tr>
-                      <td></td>
+                      <td><button  mat-raised-button color="primary" (click)="calulateHours()">Calculate Hours</button></td>
                       <td></td>
                       <td></td>
                       <td>Total Hours : {{ totalHrs }}</td>
@@ -307,7 +313,7 @@ style="background-color: white !important;border-top-color: black;border-top-sty
 
       <!-- <button mat-raised-button color="primary" style="background-color: black;">Save Timesheet</button> -->
       <!-- <button mat-raised-button color="basic" style="background-color: teal;color: whitesmoke;" >Approve</button> -->
-      <button mat-raised-button color="primary" style="margin-left: 10%;" (click)="modifyAndApprove()">Modify & Approve</button>
+      <button mat-raised-button color="primary" style="margin-left: 10%;" [disabled]="disableSaveButton" (click)="modifyAndApprove()">Modify & Approve</button>
       <!-- <button mat-raised-button color="warn" style="margin-left: 1%;">Disapprove</button> -->
       
   </div>
