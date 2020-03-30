@@ -26,6 +26,8 @@ export class SupervisorEditComponent implements OnInit {
   showLoader = false;
   showForm = true;
   userName: string;
+  showErrorDiv: boolean;
+  disableSaveButton: boolean;
   constructor(private activateRoute: ActivatedRoute,private service: ApplicantServiceService,private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
@@ -171,8 +173,10 @@ export class SupervisorEditComponent implements OnInit {
   
       let d2 = new Date(this.getFormattedDate(event))
      
-  
-      return (this.getDurationHours(d1,d2).toString())
+      let durationsHours = this.msToTime(d2.getTime()-d1.getTime());
+
+      
+      return durationsHours;
   }
 
   getSumOfHours(startTime,event) {
@@ -196,10 +200,14 @@ export class SupervisorEditComponent implements OnInit {
     return this.getDuration(start,end);
     }
   }
-
+  resetHrs(){
+    this.totalSumOfTimesheet.hours = 0;
+    this.totalSumOfTimesheet.minutes = 0;
+    this.totalHrs = 0 + "Hours,"+ 0 +" Minutes";
+  }
   calulateHours(){
     //hours
-      
+      this.resetHrs();
       this.getSumOfHours(this.timesheetsObj.mondayStartTime,this.timesheetsObj.mondayEndTime)
       this.getSumOfHours(this.timesheetsObj.tuesdayStartTime,this.timesheetsObj.tuesdayEndTime)
       this.getSumOfHours(this.timesheetsObj.wednesdayStartTime,this.timesheetsObj.wednesdayEndTime)
@@ -217,6 +225,36 @@ export class SupervisorEditComponent implements OnInit {
    
    
   }
+  msToTime(duration: number) {       
+    let  minutes = Math.floor((duration / (1000 * 60)) % 60);
+    let  hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    if(hours < 0|| minutes < 0){
+      this.disableSaveButton =true;
+      this.showErrorDiv = true;
+    }
+
+    let hours2 = hours < 10 ? "0" + hours : hours;
+    let minutes2 = minutes < 10 ? "0" + minutes : minutes;
+   
+    return hours2 + ":" + minutes2;
+ }
   
+ checkNegativeValue(start,end){
+  if(start && end){
+   if(start > end){
+     this.showErrorDiv = true;
+     this.disableSaveButton = true;    
+   }
+   else
+   {
+     this.showErrorDiv = false;
+     this.disableSaveButton = false;
+   }
+
+  }
+  else{
+    this.showErrorDiv = false;
+  }
+}
   
 }
