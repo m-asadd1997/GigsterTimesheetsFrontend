@@ -157,12 +157,10 @@
       style="color: whitesmoke; background-color: black;font-weight: lighter;margin-left: 2%;"
       (click)="registerUser()"
     >
-      Register
-    </button>
-    <div *ngIf="showLoading" style="margin-left: 50%;margin-top: 5%;">
-      <div class="spinner-grow text-dark" role="status">
+    <div *ngIf="showLoading" class="spinner-grow text-light" role="status">
         <span class="sr-only">Loading...</span>
       </div>
-    </div>
+      Register
+    </button>
   </form>
 </div>

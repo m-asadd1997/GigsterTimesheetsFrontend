@@ -16,20 +16,19 @@
     &nbsp;
     <button
       mat-stroked-button
-      (click)="goToOrganizationConfig()"
-      style="font-size: 1.1em;font-weight: 600;"
-    >
-      Profile
-    </button>
-    &nbsp;
-    <button
-      mat-stroked-button
       (click)="goToUserTable()"
       style="font-size: 1.1em;font-weight: 600;"
     >
       View Users
     </button>
     &nbsp;
+    <button
+      mat-stroked-button
+      (click)="goToOrganizationConfig()"
+      style="font-size: 1.1em;font-weight: 600;"
+    >
+      Profile
+    </button>
     
   </div>
   <div style="margin-left: -10%;">
@@ -48,14 +47,16 @@
     <img src="assets/icons8-logout-rounded-left-24.png" alt="">
   </div>
 </nav>
-<div *ngIf="loader" style="margin-left: 47%; margin-top: 10%;">
+<!-- <div *ngIf="loader" style="margin-left: 47%; margin-top: 10%;">
   <div class="spinner-grow text-info" role="status">
     <span class="sr-only">Loading...</span>
   </div>
   <div class="spinner-grow text-secondary" role="status">
     <span class="sr-only">Loading...</span>
   </div>
-</div>
+</div> -->
+<nz-spin nzSimple *ngIf="loader" style="margin-left: 45%;margin-top: 10%;" [nzSize]="'large'" nzTip="Loading..."></nz-spin>
+
 <mat-card style="width: 40%; margin-left: 30%; margin-top: 2%;" *ngIf="showForm">
     <div style="font-size: large;">
       <img src = "assets/icons8-contacts-30.png" > 
@@ -145,11 +146,14 @@
         style="background-color: black;margin-left: 20%;"
         (click)="submit(myForm)"
       >
-        Save
-      </button>
-      <div *ngIf="showLoader" class="spinner-border" style="margin-left: 1%;" role="status">
+      <div *ngIf="showLoader" class="spinner-grow text-light" role="status">
         <span class="sr-only">Loading...</span>
       </div>
+        Save
+      </button>
+      <!-- <div *ngIf="showLoader" class="spinner-border" style="margin-left: 1%;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div> -->
       </div>
       <hr>
       <br>

@@ -16,20 +16,19 @@
     &nbsp;
     <button
       mat-stroked-button
-      (click)="goToOrganizationConfig()"
-      style="font-size: 1.1em;font-weight: 600;"
-    >
-      Profile
-    </button>
-    &nbsp;
-    <button
-      mat-stroked-button
       (click)="goToUserTable()"
       style="font-size: 1.1em;font-weight: 600;"
     >
       View Users
     </button>
     &nbsp;
+    <button
+      mat-stroked-button
+      (click)="goToOrganizationConfig()"
+      style="font-size: 1.1em;font-weight: 600;"
+    >
+      Profile
+    </button>
    
   </div>
   <div style="margin-left: -10%;">
@@ -111,11 +110,14 @@
         style="background-color: black;margin-left: 5%;"
         (click)="submit(myForm);"
       >
-        Submit
-      </button>
-      <div *ngIf="showLoader" class="spinner-border" style="margin-left: 1%;" role="status">
+      <div *ngIf="showLoader" class="spinner-grow text-light" role="status">
         <span class="sr-only">Loading...</span>
       </div>
+        Submit
+      </button>
+      <!-- <div *ngIf="showLoader" class="spinner-border" style="margin-left: 1%;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div> -->
     </div>
   </form>
 </mat-card>

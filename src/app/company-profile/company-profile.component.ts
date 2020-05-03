@@ -57,7 +57,10 @@ export class CompanyProfileComponent implements OnInit {
   }
   submit(myForm:NgForm){
     this.showLoader = true;
-    this.companyImage = this.companyObj.companyimage;
+
+      this.companyImage = this.companyObj.companyimage;
+    
+    
     console.log(this.companyObj);
     if(this.id){
       this.applicantService.editCompanyProfile(this.id,this.companyObj).subscribe(d=>{
@@ -122,7 +125,18 @@ export class CompanyProfileComponent implements OnInit {
    onImageChange(event) {
     let reader = new FileReader();
     if(event.target.files && event.target.files.length > 0) {
+    
       let file = event.target.files[0];
+      if(event.target.files[0].size > 5000000){
+        this.message.error("image size cannot be greater than 5mb", {
+          nzDuration: 3000
+        });
+        this.disableSaveButton = true;
+      }
+      else{
+        this.disableSaveButton = false;
+      }
+      console.log(event.target.files[0].size)
       reader.onload =this._handleReaderImageLoaded.bind(this);
 
       this.companyObj.companyimage = file.type

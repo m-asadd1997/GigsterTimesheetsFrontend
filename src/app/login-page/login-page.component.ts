@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoginService } from "./login.service";
 import { NzMessageService } from 'ng-zorro-antd';
+import { ApplicantServiceService } from '../Services/applicant-service.service';
 
 @Component({
   selector: "app-login-page",
@@ -11,7 +12,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 export class LoginPageComponent implements OnInit {
   errorVisible = false;
   showLoading = false;
-  constructor(private router: Router, private service: LoginService,private message: NzMessageService) {}
+  constructor(private compServ : ApplicantServiceService,private router: Router, private service: LoginService,private message: NzMessageService) {}
 
   ngOnInit(): void {
     localStorage.clear();
@@ -41,12 +42,13 @@ export class LoginPageComponent implements OnInit {
           sessionStorage.setItem("token", res.result.token);
           sessionStorage.setItem("email", res.result.email);
           sessionStorage.setItem("username", res.result.username);
+          this.getImageInStorage(res,res.result.organizationName);
           sessionStorage.setItem("userType", res.result.userType);
-          sessionStorage.setItem("userImage",res.result.userImage);
           sessionStorage.setItem("organizationName",res.result.organizationName);
           sessionStorage.setItem("userName",res.result.username)
 
           if (res.result.userType === "ADMIN") {
+
             setTimeout(() => {
               this.router.navigate(["/adduser"]);
             }, 1000);
@@ -82,5 +84,28 @@ export class LoginPageComponent implements OnInit {
 
   routeToRegister() {
     this.router.navigate(["register"]);
+  }
+
+  getImageInStorage(data,org){
+    if(data.result.userType === "ADMIN"){
+      this.compServ.getCompanyProfiles(org).subscribe(d=>{
+        console.log("Result",d);
+        if(d.status == 200){
+          sessionStorage.setItem("companyImage", d.result.companyimage);
+        }
+        else{
+          sessionStorage.setItem("companyImage",null);
+        }
+        
+      })
+    }
+    else{
+      sessionStorage.setItem("userImage",data.result.userImage);
+
+    }
+  }
+
+  goToForgotPassword(){
+    this.router.navigate(['forgotPassword'])
   }
 }

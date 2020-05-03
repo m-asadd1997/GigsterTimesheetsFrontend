@@ -137,4 +137,20 @@ export class ApplicantServiceService {
     return this.http.put(this.url+"api/companyprofile/"+id,obj);
   }
 
+  getApprovedTimesheets(id):Observable<any>{
+    return this.http.get(this.url+"api/timesheets/approved/"+id);
+  }
+
+  sendMailOnForgetPassword(obj):Observable<any>{
+    return this.http.post(this.url+"api/forgotpassword/empandsup",obj)
+  }
+
+  checkTokenExpiry(obj):Observable<any>{
+    return this.http.post(this.url+"api/forgotpassword/checkexpiry",obj)
+  }
+
+  saveNewPassword(obj):Observable<any>{
+    return this.http.post(this.url+"api/forgotpassword/savepass",obj)
+  }
+
 }

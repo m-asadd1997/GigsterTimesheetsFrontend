@@ -27,11 +27,11 @@
       (click)="goToProfiles()"
       style="font-size: 1.1em;font-weight: 600;"
     >
-    Profiles
+    Profile
     </button>
   </div>
   <div>
-    <strong>{{userName}}</strong>
+    <strong>{{userName}} </strong>
     &nbsp;
     <nz-badge nzStatus="success">
       <nz-avatar nzIcon="user" [nzSrc]="userImage != null
@@ -39,6 +39,7 @@
       : 'assets/user.png'
   "></nz-avatar>
     </nz-badge>
+    <span style="font-size: xx-small;font-weight: 200;">{{userType}}</span>
   </div>
   <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()" >
     <img src="assets/icons8-logout-rounded-left-24.png" alt="">
@@ -73,7 +74,13 @@
         <!-- Weight Column -->
         <ng-container matColumnDef="modifiedBy">
           <th mat-header-cell *matHeaderCellDef style="text-align: center;">Modified By</th>
-          <td mat-cell *matCellDef="let element"> {{element.modifiedBy}} </td>
+          <td mat-cell *matCellDef="let element">
+            <nz-avatar nzIcon="user" nzSize="small" [nzSrc]="element.userImage != null
+            ? 'data:image/jpeg;base64,' + element.userImage
+            : 'assets/user.png'
+        "></nz-avatar>
+        &nbsp;
+        {{element.modifiedBy}} </td>
         </ng-container>
         <ng-container matColumnDef="modifiedAt">
           <th mat-header-cell *matHeaderCellDef style="text-align: center;">Modified At</th>
@@ -109,10 +116,11 @@
       <mat-paginator  #scheduledOrdersPaginator [pageSize]="5"  [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   
   
+     
       
       <div *ngIf="showLoader" style="margin-left: 40%;">
         <div class="spinner-grow text-primary" role="status">
-          <span class="sr-only">Loading...</span>
+          <span class="sr-only">Loading...</span> 
         </div>
         <div class="spinner-grow text-secondary" role="status">
           <span class="sr-only">Loading...</span>
