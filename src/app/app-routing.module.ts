@@ -14,6 +14,9 @@ import { SupervisorEditComponent } from './supervisor-edit/supervisor-edit.compo
 import { RegisterComponent } from './register/register.component';
 import { UserTableComponent } from './user-table/user-table.component';
 import { AuthGuard } from './auth.guard';
+import { PreviousTimesheetsComponent } from './previous-timesheets/previous-timesheets.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 
 const routes: Routes = [
@@ -67,6 +70,15 @@ const routes: Routes = [
   },
   {
     path:"edituser/:id",component:AdduserComponent,canActivate:[AuthGuard],data:{"ADMIN":true}
+  },
+  {
+    path:"previoustimesheets",component:PreviousTimesheetsComponent,canActivate:[AuthGuard],data:{"SUPERVISOR":true}
+  },
+  {
+    path:"forgotPassword",component:ForgotPasswordComponent
+  },
+  {
+    path:"resetlink/:token",component:NewPasswordComponent
   }
 ];
 

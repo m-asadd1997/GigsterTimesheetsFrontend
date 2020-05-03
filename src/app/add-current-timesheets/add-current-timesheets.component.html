@@ -27,11 +27,11 @@
       (click)="goToProfiles()"
       style="font-size: 1.1em;font-weight: 600;"
     >
-      Profiles
+      Profile
     </button>
   </div>
   <div>
-    <strong>{{userName}}</strong>
+    <strong>{{userName}} </strong>
     &nbsp;
     <nz-badge nzStatus="success">
       <nz-avatar
@@ -42,7 +42,9 @@
             : 'assets/user.png'
         "
       ></nz-avatar>
+      
     </nz-badge>
+    <span style="font-size: xx-small;font-weight: 200;">{{userType}}</span>
   </div>
   <div style="margin-right: 5%;" style="cursor: pointer;" (click)="logout()">
     <img src="assets/icons8-logout-rounded-left-24.png" alt="" />
@@ -87,27 +89,22 @@
           </button>
         </div>
       </div>
-      <div class="alert alert-warning" style="text-align: center; margin-left: 12%;" >
-        <strong>Note!</strong> Default time is set as 24:00 which is same as 00:00.
-      </div>
     </div>
-    <div class="row" *ngIf="showLoader" style="margin-left: 50%;">
+    <!-- <div class="row" *ngIf="showLoader" style="margin-left: 50%;">
       <div class="spinner-grow text-primary" role="status">
         <span class="sr-only">Loading...</span>
       </div>
       <div class="spinner-grow text-secondary" role="status">
         <span class="sr-only">Loading...</span>
       </div>
-    </div>
-    <div class="row" *ngIf="!hideForm">
+    </div> -->
+    <nz-spin nzSimple *ngIf="showLoader" style="margin-left: 45%;" [nzSize]="'large'" nzTip="Loading..."></nz-spin>
+    <div class="row" *ngIf="!hideForm && smileySection">
       <nz-result
         [nzIcon]="'smile-twotone'"
         [nzTitle]="'Timesheet Submitted!'"
         style="margin-left: 35%;"
       >
-        <!-- <div nz-result-extra>
-              <button nz-button nzType="primary">Next</button>
-            </div> -->
       </nz-result>
     </div>
     <div *ngIf="hideForm">
@@ -115,7 +112,7 @@
         <div class="col-12">
           
             <div class="alert alert-danger" style="text-align: center;" *ngIf="showErrorDiv">
-              <strong>Error!</strong> End time must be greater than start time else you can't save the timesheet.
+              <strong>Error!</strong> End time must be greater than start time.
             </div>
           
           <table class="table" style="text-align: center;">
@@ -131,264 +128,98 @@
             <tbody>
               <tr>
                 <td>MONDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.mondayStartTime"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default1"
-                    readonly
-                    [disabled]="disableInputFields"
-                    [format]="24"
-                    
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.mondayEndTime)"  #default1></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.mondayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.mondayStartTime,'mondayStartTime',timesheetsObj.mondayEndTime,'monHrs')" [timeOnly]="true"></p-calendar>
                 </td>
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.mondayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default2"
-                    readonly
-                    [format]="24"
-                    
-                  />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.mondayStartTime,$event);checkNegativeValue(timesheetsObj.mondayStartTime,$event)" #default2></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.mondayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.mondayEndTime,'mondayEndTime',timesheetsObj.mondayStartTime,'monHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.mondayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-               
               
-                <td>{{ getHours(timesheetsObj.mondayStartTime,timesheetsObj.mondayEndTime) }}
+                <td>{{ hrs.monHrs }}
                   
                 </td>
                
               </tr>
               <tr>
                 <td>TUESDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
+              
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.tuesdayStartTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default3"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.tuesdayEndTime)" #default3></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.tuesdayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.tuesdayStartTime,'tuesdayStartTime',timesheetsObj.tuesdayEndTime,'tuesHrs')" [timeOnly]="true"></p-calendar>
                 </td>
+              
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.tuesdayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default4"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker  (timeSet)="getDuration(timesheetsObj.tuesdayStartTime,$event);checkNegativeValue(timesheetsObj.tuesdayStartTime,$event)" #default4></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.tuesdayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.tuesdayEndTime,'tuesdayEndTime',timesheetsObj.tuesdayStartTime,'tuesHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.tuesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <td >{{ getHours(timesheetsObj.tuesdayStartTime,timesheetsObj.tuesdayEndTime) }}</td>
+                <td >{{hrs.tuesHrs}}</td>
                 
               </tr>
               <tr>
                 <td>WEDNESDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.wednesdayStartTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default5"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.wednesdayEndTime)" #default5></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.wednesdayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.wednesdayStartTime,'wednesdayStartTime',timesheetsObj.wednesdayEndTime,'wedHrs')" [timeOnly]="true"></p-calendar>
                 </td>
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.wednesdayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default6"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.wednesdayStartTime,$event);checkNegativeValue(timesheetsObj.wednesdayStartTime,$event)" #default6></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.wednesdayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.wednesdayEndTime,'wednesdayEndTime',timesheetsObj.wednesdayStartTime,'wedHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.wednesdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <td >{{ getHours(timesheetsObj.wednesdayStartTime,timesheetsObj.wednesdayEndTime) }}</td>
+                <td >{{ hrs.wedHrs }}</td>
                 
               </tr>
               <tr>
                 <td>THURSDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.thursdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <!-- <td><nz-time-picker nzSize="small"  [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.thursdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.thursdayStartTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default7"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.thursdayEndTime)" #default7></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.thursdayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.thursdayStartTime,'thursdayStartTime',timesheetsObj.thursdayEndTime,'thursHrs')" [timeOnly]="true"></p-calendar>
                 </td>
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.thursdayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default8"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.thursdayStartTime,$event);checkNegativeValue(timesheetsObj.thursdayStartTime,$event)" #default8></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.thursdayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.thursdayEndTime,'thursdayEndTime',timesheetsObj.thursdayStartTime,'thursHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <td >{{ getHours(timesheetsObj.thursdayStartTime,timesheetsObj.thursdayEndTime) }}</td>
+                <td >{{ hrs.thursHrs }}</td>
                 
               </tr>
               <tr>
                 <td>FRIDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.fridayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.fridayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.fridayStartTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default9"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.fridayEndTime)" #default9></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.fridayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.fridayStartTime,'fridayStartTime',timesheetsObj.fridayEndTime,'friHrs')" [timeOnly]="true"></p-calendar>
                 </td>
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.fridayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default10"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.fridayStartTime,$event);checkNegativeValue(timesheetsObj.fridayStartTime,$event)" #default10></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.fridayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.fridayEndTime,'fridayEndTime',timesheetsObj.fridayStartTime,'friHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <td >{{ getHours(timesheetsObj.fridayStartTime,timesheetsObj.fridayEndTime) }}</td>
+                <td >{{ hrs.friHrs }}</td>
                 
               </tr>
               <tr>
                 <td>SATURDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.saturdayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.saturdayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.saturdayStartTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default11"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.saturdayEndTime)" #default11></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.saturdayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.saturdayStartTime,'saturdayStartTime',timesheetsObj.saturdayEndTime,'satHrs')" [timeOnly]="true"></p-calendar>
                 </td>
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.saturdayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default12"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.saturdayStartTime,$event);checkNegativeValue(timesheetsObj.saturdayStartTime,$event)" #default12></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.saturdayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.saturdayEndTime,'saturdayEndTime',timesheetsObj.saturdayStartTime,'satHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <td >{{ getHours(timesheetsObj.saturdayStartTime,timesheetsObj.saturdayEndTime) }}</td>
+                <td >{{ hrs.satHrs }}</td>
                
               </tr>
               <tr>
                 <td>SUNDAY</td>
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.sundayStartTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
-                <!-- <td><nz-time-picker nzSize="small" [nzUse12Hours]="true" [(ngModel)]="timesheetsObj.sundayEndTime" (ngModelChange)="log($event)"></nz-time-picker></td> -->
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.sundayStartTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default13"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="checkNegativeValue($event,timesheetsObj.sundayEndTime)" #default13></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.sundayStartTime" [disabled]="disableInputFields" (onClose)="setStartMyDate(timesheetsObj.sundayStartTime,'sundayStartTime',timesheetsObj.sundayEndTime,'sunHrs')" [timeOnly]="true"></p-calendar>
                 </td>
                 <td>
-                  <input
-                    placeholder="Select time"
-                    [(ngModel)]="timesheetsObj.sundayEndTime"
-                    [disabled]="disableInputFields"
-                    aria-label="12hr format"
-                    [ngxTimepicker]="default14"
-                    readonly
-                    [format]="24"
-                  />
-                  <ngx-material-timepicker (timeSet)="getDuration(timesheetsObj.sundayStartTime,$event);checkNegativeValue(timesheetsObj.sundayStartTime,$event)" #default14></ngx-material-timepicker>
+                  <p-calendar [(ngModel)]="timesheetsObj.sundayEndTime" [disabled]="disableInputFields" (onClose)="setEndMyDate(timesheetsObj.sundayEndTime,'sundayEndTime',timesheetsObj.sundayStartTime,'sunHrs')" [timeOnly]="true"></p-calendar>
                 </td>
-                <td >{{ getHours(timesheetsObj.sundayStartTime,timesheetsObj.sundayEndTime) }}</td>
+                <td >{{ hrs.sunHrs }}</td>
                 
               </tr>
               <tr>
-                <td><div *ngIf="showButton"><button  mat-raised-button color="primary" (click)="calulateHours()">Calculate Hours</button></div></td>
+                <td><div *ngIf="showButton"><button  mat-raised-button color="primary" (click)="calculateTotalHrs()">Calculate Hours</button></div></td>
                 <td></td>
                 <td></td>
                 <td>Total Hours : {{ totalHrs }}</td>
               </tr>
             </tbody>
           </table>
-          <div style="margin-left: 45%;" *ngIf="viewTimesheet">
-          <button
-          *ngIf="!showEditBtn"
-          mat-raised-button
-          color="primary"
-          style="margin-top: 1%;"
-          (click)="saveTimesheets()"
-          [disabled]="disableSaveButton"
-        >
-          Save Timesheet
-        </button>
-        <button
-        *ngIf="showEditBtn"
-        mat-raised-button
-        color="warn"
-        style="margin-top: 1%;"
-        [disabled]="disableSaveButton"
-        (click)="editTimesheet()"
-      >
-        Edit Timesheet
-      </button>
-        <div *ngIf="showLoader2" class="spinner-border" style="margin-left: 1%;" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
+        
         </div>
       </div>
       <div class="row" style="margin-left: 43%;">
-        <!-- <button mat-raised-button color="primary" style="background-color: black;">Save Timesheet</button> -->
       </div>
       <div class="row" style="background-color: #FCFCFC;" *ngIf="disableButton">
         <div class="col-12">
@@ -407,11 +238,22 @@
                   required
                 >
                   <mat-option *ngFor="let s of supervisors" [value]="s.value">
+                    <nz-avatar
+                    nzSize="small"
+                    nzIcon="user"
+                    [nzSrc]="
+                      s.supervisorImage != null
+                        ? 'data:image/jpeg;base64,' + s.supervisorImage
+                        : 'assets/user.png'
+                    "
+                  ></nz-avatar>
+                  &nbsp;
                     {{ s.viewValue }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="row">
             <div class="col-6">
               <button
           mat-raised-button
@@ -420,12 +262,47 @@
           (click)="sendToSupervisor()"
          
         >
+        <div *ngIf="showLoader3" class="spinner-grow text-light" role="status">
+				  <span class="sr-only">Loading...</span>
+				</div>
           Send Timesheet
         </button>
-        <div *ngIf="showLoader3" class="spinner-border" style="margin-left: 1%;" role="status">
+        <!-- <div *ngIf="showLoader3" class="spinner-border" style="margin-left: 1%;" role="status">
           <span class="sr-only">Loading...</span>
-        </div>
+        </div> -->
             </div>
+            <div class="col-6" *ngIf="viewTimesheet">
+              <button
+              *ngIf="!showEditBtn"
+              mat-raised-button
+              color="primary"
+              style="margin-top: 1%;"
+              (click)="saveTimesheets()"
+              [disabled]="disableSaveButton"
+            >
+            <div *ngIf="showLoader2" class="spinner-grow text-light" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+              Save Timesheet
+            </button>
+            <button
+            *ngIf="showEditBtn"
+            mat-raised-button
+            color="primary"
+            style="margin-top: 1%;"
+            [disabled]="disableSaveButton"
+            (click)="editTimesheet()"
+          >
+          <div *ngIf="showLoader2" class="spinner-grow text-light" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+            Save Timesheet
+          </button>
+            <!-- <div *ngIf="showLoader2" class="spinner-border" style="margin-left: 1%;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div> -->
+          </div>
+        </div>
           </div>
         </div>
       </div>

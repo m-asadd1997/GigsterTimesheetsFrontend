@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgForm } from '@angular/forms';
 
 import {Location} from '@angular/common';
+import { NzMessageService } from 'ng-zorro-antd';
+import { error } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -45,14 +47,13 @@ export class MainScreenComponent implements OnInit {
   showForm: boolean = true;
   loader = false;
   userName: string;
-  constructor(private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
+  userType: string;
+  type: string;
+  constructor(private message: NzMessageService,private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
 
-    this.userImage = sessionStorage.getItem("userImage");
-    this.id = this.activateRoute.snapshot.params['id'];
-    this.checkEmail = sessionStorage.getItem("email");
-    this.userName = sessionStorage.getItem("userName")
+    this.getItemsOnPageLoad();
 
     if(this.checkEmail){
       this.getProfiles()
@@ -65,6 +66,18 @@ export class MainScreenComponent implements OnInit {
     this.appFormObj.checkEmail = sessionStorage.getItem("email")
       
   }
+
+  getItemsOnPageLoad(){
+    this.userImage = sessionStorage.getItem("userImage");
+    this.id = this.activateRoute.snapshot.params['id'];
+    this.checkEmail = sessionStorage.getItem("email");
+    this.userName = sessionStorage.getItem("userName")
+    this.appFormObj.name = sessionStorage.getItem("userName")
+    this.appFormObj.email = sessionStorage.getItem("email")
+    this.type = sessionStorage.getItem("userType").toLowerCase();
+    this.userType = this.type.charAt(0).toUpperCase()+this.type.slice(1);
+  }
+
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -159,10 +172,20 @@ export class MainScreenComponent implements OnInit {
   }
 
   saveApplicantForm(myForm : NgForm){
-    sessionStorage.setItem("userImage",this.appFormObj.userImage);
+    try{
+      sessionStorage.setItem("userImage",this.appFormObj.userImage);
+    }
+    catch(e){
+      this.showSaveLoading = false;
+      this.message.error("Image size is too large, select an image with smaller size", {
+        nzDuration: 3000
+      });
+      console.log(e)
+    }
+    
     this.userImage = this.appFormObj.userImage
     this.appFormObj.checkEmail = this.checkEmail;
-    this.disableSaveButton = true;
+    
     // this.responseStatus = true;
     // this.disableSaveButton = true;
     this.responseId = null;
@@ -178,15 +201,27 @@ export class MainScreenComponent implements OnInit {
           
           this.responseStatus = true;
           //this.openSnackBar("done")
-          this._snackBar.open("Success","X",{duration: 3000});
+          this.message.success(d.message, {
+            nzDuration: 3000
+          });
 
         }
         else{
           this.responseStatus = false;
-          this._snackBar.open("Error","X",{duration: 3000});
+          this.showSaveLoading = false;
+          this.message.error(d.message, {
+            nzDuration: 3000
+          });
         }
        
-      })
+      },error=>{
+        this.showloading = false;
+        this.message.error("Server error", {
+          nzDuration: 3000
+        });
+      }
+      
+      )
     }else{
       this.showSaveLoading = true;
       this.applicantService.saveApplicantForm(this.appFormObj).subscribe(d=>{
@@ -196,13 +231,24 @@ export class MainScreenComponent implements OnInit {
           this.responseId = d['result'].id;
           this.appFormObj = d.result
           this.responseStatus = true;
-          this._snackBar.open("Success","X",{duration: 3000});
+          this.message.success(d.message, {
+            nzDuration: 3000
+          });
           
         }
         else{
           this.responseStatus = false;
-          this._snackBar.open("Error","X",{duration: 3000});
+          this.showSaveLoading = false;
+          this.message.error(d.message, {
+            nzDuration: 3000
+          });
         }
+      }
+      ,error=>{
+        this.showloading = false;
+        this.message.error("Server error", {
+          nzDuration: 3000
+        });
       })
 
     }
@@ -249,7 +295,17 @@ _handleReaderLoaded(readerEvt) {
   onImageChange(event) {
     let reader = new FileReader();
     if(event.target.files && event.target.files.length > 0) {
+
       let file = event.target.files[0];
+      if(event.target.files[0].size > 5000000){
+        this.message.error("image size cannot be greater than 5mb", {
+          nzDuration: 5000
+        });
+        this.disableSaveButton = true;
+      }
+      else{
+        this.disableSaveButton = false;
+      }
       reader.onload =this._handleReaderImageLoaded.bind(this);
       this.appFormObj.userImage = file.type
       //console.log("1"+this.appFormObj.resumeContentType)

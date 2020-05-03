@@ -14,14 +14,7 @@
       Add new user
     </button>
     &nbsp;
-    <button
-      mat-stroked-button
-      (click)="goToOrganizationConfig()"
-      style="font-size: 1.1em;font-weight: 600;"
-    >
-      Profile
-    </button>
-    &nbsp;
+
     <button
       mat-stroked-button
       (click)="goToUserTable()"
@@ -30,6 +23,13 @@
       View Users
     </button>
     &nbsp;
+    <button
+    mat-stroked-button
+    (click)="goToOrganizationConfig()"
+    style="font-size: 1.1em;font-weight: 600;"
+  >
+    Profile
+  </button>
    
    
   </div>
@@ -67,8 +67,20 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <nz-avatar
+            nzIcon="user"
+            nzSize="small"
+            [nzSrc]="
+              element.userImage != null
+                ? 'data:image/jpeg;base64,' + element.userImage
+                : 'assets/user.png'
+            "
+          ></nz-avatar>
+          &nbsp;{{element.name}} </td>
         </ng-container>
+
+        
     
         <!-- Weight Column -->
         <ng-container matColumnDef="email">

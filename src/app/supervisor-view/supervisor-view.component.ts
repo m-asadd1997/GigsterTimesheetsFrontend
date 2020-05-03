@@ -24,14 +24,24 @@ export class SupervisorViewComponent implements OnInit {
   showRangeForView: string;
   userImage:any;
   userName:string;
+  userType: string;
+  showEmpty = false;
+  type: string;
   constructor(private service: ApplicantServiceService, private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
+    this.getItemsOnPageLoad()
     this.getTimesheets();
-    this.userName = sessionStorage.getItem("userName")
-    this.userImage = sessionStorage.getItem("userImage");
+   
   }
   
+  getItemsOnPageLoad(){
+    this.userName = sessionStorage.getItem("userName")
+    this.userImage = sessionStorage.getItem("userImage");
+    this.type = sessionStorage.getItem("userType").toLowerCase();
+  this.userType = this.type.charAt(0).toUpperCase()+this.type.slice(1);
+  }
+
   logout(){
     this.service.logout(this.router);
   }
@@ -56,16 +66,25 @@ export class SupervisorViewComponent implements OnInit {
         modifiedBy:d.modifiedBy,
         modifiedAt:d.dateSubmitted,
         sentBy:d.user.name,
-        week:this.showRangeForView
+        week:this.showRangeForView,
+        modifierImage:d.modifiedByImage
       })
     })
-      
+    
+   
+
       if(this.tableData)
       {
+    
         this.showLoader = false;
+        
+        
       }
       else{
+        
         this.showLoader = false
+        
+        
       }
       this.dataSource = new MatTableDataSource(this.tableData);
       this.dataSource.paginator = this.paginator;
@@ -150,5 +169,12 @@ getEndingDay( weeks, year ) {
 }
 goToProfiles(){
   this.router.navigate(['applicantForm'])
+}
+
+goToPreviousTimesheets(){
+  this.router.navigate(['previoustimesheets'])
+}
+goToCurrentTimesheets(){
+  this.router.navigate(['supervisorview'])
 }
 }

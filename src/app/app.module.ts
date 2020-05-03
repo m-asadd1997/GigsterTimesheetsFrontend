@@ -54,7 +54,19 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { UserTableComponent } from './user-table/user-table.component';
-
+import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
+import {MenuItem} from 'primeng/api';  
+import {CalendarModule} from 'primeng/calendar';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { PreviousTimesheetsComponent } from './previous-timesheets/previous-timesheets.component';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 
 // import {MatPaginator} from '@angular/material/paginator';
@@ -76,7 +88,10 @@ import { UserTableComponent } from './user-table/user-table.component';
     SupervisorViewComponent,
     SupervisorEditComponent,
     RegisterComponent,
-    UserTableComponent
+    UserTableComponent,
+    PreviousTimesheetsComponent,
+    ForgotPasswordComponent,
+    NewPasswordComponent
     
   ],
   imports: [
@@ -114,7 +129,17 @@ import { UserTableComponent } from './user-table/user-table.component';
     NzResultModule,
     NzAvatarModule,
     NzBadgeModule ,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    AccordionModule,
+    CalendarModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    NzSpinModule,
+    NzEmptyModule,
+    NzInputModule,
+    NzIconModule,
+NzAlertModule
+
 
     
     // MatGridListModule
