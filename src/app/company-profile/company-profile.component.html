@@ -62,6 +62,25 @@
       <img src = "assets/icons8-contacts-30.png" > 
       <b>Company Profile</b>
       <div class="row">
+        <nz-modal  [(nzVisible)]="isVisible" nzTitle="Resize your image" (nzOnCancel)="handleCancel()" (nzOnOk)="updateCroppedImage()">
+          <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+          [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1/1" [disabled]="true"
+          [resizeToWidth]="100" backgroundColor="lightgray" [resizeToHeight]="100" [cropperMinWidth]="100"
+          [roundCropper]="true" [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'center'"
+          [style.display]="showCropper ? null : 'none'" [imageQuality]="100" (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)">
+        </image-cropper>
+    
+        <div class="row">
+    
+          <div class="col-lg-5 offset-4">
+        
+            <nz-slider [nzMin]="1" (ngModelChange)="zoom($event)" [nzMax]="10" [nzStep]="0.5"
+              [(ngModel)]="zoomvalue"></nz-slider>
+          
+          </div>
+        </div>
+        </nz-modal>
       <div class="col-md-8" >
       <img
       style="margin-left: 60%;"

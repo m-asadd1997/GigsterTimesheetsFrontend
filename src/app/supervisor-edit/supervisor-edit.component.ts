@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { NzMessageService } from 'ng-zorro-antd';
 
+
 @Component({
   selector: 'app-supervisor-edit',
   templateUrl: './supervisor-edit.component.html',
@@ -13,6 +14,7 @@ export class SupervisorEditComponent implements OnInit {
 
   timesheetsObj: Timesheet = new Timesheet();
   id: any;
+  routeId;
 
   showRange: string;
   weekId: any;
@@ -28,6 +30,7 @@ export class SupervisorEditComponent implements OnInit {
   userName: string;
   showErrorDiv: boolean;
   disableSaveButton: boolean;
+  disableInputFields = false;
   hrs = {
     monHrs:"00:00",
     tuesHrs:"00:00",
@@ -39,18 +42,39 @@ export class SupervisorEditComponent implements OnInit {
   }
   userType: string;
   type: string;
+  showBtnLoader= false;
+  hideButton = true;
   constructor(private activateRoute: ActivatedRoute,private service: ApplicantServiceService,private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
     this.getItemsOnPageLoad();
-    this.getTimeSheetById();
+    if(this.id){
+      this.getTimeSheetById(this.id);
+    }
+    else if(this.routeId){
+      this.getTimeSheetsForViewOnly();
+    }
+    
     
   }
+  checkExtraHrsField(dayHrs){
+
+    if(this.hrs[dayHrs] == "00:00" || this.hrs[dayHrs] == "Error") return true
+    else return false;
+  }
+
   logout(){
     this.service.logout(this.router);
   }
 
+  getTimeSheetsForViewOnly(){
+      this.disableInputFields = true;
+      this.hideButton = false;
+      this.getTimeSheetById(this.routeId)
+  }
+
   getItemsOnPageLoad(){
+    this.routeId = this.activateRoute.snapshot.params['routeId']
     this.id = this.activateRoute.snapshot.params['id'];
     this.userImage = sessionStorage.getItem("userImage");
     this.userName = sessionStorage.getItem("userName")
@@ -59,10 +83,10 @@ export class SupervisorEditComponent implements OnInit {
 
   }
 
-  getTimeSheetById(){
+  getTimeSheetById(id){
     this.showLoader = true;
     this.showForm = false;
-    this.service.getTimesheetById(this.id).subscribe(d=>{
+    this.service.getTimesheetById(id).subscribe(d=>{
       this.timesheetsObj = d.result;
       this.populateDuration(d.result);
       this.calulateHours()
@@ -85,17 +109,22 @@ export class SupervisorEditComponent implements OnInit {
   }
 
   modifyAndApprove(){
+    this.calulateHours();
+    this.populateTimesheetObjTotalHrs();
+    this.showBtnLoader = true;
     this.timesheetsObj.status = "Approved"
     this.timesheetsObj.dateSubmitted = this.dateFormatedDate(new Date())
     this.service.modifyAndApprove(this.id,this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
         // this.showLoading = false;
+        this.showBtnLoader = false;
         this.message.success(d.message, {
          nzDuration: 3000
        });
        this.router.navigate(['supervisorview'])
       }
       else{
+        this.showBtnLoader = false;
         // this.showLoading = false;
         this.message.error(d.message, {
           nzDuration: 3000
@@ -174,8 +203,15 @@ export class SupervisorEditComponent implements OnInit {
       return durationsHours;
   }
 
-  setStartMyDate(event,day,end,dayHrs){
-        
+  getDurationForExtraHours(hrs){
+    let time = new Date(this.getFormattedDate(hrs))
+    if(!time) return;
+    let durationsHours = this.msToTime(time.getTime()); 
+    return durationsHours;
+  }
+
+  setStartMyDate(event,day,end,dayHrs,extraHrs){
+        this.clearField(extraHrs,dayHrs)
     console.log(event,day)
     this.timesheetsObj[day] = this.getHrsAndMins(event);
     if(this.getDuration(this.timesheetsObj[day],end) === "Error") {
@@ -191,8 +227,8 @@ export class SupervisorEditComponent implements OnInit {
    this.checkAllHrs()
     
   }
-  setEndMyDate(event,day,start,dayHrs){
-
+  setEndMyDate(event,day,start,dayHrs,extraHrs){
+    this.clearField(extraHrs,dayHrs)
     this.timesheetsObj[day] = this.getHrsAndMins(event);
    
       if(this.getDuration(start,this.timesheetsObj[day]) === "Error") {
@@ -210,6 +246,26 @@ export class SupervisorEditComponent implements OnInit {
 
   }
 
+  setExtraHours(event,day,dayHrs){
+    // this.hrs[dayHrs] = "00:00"
+    this.timesheetsObj[day] = this.getHrsAndMins(event);
+    console.log(this.timesheetsObj[day]);
+    
+    // this.hrs[dayHrs] = this.hrs[dayHrs] + this.getDurationForExtraHours(this.timesheetsObj[day])
+    // this.checkAllHrs()
+    let hrs = 0, min = 0;
+          hrs = (parseInt(this.hrs[dayHrs].split(":")[0])) + (parseInt(this.timesheetsObj[day].split(":")[0]))
+          min = (parseInt(this.hrs[dayHrs].split(":")[1])) + (parseInt(this.timesheetsObj[day].split(":")[1]))
+          while(min >= 60){
+            hrs++;
+            min -= 60;
+          }
+          let hours2 = hrs < 10 ? "0" + hrs : hrs;
+          let minutes2 = min < 10 ? "0" + min : min;
+          
+           this.hrs[dayHrs] = hours2+ ":" +minutes2;
+          
+   }
   checkAllHrs(){
     Object.values(this.hrs).forEach((d)=> {
       if(d === "Error"){
@@ -253,6 +309,7 @@ export class SupervisorEditComponent implements OnInit {
           this.totalSumOfTimesheet.minutes -= 60;
         }
       this.totalHrs = this.totalSumOfTimesheet.hours + " Hours, "+this.totalSumOfTimesheet.minutes + " Minutes";
+      this.timesheetsObj.totalHrs = this.totalHrs;
     }
      
   }
@@ -286,34 +343,80 @@ populateDuration(d){
     
     if(d.includes("monday")){
      this.hrs.monHrs = this.getDuration(this.timesheetsObj.mondayStartTime,this.timesheetsObj.mondayEndTime)
-     
+     this.hrs.monHrs = this.calculateHrsAtPageLoad(this.hrs.monHrs,this.timesheetsObj.monExtraHrs)
+
     }
     else if(d.includes("tuesday")){
       this.hrs.tuesHrs = this.getDuration(this.timesheetsObj.tuesdayStartTime,this.timesheetsObj.tuesdayEndTime)
+      this.hrs.tuesHrs = this.calculateHrsAtPageLoad(this.hrs.tuesHrs,this.timesheetsObj.tueExtraHrs)
 
     }
     else if(d.includes("wednesday")){
       this.hrs.wedHrs = this.getDuration(this.timesheetsObj.wednesdayStartTime,this.timesheetsObj.wednesdayEndTime)
+      this.hrs.wedHrs = this.calculateHrsAtPageLoad(this.hrs.wedHrs,this.timesheetsObj.wedExtraHrs)
 
     }
     else if(d.includes("thursday")){
      this.hrs.thursHrs = this.getDuration(this.timesheetsObj.thursdayStartTime,this.timesheetsObj.thursdayEndTime)
+     this.hrs.thursHrs = this.calculateHrsAtPageLoad(this.hrs.thursHrs,this.timesheetsObj.thursExtraHrs)
 
     }
     else if(d.includes("friday")){
       this.hrs.friHrs = this.getDuration(this.timesheetsObj.fridayStartTime,this.timesheetsObj.fridayEndTime)
+      this.hrs.friHrs = this.calculateHrsAtPageLoad(this.hrs.friHrs,this.timesheetsObj.friExtraHrs)
 
     }
     else if(d.includes("saturday")){
       this.hrs.satHrs = this.getDuration(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
+      this.hrs.satHrs = this.calculateHrsAtPageLoad(this.hrs.satHrs,this.timesheetsObj.satExtraHrs)
 
     }
     else if(d.includes("sunday")){
       this.hrs.sunHrs = this.getDuration(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
+      this.hrs.sunHrs = this.calculateHrsAtPageLoad(this.hrs.sunHrs,this.timesheetsObj.sunExtraHrs)
 
     }
     console.log(this.hrs)
 
   })
+}
+
+calculateHrsAtPageLoad(dayHrs,extraHrs){
+  let hrs = 0, min = 0;
+  hrs = (parseInt(dayHrs.split(":")[0])) + (parseInt(extraHrs.split(":")[0]))
+  min = (parseInt(dayHrs.split(":")[1])) + (parseInt(extraHrs.split(":")[1]))
+  while(min >= 60){
+    hrs++;
+    min -= 60;
+  }
+  let hours2 = hrs < 10 ? "0" + hrs : hrs;
+  let minutes2 = min < 10 ? "0" + min : min;
+  
+   return hours2+ ":" +minutes2;
+ }
+
+ clearField(extraHrs,dayHrs){
+   if(this.timesheetsObj[extraHrs] !== "00:00"){
+    let hrs = 0, min = 0;
+    hrs = (parseInt(this.hrs[dayHrs].split(":")[0])) - (parseInt(this.timesheetsObj[extraHrs].split(":")[0]))
+    min = (parseInt(this.hrs[dayHrs].split(":")[1])) - (parseInt(this.timesheetsObj[extraHrs].split(":")[1]))
+    
+    let hrs2 = hrs < 10 ? "0" + hrs : hrs;
+    let min2 = min < 10 ? "0" + min : min;
+    this.hrs[dayHrs] = hrs2+ ":" +min2;
+    this.timesheetsObj[extraHrs] = "00:00"
+   }
+   
+   
+ }
+
+populateTimesheetObjTotalHrs(){
+  this.timesheetsObj.monTotalHrs = this.hrs.monHrs;
+  this.timesheetsObj.tueTotalHrs = this.hrs.tuesHrs;
+  this.timesheetsObj.wedTotalHrs = this.hrs.wedHrs;
+  this.timesheetsObj.thursTotalHrs = this.hrs.thursHrs;
+  this.timesheetsObj.friTotalHrs = this.hrs.friHrs;
+  this.timesheetsObj.satTotalHrs = this.hrs.satHrs;
+  this.timesheetsObj.sunTotalHrs = this.hrs.sunHrs;
 }
 }

@@ -4,6 +4,7 @@ import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
+import { Dimensions, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 
 
 @Component({
@@ -34,6 +35,16 @@ export class CompanyProfileComponent implements OnInit {
   showForm: boolean;
   showLoader: boolean;
   companyImage:string;
+  zoomvalue:any=1;
+  checkZoomInOrOut=this.zoomvalue;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  canvasRotation = 0;
+  rotation = 0;
+  scale = 1;
+  containWithinAspectRatio = false;
+  transform: ImageTransform = {};
+  showCropper: boolean;
   constructor(private applicantService:ApplicantServiceService,private router:Router,private message: NzMessageService) { }
 
   ngOnInit() {
@@ -124,6 +135,7 @@ export class CompanyProfileComponent implements OnInit {
    }
    onImageChange(event) {
     let reader = new FileReader();
+    this.fileChangeEvent(event)
     if(event.target.files && event.target.files.length > 0) {
     
       let file = event.target.files[0];
@@ -167,5 +179,95 @@ export class CompanyProfileComponent implements OnInit {
         this.showForm = true;
       }
     })
+  }
+
+  imageLoaded() {
+    this.showCropper = true;
+    console.log('Image loaded');
+  }
+
+  cropperReady(sourceImageDimensions: Dimensions) {
+    console.log('Cropper ready', sourceImageDimensions);
+  }
+
+
+ 
+ 
+
+  resetImage() {
+    this.scale = 1;
+    this.rotation = 0;
+    this.canvasRotation = 0;
+    this.transform = {};
+  }
+
+ 
+
+ 
+    zoom(a) {
+
+      this.zoomvalue = a;
+      this.transform = {
+        ...this.transform,
+        scale: this.zoomvalue
+      };
+    }
+ 
+
+  toggleContainWithinAspectRatio() {
+    this.containWithinAspectRatio = !this.containWithinAspectRatio;
+  }
+
+  updateRotation() {
+    this.transform = {
+      ...this.transform,
+      rotate: this.rotation
+    };
+  }
+
+
+
+
+  fileChangeEvent(event: any): void {
+    
+    this.isVisible = true;
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64.replace(/^data:image\/[a-z]+;base64,/, "");
+
+  }
+
+
+
+
+  updateCroppedImage() {
+    sessionStorage.removeItem('companyImage');
+    this.companyObj.companyimage = this.croppedImage;
+    sessionStorage.setItem('companyImage', this.companyObj.companyimage);
+    // this.logoChangeObservable.next();
+    // console.log(event, base64ToFile(event.base64));
+    // base64 to blob file
+    this.isVisible = false;
+  }
+
+  isVisible = false;
+
+
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.companyObj.companyimage = null; 
+    console.log('Button cancel clicked!', this.companyObj.companyimage);
+    this.isVisible = false;
   }
 }
