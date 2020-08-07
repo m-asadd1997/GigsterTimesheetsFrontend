@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ApplicantForm } from './ApplicantForm';
 import { ApplicantServiceService } from '../Services/applicant-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { NgForm } from '@angular/forms';
 import {Location} from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd';
 import { error } from '@angular/compiler/src/util';
-
+import { ImageCroppedEvent, Dimensions, ImageTransform } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-main-screen',
@@ -49,6 +49,18 @@ export class MainScreenComponent implements OnInit {
   userName: string;
   userType: string;
   type: string;
+  zoomvalue:any=1;
+  checkZoomInOrOut=this.zoomvalue;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  canvasRotation = 0;
+  rotation = 0;
+  scale = 1;
+  containWithinAspectRatio = false;
+  transform: ImageTransform = {};
+  getImageOnCancel;
+  @ViewChild('openModal', { static: true }) openModal: ElementRef
+  showCropper: boolean;
   constructor(private message: NzMessageService,private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
@@ -117,6 +129,8 @@ export class MainScreenComponent implements OnInit {
   getApplicantById(id){
     this.applicantService.getApplicantById(id).subscribe(d=>{
       this.appFormObj = d.result;
+     
+     
     })
 
   }
@@ -172,18 +186,9 @@ export class MainScreenComponent implements OnInit {
   }
 
   saveApplicantForm(myForm : NgForm){
-    try{
-      sessionStorage.setItem("userImage",this.appFormObj.userImage);
-    }
-    catch(e){
-      this.showSaveLoading = false;
-      this.message.error("Image size is too large, select an image with smaller size", {
-        nzDuration: 3000
-      });
-      console.log(e)
-    }
+   
     
-    this.userImage = this.appFormObj.userImage
+    
     this.appFormObj.checkEmail = this.checkEmail;
     
     // this.responseStatus = true;
@@ -195,7 +200,17 @@ export class MainScreenComponent implements OnInit {
       this.applicantService.updateApplicantForm(this.id,this.appFormObj).subscribe(d=>{
         if(d['status']===200){
           
-         
+          try{
+            sessionStorage.setItem("userImage",this.appFormObj.userImage);
+          }
+          catch(e){
+            this.showSaveLoading = false;
+            this.message.error("Image size is too large, select an image with smaller size", {
+              nzDuration: 3000
+            });
+            console.log(e)
+          }
+          this.userImage = this.appFormObj.userImage
           this.showSaveLoading = false;
           this.responseId = d['result'].id;
           
@@ -227,6 +242,17 @@ export class MainScreenComponent implements OnInit {
       this.applicantService.saveApplicantForm(this.appFormObj).subscribe(d=>{
         if(d['status']===200){
          
+          try{
+            sessionStorage.setItem("userImage",this.appFormObj.userImage);
+          }
+          catch(e){
+            this.showSaveLoading = false;
+            this.message.error("Image size is too large, select an image with smaller size", {
+              nzDuration: 3000
+            });
+            console.log(e)
+          }
+          this.userImage = this.appFormObj.userImage
           this.showSaveLoading = false;
           this.responseId = d['result'].id;
           this.appFormObj = d.result
@@ -269,6 +295,8 @@ _handleReaderLoaded(readerEvt) {
           //console.log(this.appFormObj.resume)
           
   }
+
+
   
   _handleReaderImageLoaded(readerEvt) {
     var binaryString = readerEvt.target.result;
@@ -293,7 +321,9 @@ _handleReaderLoaded(readerEvt) {
   }
 
   onImageChange(event) {
+    
     let reader = new FileReader();
+    this.fileChangeEvent(event)
     if(event.target.files && event.target.files.length > 0) {
 
       let file = event.target.files[0];
@@ -306,7 +336,8 @@ _handleReaderLoaded(readerEvt) {
       else{
         this.disableSaveButton = false;
       }
-      reader.onload =this._handleReaderImageLoaded.bind(this);
+      
+      // reader.onload =this._handleReaderImageLoaded.bind(this);
       this.appFormObj.userImage = file.type
       //console.log("1"+this.appFormObj.resumeContentType)
       reader.readAsBinaryString(file);
@@ -327,7 +358,7 @@ _handleReaderLoaded(readerEvt) {
   }
 
   downloadFile(){
-    debugger;
+    
     const extension =this.getMIMEtype(this.appFormObj['resumeContentType']);
     const source =  "data:"+extension +";base64,"+this.appFormObj["resume"];//new Blob([this.applicantObj["resume"]], { type: this.getMIMEtype(this.applicantObj['resumeContentType']) });
     const downloadLink = document.createElement("a");
@@ -373,6 +404,99 @@ _handleReaderLoaded(readerEvt) {
   {
     this._location.back();
   }
+
+
+  imageLoaded() {
+    this.showCropper = true;
+    console.log('Image loaded');
+  }
+
+  cropperReady(sourceImageDimensions: Dimensions) {
+    console.log('Cropper ready', sourceImageDimensions);
+  }
+
+
+ 
+ 
+
+  resetImage() {
+    this.scale = 1;
+    this.rotation = 0;
+    this.canvasRotation = 0;
+    this.transform = {};
+  }
+
+ 
+
+ 
+    zoom(a) {
+
+      this.zoomvalue = a;
+      this.transform = {
+        ...this.transform,
+        scale: this.zoomvalue
+      };
+    }
+ 
+
+  toggleContainWithinAspectRatio() {
+    this.containWithinAspectRatio = !this.containWithinAspectRatio;
+  }
+
+  updateRotation() {
+    this.transform = {
+      ...this.transform,
+      rotate: this.rotation
+    };
+  }
+
+
+
+
+  fileChangeEvent(event: any): void {
+    
+    this.isVisible = true;
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64.replace(/^data:image\/[a-z]+;base64,/, "");
+
+  }
+
+
+
+
+  updateCroppedImage() {
+    sessionStorage.removeItem('userImage');
+    this.appFormObj.userImage = this.croppedImage;
+    sessionStorage.setItem('userImage', this.appFormObj.userImage);
+    // this.logoChangeObservable.next();
+    // console.log(event, base64ToFile(event.base64));
+    // base64 to blob file
+    this.isVisible = false;
+  }
+
+  isVisible = false;
+
+
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.appFormObj.userImage = null; 
+    console.log('Button cancel clicked!', this.appFormObj.userImage);
+    this.isVisible = false;
+  }
+
+
 }
 
 

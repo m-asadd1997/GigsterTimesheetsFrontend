@@ -3,6 +3,7 @@ import { Timesheet } from "./Timesheet";
 import { ApplicantServiceService } from "../Services/applicant-service.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 
 @Component({
   selector: "app-add-current-timesheets",
@@ -58,6 +59,7 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   userType: string;
   smileySection = true;
   type: string;
+  disableExtraHrs = false;
 
   constructor(private service: ApplicantServiceService,private router:Router,private message: NzMessageService,private activateRoute: ActivatedRoute) {}
   
@@ -92,6 +94,12 @@ export class AddCurrentTimesheetsComponent implements OnInit {
     this.service.logout(this.router);
   }
 
+  checkExtraHrsField(dayHrs){
+
+    if(this.hrs[dayHrs] == "00:00" || this.hrs[dayHrs] == "Error") return true
+    else return false;
+  }
+
  getItemsOnPageLoad(){
   this.userImage = sessionStorage.getItem("userImage");
   this.id = this.activateRoute.snapshot.params['id'];
@@ -113,6 +121,10 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   }
 
   saveTimesheets(){
+    this.calculateTotalHrs();
+    this.populateTimesheetObjTotalHrs()
+    
+    console.log("these are total hours",this.timesheetsObj.totalHrs);
     
     this.showLoader2 = true;
     this.timesheetsObj.dateSubmitted = this.dateFormatedDate(new Date());
@@ -332,29 +344,35 @@ populateDuration(d){
     
     if(d.includes("monday")){
      this.hrs.monHrs = this.getDuration(this.timesheetsObj.mondayStartTime,this.timesheetsObj.mondayEndTime)
+     this.hrs.monHrs = this.calculateHrsAtPageLoad(this.hrs.monHrs,this.timesheetsObj.monExtraHrs);
     }
     else if(d.includes("tuesday")){
       this.hrs.tuesHrs = this.getDuration(this.timesheetsObj.tuesdayStartTime,this.timesheetsObj.tuesdayEndTime)
-
+      this.hrs.tuesHrs = this.calculateHrsAtPageLoad(this.hrs.tuesHrs,this.timesheetsObj.tueExtraHrs)
     }
     else if(d.includes("wednesday")){
       this.hrs.wedHrs = this.getDuration(this.timesheetsObj.wednesdayStartTime,this.timesheetsObj.wednesdayEndTime)
+      this.hrs.wedHrs = this.calculateHrsAtPageLoad(this.hrs.wedHrs,this.timesheetsObj.wedExtraHrs)
 
     }
     else if(d.includes("thursday")){
      this.hrs.thursHrs = this.getDuration(this.timesheetsObj.thursdayStartTime,this.timesheetsObj.thursdayEndTime)
+     this.hrs.thursHrs = this.calculateHrsAtPageLoad(this.hrs.thursHrs,this.timesheetsObj.thursExtraHrs)
 
     }
     else if(d.includes("friday")){
       this.hrs.friHrs = this.getDuration(this.timesheetsObj.fridayStartTime,this.timesheetsObj.fridayEndTime)
+      this.hrs.friHrs = this.calculateHrsAtPageLoad(this.hrs.friHrs,this.timesheetsObj.friExtraHrs)
 
     }
     else if(d.includes("saturday")){
       this.hrs.satHrs = this.getDuration(this.timesheetsObj.saturdayStartTime,this.timesheetsObj.saturdayEndTime)
+      this.hrs.satHrs = this.calculateHrsAtPageLoad(this.hrs.satHrs,this.timesheetsObj.satExtraHrs)
 
     }
     else if(d.includes("sunday")){
       this.hrs.sunHrs = this.getDuration(this.timesheetsObj.sundayStartTime,this.timesheetsObj.sundayEndTime)
+      this.hrs.sunHrs = this.calculateHrsAtPageLoad(this.hrs.sunHrs,this.timesheetsObj.sunExtraHrs)
 
     }
 
@@ -409,6 +427,13 @@ initializeHrs(){
     return durationsHours;
 }
 
+getDurationForExtraHours(hrs){
+  let time = new Date(this.getFormattedDate(hrs))
+  if(!time) return;
+  let durationsHours = this.msToTime(time.getTime()); 
+  return durationsHours;
+}
+
 msToTime(duration: number) {
          
          let  minutes = Math.floor((duration / (1000 * 60)) % 60);
@@ -422,8 +447,8 @@ msToTime(duration: number) {
          return hours2 + ":" + minutes2;
       }
 
-      setStartMyDate(event,day,end,dayHrs){
-        
+      setStartMyDate(event,day,end,dayHrs,extraHrs){
+        this.clearField(extraHrs,dayHrs)
         console.log(event,day)
         this.timesheetsObj[day] = this.getHrsAndMins(event);
         if(this.getDuration(this.timesheetsObj[day],end) === "Error") {
@@ -434,13 +459,15 @@ msToTime(duration: number) {
         else{
           this.hideErrorDivAndEnableBtn();
           this.hrs[dayHrs] = this.getDuration(this.timesheetsObj[day],end)
+          
         }
        
        this.checkAllHrs()
+       this.checkExtraHrsField(dayHrs)
         
       }
-      setEndMyDate(event,day,start,dayHrs){
-
+      setEndMyDate(event,day,start,dayHrs,extraHrs){
+        this.clearField(extraHrs,dayHrs)
         this.timesheetsObj[day] = this.getHrsAndMins(event);
        
           if(this.getDuration(start,this.timesheetsObj[day]) === "Error") {
@@ -451,12 +478,49 @@ msToTime(duration: number) {
           else{
             this.hideErrorDivAndEnableBtn();
             this.hrs[dayHrs] = this.getDuration(start,this.timesheetsObj[day])
+            
           }
 
          
         this.checkAllHrs()
+        this.checkExtraHrsField(dayHrs)
 
       }
+
+      setExtraHours(event,day,dayHrs){
+        this.timesheetsObj[day] = this.getHrsAndMins(event);
+        console.log(this.timesheetsObj[day]);
+        
+        // this.hrs[dayHrs] = this.hrs[dayHrs] + this.getDurationForExtraHours(this.timesheetsObj[day])
+        // this.checkAllHrs()
+        let hrs = 0, min = 0;
+              hrs = (parseInt(this.hrs[dayHrs].split(":")[0])) + (parseInt(this.timesheetsObj[day].split(":")[0]))
+              min = (parseInt(this.hrs[dayHrs].split(":")[1])) + (parseInt(this.timesheetsObj[day].split(":")[1]))
+              while(min >= 60){
+                hrs++;
+                min -= 60;
+              }
+              let hours2 = hrs < 10 ? "0" + hrs : hrs;
+              let minutes2 = min < 10 ? "0" + min : min;
+              
+               this.hrs[dayHrs] = hours2+ ":" +minutes2;
+              
+       }
+
+
+       calculateHrsAtPageLoad(dayHrs,extraHrs){
+        let hrs = 0, min = 0;
+        hrs = (parseInt(dayHrs.split(":")[0])) + (parseInt(extraHrs.split(":")[0]))
+        min = (parseInt(dayHrs.split(":")[1])) + (parseInt(extraHrs.split(":")[1]))
+        while(min >= 60){
+          hrs++;
+          min -= 60;
+        }
+        let hours2 = hrs < 10 ? "0" + hrs : hrs;
+        let minutes2 = min < 10 ? "0" + min : min;
+        
+         return hours2+ ":" +minutes2;
+       }
 
       checkAllHrs(){
         Object.values(this.hrs).forEach((d)=> {
@@ -535,11 +599,20 @@ msToTime(duration: number) {
    this.timesheetsObj.saturdayEndTime = "00:00";
    this.timesheetsObj.sundayStartTime = "00:00";
    this.timesheetsObj.sundayEndTime = "00:00";
+   this.timesheetsObj.monExtraHrs = "00:00";
+   this.timesheetsObj.tueExtraHrs = "00:00";
+   this.timesheetsObj.wedExtraHrs = "00:00";
+   this.timesheetsObj.thursExtraHrs = "00:00";
+   this.timesheetsObj.friExtraHrs = "00:00";
+   this.timesheetsObj.satExtraHrs = "00:00";
+   this.timesheetsObj.sunExtraHrs = "00:00";
+
  
  }
 
 sendToSupervisor(){
-  debugger;
+  this.calculateTotalHrs();
+  this.populateTimesheetObjTotalHrs();
   if(this.sendId){
     this.showLoader2 = true;
     this.timesheetsObj.dateSubmitted =this.dateFormatedDate(new Date());
@@ -630,6 +703,10 @@ validateButton3(){
 }
 
 editTimesheet(){
+  this.calculateTotalHrs();
+  this.populateTimesheetObjTotalHrs();
+  console.log("this is hrs on edit",this.timesheetsObj);
+  
   this.showLoader2 = true;
   this.timesheetsObj.dateSubmitted =this.dateFormatedDate(new Date());
   this.timesheetsObj.status = "Draft";
@@ -662,7 +739,33 @@ calculateTotalHrs(){
         this.totalSumOfTimesheet.minutes -= 60;
       }
     this.totalHrs = this.totalSumOfTimesheet.hours + " Hours, "+this.totalSumOfTimesheet.minutes + " Minutes";
+    this.timesheetsObj.totalHrs = this.totalHrs;
   }
  
+}
+
+populateTimesheetObjTotalHrs(){
+  this.timesheetsObj.monTotalHrs = this.hrs.monHrs;
+  this.timesheetsObj.tueTotalHrs = this.hrs.tuesHrs;
+  this.timesheetsObj.wedTotalHrs = this.hrs.wedHrs;
+  this.timesheetsObj.thursTotalHrs = this.hrs.thursHrs;
+  this.timesheetsObj.friTotalHrs = this.hrs.friHrs;
+  this.timesheetsObj.satTotalHrs = this.hrs.satHrs;
+  this.timesheetsObj.sunTotalHrs = this.hrs.sunHrs;
+}
+
+clearField(extraHrs,dayHrs){
+  console.log("In clear field");
+  
+  if(this.timesheetsObj[extraHrs] !== "00:00" && this.hrs[dayHrs] !=="00:00"){
+   let hrs = 0, min = 0;
+   hrs = (parseInt(this.hrs[dayHrs].split(":")[0])) - (parseInt(this.timesheetsObj[extraHrs].split(":")[0]))
+   min = (parseInt(this.hrs[dayHrs].split(":")[1])) - (parseInt(this.timesheetsObj[extraHrs].split(":")[1]))
+   
+   let hrs2 = hrs < 10 ? "0" + hrs : hrs;
+   let min2 = min < 10 ? "0" + min : min;
+   this.hrs[dayHrs] = hrs2+ ":" +min2;
+   this.timesheetsObj[extraHrs] = "00:00"
+  }
 }
 }

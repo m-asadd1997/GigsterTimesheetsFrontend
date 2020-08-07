@@ -19,4 +19,19 @@ export class Timesheet {
   user:any;
   supervisor:any;
   dateSubmitted:any;
+  monTotalHrs;
+  tueTotalHrs;
+  wedTotalHrs;
+  thursTotalHrs;
+  friTotalHrs;
+  satTotalHrs;
+  sunTotalHrs;
+  monExtraHrs:String= "00:00";
+  tueExtraHrs:String= "00:00";
+  wedExtraHrs:String= "00:00";
+  thursExtraHrs:String= "00:00";
+  friExtraHrs:String= "00:00";
+  satExtraHrs:String= "00:00";
+  sunExtraHrs:String= "00:00";
+  totalHrs;
 }

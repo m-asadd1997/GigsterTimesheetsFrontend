@@ -36,14 +36,7 @@
 </nav>
 
 <br />
-<!-- <div *ngIf="loader" style="margin-left: 47%; margin-top: 10%;">
-  <div class="spinner-grow text-info" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-  <div class="spinner-grow text-secondary" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div> -->
+
 <nz-spin nzSimple *ngIf="loader" style="margin-left: 45%;margin-top: 10%;" [nzSize]="'large'" nzTip="Loading..."></nz-spin>
 
 <div class="container" *ngIf="showForm">
@@ -52,6 +45,27 @@
     
 </h1>
   <div class="row">
+    <!-- <button #openModal data-toggle="modal"
+    data-target="#myCropImageModal" nz-button [hidden]="true" [nzType]="'primary'" ><span>Show Modal</span></button> -->
+    <nz-modal  [(nzVisible)]="isVisible" nzTitle="Resize your image" (nzOnCancel)="handleCancel()" (nzOnOk)="updateCroppedImage()">
+      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+      [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1/1" [disabled]="true"
+      [resizeToWidth]="100" backgroundColor="lightgray" [resizeToHeight]="100" [cropperMinWidth]="100"
+      [roundCropper]="true" [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'center'"
+      [style.display]="showCropper ? null : 'none'" [imageQuality]="100" (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)">
+    </image-cropper>
+
+    <div class="row">
+
+      <div class="col-lg-5 offset-4">
+    
+        <nz-slider [nzMin]="1" (ngModelChange)="zoom($event)" [nzMax]="10" [nzStep]="0.5"
+          [(ngModel)]="zoomvalue"></nz-slider>
+      
+      </div>
+    </div>
+    </nz-modal>
     <div class="col-md-3">
       <img
         style="margin-left: 60%;"
@@ -75,6 +89,7 @@
       </label>
     </div>
 
+    
     <div class="col-md-6">
       <mat-card>
         <form class="example-form" #myForm="ngForm">

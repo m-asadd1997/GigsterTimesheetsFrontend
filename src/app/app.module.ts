@@ -67,6 +67,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 
 // import {MatPaginator} from '@angular/material/paginator';
@@ -138,7 +140,9 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     NzEmptyModule,
     NzInputModule,
     NzIconModule,
-NzAlertModule
+NzAlertModule,
+ImageCropperModule,
+NzModalModule
 
 
     

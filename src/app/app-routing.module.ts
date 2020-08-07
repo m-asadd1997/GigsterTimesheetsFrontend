@@ -50,6 +50,10 @@ const routes: Routes = [
     path:"currenttimesheets/:id",component:ViewCurrentTimesheetsComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true}
   },
   {
+    path:"viewapprovedtimesheet/:routeId",component:SupervisorEditComponent,canActivate:[AuthGuard],data:{"SUPERVISOR":true}
+  },
+
+  {
     path:"adduser",component:AdduserComponent,canActivate:[AuthGuard],data:{"ADMIN":true}
   },
   {

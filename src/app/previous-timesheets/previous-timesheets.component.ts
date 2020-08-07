@@ -12,7 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 export class PreviousTimesheetsComponent implements OnInit {
   tableData:any[] = [];
   showLoader = false;
-  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy','modifiedAt', 'week','sentBy'];
+  displayedColumns: string[] = ['id', 'status', 'lastModifiedBy','modifiedAt', 'week','sentBy','action'];
   dataSource: MatTableDataSource<any>;
   //@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild('scheduledOrdersPaginator') paginator: MatPaginator;
@@ -117,5 +117,9 @@ export class PreviousTimesheetsComponent implements OnInit {
   
     d.setDate(1 - d.getDay() + ++requiredDate );
     return d;
+  }
+
+  viewTimesheet(id){
+    this.router.navigate(['viewapprovedtimesheet/'+id]);
   }
 }

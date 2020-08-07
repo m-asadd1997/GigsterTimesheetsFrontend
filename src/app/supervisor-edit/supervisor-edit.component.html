@@ -95,6 +95,7 @@
               <th scope="col">Start Time</th>
               <th scope="col">End Time</th>
               <th scope="col">Hours</th>
+              <th scope="col">Extra Hours</th>
             </tr>
           </thead>
           <tbody>
@@ -109,10 +110,12 @@
                       timesheetsObj.mondayStartTime,
                       'mondayStartTime',
                       timesheetsObj.mondayEndTime,
-                      'monHrs'
+                      'monHrs',
+                      'monExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>
@@ -123,14 +126,20 @@
                       timesheetsObj.mondayEndTime,
                       'mondayEndTime',
                       timesheetsObj.mondayStartTime,
-                      'monHrs'
+                      'monHrs',
+                      'monExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
 
               <td>{{ hrs.monHrs }}</td>
+              <td>
+ 
+                <p-calendar [(ngModel)]="timesheetsObj.monExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('monHrs')" (onClose)="setExtraHours(timesheetsObj.monExtraHrs,'monExtraHrs','monHrs')" (onFocus)="clearField('monExtraHrs','monHrs')"  [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>TUESDAY</td>
@@ -143,10 +152,12 @@
                       timesheetsObj.tuesdayStartTime,
                       'tuesdayStartTime',
                       timesheetsObj.tuesdayEndTime,
-                      'tuesHrs'
+                      'tuesHrs',
+                      'tueExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
 
@@ -158,13 +169,18 @@
                       timesheetsObj.tuesdayEndTime,
                       'tuesdayEndTime',
                       timesheetsObj.tuesdayStartTime,
-                      'tuesHrs'
+                      'tuesHrs',
+                      'tueExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>{{ hrs.tuesHrs }}</td>
+              <td>
+                <p-calendar [(ngModel)]="timesheetsObj.tueExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('tuesHrs')" (onClose)="setExtraHours(timesheetsObj.tueExtraHrs,'tueExtraHrs','tuesHrs')"  (onFocus)="clearField('tueExtraHrs','tuesHrs')" [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>WEDNESDAY</td>
@@ -176,10 +192,12 @@
                       timesheetsObj.wednesdayStartTime,
                       'wednesdayStartTime',
                       timesheetsObj.wednesdayEndTime,
-                      'wedHrs'
+                      'wedHrs',
+                      'wedExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>
@@ -190,13 +208,18 @@
                       timesheetsObj.wednesdayEndTime,
                       'wednesdayEndTime',
                       timesheetsObj.wednesdayStartTime,
-                      'wedHrs'
+                      'wedHrs',
+                      'wedExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields "
                 ></p-calendar>
               </td>
               <td>{{ hrs.wedHrs }}</td>
+              <td>
+                <p-calendar [(ngModel)]="timesheetsObj.wedExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('wedHrs')" (onClose)="setExtraHours(timesheetsObj.wedExtraHrs,'wedExtraHrs','wedHrs')" (onFocus)="clearField('wedExtraHrs','wedHrs')"  [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>THURSDAY</td>
@@ -208,10 +231,12 @@
                       timesheetsObj.thursdayStartTime,
                       'thursdayStartTime',
                       timesheetsObj.thursdayEndTime,
-                      'thursHrs'
+                      'thursHrs',
+                      'thursExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>
@@ -222,13 +247,18 @@
                       timesheetsObj.thursdayEndTime,
                       'thursdayEndTime',
                       timesheetsObj.thursdayStartTime,
-                      'thursHrs'
+                      'thursHrs',
+                      'thursExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>{{ hrs.thursHrs }}</td>
+              <td>
+                <p-calendar [(ngModel)]="timesheetsObj.thursExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('thursHrs')" (onClose)="setExtraHours(timesheetsObj.thursExtraHrs,'thursExtraHrs','thursHrs')" (onFocus)="clearField('thursExtraHrs','thursHrs')" [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>FRIDAY</td>
@@ -240,10 +270,12 @@
                       timesheetsObj.fridayStartTime,
                       'fridayStartTime',
                       timesheetsObj.fridayEndTime,
-                      'friHrs'
+                      'friHrs',
+                      'friExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>
@@ -254,13 +286,18 @@
                       timesheetsObj.fridayEndTime,
                       'fridayEndTime',
                       timesheetsObj.fridayStartTime,
-                      'friHrs'
+                      'friHrs',
+                      'friExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>{{ hrs.friHrs }}</td>
+              <td>
+                <p-calendar [(ngModel)]="timesheetsObj.friExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('friHrs')"  (onClose)="setExtraHours(timesheetsObj.friExtraHrs,'friExtraHrs','friHrs')" (onFocus)="clearField('friExtraHrs','friHrs')" [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>SATURDAY</td>
@@ -272,10 +309,12 @@
                       timesheetsObj.saturdayStartTime,
                       'saturdayStartTime',
                       timesheetsObj.saturdayEndTime,
-                      'satHrs'
+                      'satHrs',
+                      'satExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>
@@ -286,13 +325,18 @@
                       timesheetsObj.saturdayEndTime,
                       'saturdayEndTime',
                       timesheetsObj.saturdayStartTime,
-                      'satHrs'
+                      'satHrs',
+                      'satExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>{{ hrs.satHrs }}</td>
+              <td>
+                <p-calendar [(ngModel)]="timesheetsObj.satExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('satHrs')"  (onClose)="setExtraHours(timesheetsObj.satExtraHrs,'satExtraHrs','satHrs')" (onFocus)="clearField('satExtraHrs','satHrs')" [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>SUNDAY</td>
@@ -304,10 +348,12 @@
                       timesheetsObj.sundayStartTime,
                       'sundayStartTime',
                       timesheetsObj.sundayEndTime,
-                      'sunHrs'
+                      'sunHrs',
+                      'sunExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>
@@ -318,17 +364,22 @@
                       timesheetsObj.sundayEndTime,
                       'sundayEndTime',
                       timesheetsObj.sundayStartTime,
-                      'sunHrs'
+                      'sunHrs',
+                      'sunExtraHrs'
                     )
                   "
                   [timeOnly]="true"
+                  [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
               <td>{{ hrs.sunHrs }}</td>
+              <td>
+                <p-calendar [(ngModel)]="timesheetsObj.sunExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('sunHrs')" (onClose)="setExtraHours(timesheetsObj.sunExtraHrs,'sunExtraHrs','sunHrs')" (onFocus)="clearField('sunExtraHrs','sunHrs')" [timeOnly]="true"></p-calendar>
+              </td>
             </tr>
             <tr>
               <td>
-                <div>
+                <div *ngIf="hideButton">
                   <button
                     mat-raised-button
                     color="primary"
@@ -355,9 +406,10 @@
         [(ngModel)]="timesheetsObj.comments"
         name="name"
         required
+        
       />
     </mat-form-field>
-    <div class="row">
+    <div class="row" *ngIf="hideButton">
       <div class="col-4"></div>
 
       <!-- <button mat-raised-button color="primary" style="background-color: black;">Save Timesheet</button> -->
@@ -369,6 +421,9 @@
         [disabled]="disableSaveButton"
         (click)="modifyAndApprove()"
       >
+      <div *ngIf="showBtnLoader" class="spinner-grow text-light" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
         Modify & Approve
       </button>
       <!-- <button mat-raised-button color="warn" style="margin-left: 1%;">Disapprove</button> -->

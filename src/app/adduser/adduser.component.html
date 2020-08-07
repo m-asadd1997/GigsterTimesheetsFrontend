@@ -58,7 +58,7 @@
       <div class="col">
         <mat-form-field class="example-full-width" style="width: 100%;">
           <!-- <mat-label>Favorite food</mat-label> -->
-          <input matInput="text" placeholder="Name" [(ngModel)]=adduserobj.name name="name" required/>
+          <input matInput="text" placeholder="Name" [(ngModel)]=adduserobj.name name="name" />
         </mat-form-field>
       </div>
       <!-- <div class="col">
@@ -70,7 +70,7 @@
     <div>
       <mat-form-field class="example-full-width" style="width: 100%;">
         <!-- <mat-label>Favorite food</mat-label> -->
-        <input matInput="email" placeholder="Email" name="email" [(ngModel)]="adduserobj.email" required
+        <input matInput="email" placeholder="Email" name="email" [(ngModel)]="adduserobj.email" 
         email #email="ngModel" [ngClass]="{ 'is-invalid':email.invalid }"
         />
         <div *ngIf="email.invalid" class="invalid-feedback">
@@ -82,7 +82,7 @@
     <div>
       <mat-form-field class="example-full-width" style="width: 100%;">
         <!-- <mat-label>Favorite food</mat-label> -->
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" placeholder="Password" name = "password" [(ngModel)]=adduserobj.password required/>
+        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" placeholder="Password" name = "password" [(ngModel)]=adduserobj.password />
       </mat-form-field>
     </div>
    
