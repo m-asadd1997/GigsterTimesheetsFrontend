@@ -122,7 +122,7 @@
                 <th scope="col">Start Time</th>
                 <th scope="col">End Time</th>
                 <th scope="col">Hours</th>
-                <th scope="col">Extra Hours</th>              
+                <th scope="col">Overtime</th>              
                 <th></th>
               </tr>
             </thead>
@@ -270,21 +270,42 @@
             </div>
             <div class="row">
             <div class="col-6">
+                <ng-template #content let-modal>
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="modal-basic-title">
+                       Are you sure?
+                      </h4>
+                      <button
+                        type="button"
+                        class="close"
+                        aria-label="Close"
+                        (click)="modal.dismiss('Cross click')"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>when you sent a timesheet you cannot edit it anymore</p>
+                      <button
+                      mat-raised-button
+                      color="primary"
+                      style="margin-top: 1%;"
+                        (click)="sendToSupervisor()">
+                        <div *ngIf="showLoader3" class="spinner-grow text-light" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                      Sent Timesheet
+                      </button>
+                    </div>
+                  </ng-template>
               <button
-          mat-raised-button
-          color="primary"
-          style="margin-top: 1%;"
-          (click)="sendToSupervisor()"
-         
-        >
-        <div *ngIf="showLoader3" class="spinner-grow text-light" role="status">
-				  <span class="sr-only">Loading...</span>
-				</div>
-          Send Timesheet
-        </button>
-        <!-- <div *ngIf="showLoader3" class="spinner-border" style="margin-left: 1%;" role="status">
-          <span class="sr-only">Loading...</span>
-        </div> -->
+                mat-raised-button
+                color="primary"
+                style="margin-top: 1%;"
+                (click)="validateButton3();open(content)">
+              
+                Send Timesheet
+              </button>
             </div>
             <div class="col-6" *ngIf="viewTimesheet">
               <button

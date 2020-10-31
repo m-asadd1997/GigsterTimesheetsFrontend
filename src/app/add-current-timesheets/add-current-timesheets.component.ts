@@ -4,6 +4,7 @@ import { ApplicantServiceService } from "../Services/applicant-service.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: "app-add-current-timesheets",
@@ -60,8 +61,11 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   smileySection = true;
   type: string;
   disableExtraHrs = false;
+  closeResult: string;
 
-  constructor(private service: ApplicantServiceService,private router:Router,private message: NzMessageService,private activateRoute: ActivatedRoute) {}
+  constructor(private service: ApplicantServiceService,private router:Router,
+    private message: NzMessageService,private activateRoute: ActivatedRoute,
+    private modalService: NgbModal) {}
   
   ngOnInit(): void {
    
@@ -609,6 +613,24 @@ msToTime(duration: number) {
 
  
  }
+
+ open(content) {
+  this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+}
+
+private getDismissReason(reason: any): string {
+  if (reason === ModalDismissReasons.ESC) {
+    return 'by pressing ESC';
+  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+  } else {
+    return  `with: ${reason}`;
+  }
+}
 
 sendToSupervisor(){
   this.calculateTotalHrs();
