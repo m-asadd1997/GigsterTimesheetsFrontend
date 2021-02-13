@@ -69,6 +69,9 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { ProfileViewComponent } from './profile-view/profile-view.component';
+import { TimeFormatPipe } from './Pipes/time-format.pipe';
 
 
 // import {MatPaginator} from '@angular/material/paginator';
@@ -93,7 +96,9 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     UserTableComponent,
     PreviousTimesheetsComponent,
     ForgotPasswordComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    ProfileViewComponent,
+    TimeFormatPipe
     
   ],
   imports: [
@@ -113,9 +118,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     MatCardModule,
     MatTableModule,
     MatRadioModule,
-
     MatDialogModule,  
-
     MatDividerModule,
     NgbModule,
     MatIconModule,
@@ -140,9 +143,10 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzEmptyModule,
     NzInputModule,
     NzIconModule,
-NzAlertModule,
-ImageCropperModule,
-NzModalModule
+    NzAlertModule,
+    ImageCropperModule,
+    NzModalModule,
+    NzSwitchModule
 
 
     

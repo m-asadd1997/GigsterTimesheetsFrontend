@@ -3,8 +3,8 @@ import { Timesheet } from "./Timesheet";
 import { ApplicantServiceService } from "../Services/applicant-service.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
-import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: "app-add-current-timesheets",
@@ -15,6 +15,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 
 export class AddCurrentTimesheetsComponent implements OnInit {
+  
   email: string;
   organizationName: String;
   currentSupervisor;
@@ -62,6 +63,26 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   type: string;
   disableExtraHrs = false;
   closeResult: string;
+  showErrorDivForBreakTime= false;
+  disableOkButtonForBreakTime = false;
+  breakTimeObj={
+    monStartBreakTime: "00:00",
+    monEndBreakTime: "00:00",
+    tueStartBreakTime: "00:00",
+    tueEndBreakTime: "00:00",
+    wedStartBreakTime: "00:00",
+    wedEndBreakTime: "00:00",
+    thursStartBreakTime: "00:00",
+    thursEndBreakTime: "00:00",
+    friStartBreakTime: "00:00",
+    friEndBreakTime: "00:00",
+    satStartBreakTime: "00:00",
+    satEndBreakTime: "00:00",
+    sunStartBreakTime: "00:00",
+    sunEndBreakTime: "00:00"
+  }
+  paid :Boolean;
+  
 
   constructor(private service: ApplicantServiceService,private router:Router,
     private message: NzMessageService,private activateRoute: ActivatedRoute,
@@ -110,6 +131,7 @@ export class AddCurrentTimesheetsComponent implements OnInit {
   this.userName = sessionStorage.getItem("userName");
   this.type = sessionStorage.getItem("userType").toLowerCase();
   this.userType = this.type.charAt(0).toUpperCase()+this.type.slice(1);
+  this.paid = (sessionStorage.getItem("paid") === "true") ? true : false;
  }
 
   getUserLoginInfo() {
@@ -270,6 +292,7 @@ getStartingDay( weeks, year ) {
  goToNextWeek(){
   this.resetHrs();
   this.initializeHrs();
+  
    this.emptyTimesheetObj();
     this.showLoader = true;
     this.smileySection = !this.showLoader
@@ -486,6 +509,7 @@ msToTime(duration: number) {
           }
 
          
+
         this.checkAllHrs()
         this.checkExtraHrsField(dayHrs)
 
@@ -510,6 +534,49 @@ msToTime(duration: number) {
                this.hrs[dayHrs] = hours2+ ":" +minutes2;
               
        }
+
+       setStartBreakTime(event,day,end,breakHrs){
+        
+        console.log(event,day)
+        this.breakTimeObj[day] = this.getHrsAndMins(event);
+        if(this.getDuration(this.breakTimeObj[day],end) === "Error") {
+          this.showErrorDivAndDisableBtnForBreakTime();
+          this.timesheetsObj[breakHrs] = this.getDuration(this.breakTimeObj[day],end)
+        }                
+        else{
+          this.hideErrorDivAndEnableBtnForBreakTime();
+          this.timesheetsObj[breakHrs] = this.getDuration(this.breakTimeObj[day],end)         
+        }
+      //  this.checkExtraHrsField(dayHrs)      
+      }
+
+      setEndBreakTime(event,day,start,breakHrs){
+        console.log(event,day)
+        this.breakTimeObj[day] = this.getHrsAndMins(event);
+        if(this.getDuration(start,this.breakTimeObj[day]) === "Error") {
+          this.showErrorDivAndDisableBtnForBreakTime();
+          this.timesheetsObj[breakHrs] = this.getDuration(start,this.breakTimeObj[day])
+        }                
+        else{
+          this.hideErrorDivAndEnableBtnForBreakTime();
+          this.timesheetsObj[breakHrs] = this.getDuration(start,this.breakTimeObj[day])  
+          
+                 
+        }
+      //  this.checkExtraHrsField(dayHrs)      
+      }
+
+
+
+      showErrorDivAndDisableBtnForBreakTime(){
+        this.showErrorDivForBreakTime = true;
+        this.disableOkButtonForBreakTime = true;
+      }
+      hideErrorDivAndEnableBtnForBreakTime(){
+        this.showErrorDivForBreakTime = false;
+        this.disableOkButtonForBreakTime = false;
+      }
+
 
 
        calculateHrsAtPageLoad(dayHrs,extraHrs){
@@ -623,6 +690,8 @@ msToTime(duration: number) {
 }
 
 private getDismissReason(reason: any): string {
+  console.log("reason===",reason);
+  
   if (reason === ModalDismissReasons.ESC) {
     return 'by pressing ESC';
   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -653,6 +722,8 @@ sendToSupervisor(){
         this.message.success(d.message, {
           nzDuration: 3000
         });
+        
+
       }
       else{
         this.showLoader3 = false;
@@ -687,7 +758,7 @@ sendToSupervisor(){
        this.service.sendToSupervisor(this.sendId,this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
         this.hideForm = false;
-        this.showLoader3 = false;      
+        this.showLoader3 = false;    
         this.message.success(d.message, {
           nzDuration: 3000
         });
@@ -790,4 +861,74 @@ clearField(extraHrs,dayHrs){
    this.timesheetsObj[extraHrs] = "00:00"
   }
 }
+isVisible = {
+  monBreakTime : false,
+  tueBreakTime : false,
+  wedBreakTime : false,
+  thursBreakTime : false,
+  friBreakTime : false,
+  satBreakTime : false,
+  sunBreakTime : false
+};
+showModal(dayHrs,dayBreak,start,end): void {
+  this.resetBreakTimeFields(dayHrs,dayBreak,start,end)
+  this.isVisible[dayBreak] = true;
+}
+
+handleOk(dayHrs,dayBreak): void {
+  this.subtractBreakTimeFromDayHrs(dayHrs,dayBreak)
+  this.isVisible[dayBreak] = false;
+}
+
+handleCancel(dayBreak,start,end): void {
+  this.resetFieldsOnly(dayBreak,start,end);
+  this.isVisible[dayBreak] = false;
+}
+
+subtractBreakTimeFromDayHrs(dayHrs,dayBreak){
+  if(this.timesheetsObj[dayBreak] !== "00:00" && this.hrs[dayHrs] !=="00:00" && this.timesheetsObj[dayBreak] < this.hrs[dayHrs]){
+    this.hideErrorDivAndEnableBtn();
+  let hrs = 0, min = 0;
+   hrs = (parseInt(this.hrs[dayHrs].split(":")[0])) - (parseInt(this.timesheetsObj[dayBreak].split(":")[0]))
+   min = (parseInt(this.hrs[dayHrs].split(":")[1])) - (parseInt(this.timesheetsObj[dayBreak].split(":")[1]))
+   let hrs2 = hrs < 10 ? "0" + hrs : hrs;
+   let min2 = min < 10 ? "0" + min : min;
+   this.hrs[dayHrs] = hrs2+ ":" +min2;
+    
+  }
+  else{
+    this.showErrorDivAndDisableBtn();
+  }
+}
+
+resetBreakTimeFields(dayHrs,dayBreak,start,end){
+  console.log(this.timesheetsObj[dayBreak]," ", this.hrs[dayHrs]);
+  
+  if(this.timesheetsObj[dayBreak] !== "00:00" && this.hrs[dayHrs] !=="00:00" && this.timesheetsObj[dayBreak] < this.hrs[dayHrs]){
+    let hrs = 0, min = 0;
+     hrs = (parseInt(this.hrs[dayHrs].split(":")[0])) + (parseInt(this.timesheetsObj[dayBreak].split(":")[0]))
+     min = (parseInt(this.hrs[dayHrs].split(":")[1])) + (parseInt(this.timesheetsObj[dayBreak].split(":")[1]))
+     let hrs2 = hrs < 10 ? "0" + hrs : hrs;
+     let min2 = min < 10 ? "0" + min : min;
+     this.hrs[dayHrs] = hrs2+ ":" +min2;
+     this.timesheetsObj[dayBreak] = "00:00"
+     this.breakTimeObj[start] = "00:00"
+     this.breakTimeObj[end] = "00:00"
+  
+    }
+    else if(this.timesheetsObj[dayBreak] > this.hrs[dayHrs]){
+    //   this.timesheetsObj[dayBreak] = "00:00"
+    //  this.breakTimeObj[start] = "00:00"
+    //  this.breakTimeObj[end] = "00:00"
+    this.resetFieldsOnly(dayBreak,start,end);
+     this.hideErrorDivAndEnableBtn()
+    }
+}
+
+resetFieldsOnly(dayBreak,start,end){
+  this.timesheetsObj[dayBreak] = "00:00"
+  this.breakTimeObj[start] = "00:00"
+  this.breakTimeObj[end] = "00:00"
+}
+
 }

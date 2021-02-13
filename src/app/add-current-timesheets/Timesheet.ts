@@ -33,5 +33,12 @@ export class Timesheet {
   friExtraHrs:String= "00:00";
   satExtraHrs:String= "00:00";
   sunExtraHrs:String= "00:00";
+  monBreakTime:String="00:00";
+  tueBreakTime:String="00:00";
+  wedBreakTime:String="00:00";
+  thursBreakTime:String="00:00";
+  friBreakTime:String="00:00";
+  satBreakTime:String="00:00";
+  sunBreakTime:String="00:00";
   totalHrs;
 }

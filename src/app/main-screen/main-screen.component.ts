@@ -10,6 +10,7 @@ import {Location} from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd';
 import { error } from '@angular/compiler/src/util';
 import { ImageCroppedEvent, Dimensions, ImageTransform } from 'ngx-image-cropper';
+import { NewPassword } from '../new-password/newpassword';
 
 @Component({
   selector: 'app-main-screen',
@@ -61,6 +62,9 @@ export class MainScreenComponent implements OnInit {
   getImageOnCancel;
   @ViewChild('openModal', { static: true }) openModal: ElementRef
   showCropper: boolean;
+  isVisibleForChangePass: boolean;
+  loaderForChangePass: boolean = false;
+  newPassObj: NewPassword = new NewPassword();
   constructor(private message: NzMessageService,private _snackBar: MatSnackBar,private router:Router,private applicantService: ApplicantServiceService,private activateRoute: ActivatedRoute,private modalService: NgbModal,private _location: Location) { }
 
   ngOnInit(): void {
@@ -97,6 +101,8 @@ export class MainScreenComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
+
+ 
 
   getProfiles(){
     this.showForm = false;
@@ -495,6 +501,50 @@ _handleReaderLoaded(readerEvt) {
     console.log('Button cancel clicked!', this.appFormObj.userImage);
     this.isVisible = false;
   }
+
+  showModalForChangePass(){
+    this.isVisibleForChangePass = true;
+  }
+
+  handleOkForChangePass(): void {
+      this.loaderForChangePass = true;
+      this.newPassObj.email = sessionStorage.getItem('email');
+    this.applicantService.saveNewPassword(this.newPassObj).subscribe(d=>{
+      if(d.status == 200){
+        this.message.success(d.message, {
+          nzDuration: 4000
+        });
+        this.loaderForChangePass = false;
+       
+        // setTimeout(()=>this.router.navigate(['']),3000)
+      }
+      else{
+        this.message.error(d.message, {
+          nzDuration: 4000
+        });
+        this.loaderForChangePass = false;
+      }
+    })
+    }
+    
+
+    
+  
+
+  handleCancelForChangePass(): void {
+    this.isVisibleForChangePass = false;
+  }
+
+  typeChange = "password";
+  onToggleShowPassword(){
+    if(this.typeChange === "password"){
+      this.typeChange = "text"
+    }
+    else if(this.typeChange === "text"){
+      this.typeChange = "password"
+    }
+  }
+
 
 
 }

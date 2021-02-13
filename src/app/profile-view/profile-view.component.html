@@ -1,0 +1,126 @@
+<nav
+  class="navbar navbar-light bg-light"
+  style="
+    background-color: white !important;
+    border-top-color: black;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-bottom-style: ridge;
+    box-shadow: 0px 5px 5px rgb(179, 179, 179);
+  "
+>
+  <div>
+    <img src="assets/Capture.PNG" width="120" height="30" />
+  </div>
+  <button
+    mat-stroked-button
+    (click)="goBack()"
+    style="font-size: 1.1em; font-weight: 600; margin-left: -2%"
+  >
+    Back
+  </button>
+  <div style="margin-left: 60%">
+    <strong>{{ userName }} </strong>
+    &nbsp;
+    <nz-badge nzStatus="success">
+      <nz-avatar
+        nzIcon="user"
+        [nzSrc]="
+          userImage != null
+            ? 'data:image/jpeg;base64,' + userImage
+            : 'assets/user.png'
+        "
+      ></nz-avatar>
+    </nz-badge>
+    <span style="font-size: xx-small; font-weight: 200">{{ userType }}</span>
+  </div>
+  <div style="margin-right: 10%" style="cursor: pointer" (click)="logout()">
+    <img src="assets/icons8-logout-rounded-left-24.png" alt="" />
+  </div>
+  <!-- <div class="row" style="float: right; margin-right: 0%;">
+    <img src="assets/logo.jpeg" height="33" width="57" />
+    </div> -->
+</nav>
+<br />
+<nz-spin
+  nzSimple
+  *ngIf="loader"
+  style="margin-left: 45%; margin-top: 10%"
+  [nzSize]="'large'"
+  nzTip="Loading..."
+></nz-spin>
+<div class="container" *ngIf="!loader">
+  <h1 style="color: #6e6f6d; font-weight: 600; margin-left: 17%">
+    View Profile
+  </h1>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <mat-card>
+        <div class="row">
+        <div class="col-1"></div>
+          <div class="col-2">
+            <img
+              [src]="
+                appFormObj.userImage != null
+                  ? 'data:image/jpeg;base64,' + appFormObj.userImage
+                  : 'assets/user.png'
+              "
+              alt="Avatar"
+              class="avatar"
+            />
+          </div>
+          <div class="col-4">
+              <h2 style="font-weight: bold; margin-top: 15%;">
+                  {{profileUserName}}
+              </h2>
+          </div>
+        </div>
+
+        
+        <hr>
+        
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2"> 
+                  <p style="font-size: small; font-weight: bold;"> Email </p>
+            </div>
+            <div class="col-6">
+                <p>{{profileEmail}}</p>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2"> 
+                  <p style="font-size: small; font-weight: bold;"> Phone Number </p>
+            </div>
+            <div class="col-6">
+                <p *ngIf="appFormObj.phone">
+                    {{appFormObj.phone}}
+                </p>
+                <p *ngIf="!appFormObj.phone">
+                    -
+                </p>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2"> 
+                  <p style="font-size: small; font-weight: bold;"> Gender </p>
+            </div>
+            <div class="col-6">
+                <p *ngIf="appFormObj.gender">
+                    {{appFormObj.gender}}
+                </p>
+                <p *ngIf="!appFormObj.gender">
+                    -
+                </p>
+            </div>
+        </div>
+    
+      </mat-card>
+    </div>
+  </div>
+</div>

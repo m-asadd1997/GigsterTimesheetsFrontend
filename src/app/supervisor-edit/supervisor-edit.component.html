@@ -93,9 +93,11 @@
             <tr>
               <th scope="col">Day</th>
               <th scope="col">Start Time</th>
-              <th scope="col">End Time</th>
-              <th scope="col">Hours</th>
+              <th scope="col">End Time</th>              
               <th scope="col">Overtime</th>
+              <th *ngIf="paid" scope="col">Break Time</th>
+              <th scope="col">Hours</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -135,11 +137,17 @@
                 ></p-calendar>
               </td>
 
-              <td>{{ hrs.monHrs }}</td>
+             
               <td>
  
                 <p-calendar [(ngModel)]="timesheetsObj.monExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('monHrs')" (onClose)="setExtraHours(timesheetsObj.monExtraHrs,'monExtraHrs','monHrs')" (onFocus)="clearField('monExtraHrs','monHrs')"  [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+              <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                   &nbsp;<span >{{timesheetsObj.monBreakTime}}</span>
+              </td>
+              
+              <td>{{ hrs.monHrs }}</td>
             </tr>
             <tr>
               <td>TUESDAY</td>
@@ -177,10 +185,15 @@
                   [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
-              <td>{{ hrs.tuesHrs }}</td>
+              
               <td>
                 <p-calendar [(ngModel)]="timesheetsObj.tueExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('tuesHrs')" (onClose)="setExtraHours(timesheetsObj.tueExtraHrs,'tueExtraHrs','tuesHrs')"  (onFocus)="clearField('tueExtraHrs','tuesHrs')" [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                     &nbsp;<span >{{timesheetsObj.tueBreakTime}}</span>
+                </td>
+                <td>{{ hrs.tuesHrs }}</td>
             </tr>
             <tr>
               <td>WEDNESDAY</td>
@@ -216,10 +229,15 @@
                   [disabled]="disableInputFields "
                 ></p-calendar>
               </td>
-              <td>{{ hrs.wedHrs }}</td>
+              
               <td>
                 <p-calendar [(ngModel)]="timesheetsObj.wedExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('wedHrs')" (onClose)="setExtraHours(timesheetsObj.wedExtraHrs,'wedExtraHrs','wedHrs')" (onFocus)="clearField('wedExtraHrs','wedHrs')"  [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                     &nbsp;<span >{{timesheetsObj.wedBreakTime}}</span>
+                </td>
+                <td>{{ hrs.wedHrs }}</td>
             </tr>
             <tr>
               <td>THURSDAY</td>
@@ -255,10 +273,15 @@
                   [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
-              <td>{{ hrs.thursHrs }}</td>
+              
               <td>
                 <p-calendar [(ngModel)]="timesheetsObj.thursExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('thursHrs')" (onClose)="setExtraHours(timesheetsObj.thursExtraHrs,'thursExtraHrs','thursHrs')" (onFocus)="clearField('thursExtraHrs','thursHrs')" [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                     &nbsp;<span >{{timesheetsObj.thursBreakTime}}</span>
+                </td>
+                <td>{{ hrs.thursHrs }}</td>
             </tr>
             <tr>
               <td>FRIDAY</td>
@@ -294,10 +317,15 @@
                   [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
-              <td>{{ hrs.friHrs }}</td>
+              
               <td>
                 <p-calendar [(ngModel)]="timesheetsObj.friExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('friHrs')"  (onClose)="setExtraHours(timesheetsObj.friExtraHrs,'friExtraHrs','friHrs')" (onFocus)="clearField('friExtraHrs','friHrs')" [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                     &nbsp;<span >{{timesheetsObj.friBreakTime}}</span>
+                </td>
+                <td>{{ hrs.friHrs }}</td>
             </tr>
             <tr>
               <td>SATURDAY</td>
@@ -333,10 +361,15 @@
                   [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
-              <td>{{ hrs.satHrs }}</td>
+              
               <td>
                 <p-calendar [(ngModel)]="timesheetsObj.satExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('satHrs')"  (onClose)="setExtraHours(timesheetsObj.satExtraHrs,'satExtraHrs','satHrs')" (onFocus)="clearField('satExtraHrs','satHrs')" [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                     &nbsp;<span >{{timesheetsObj.satBreakTime}}</span>
+                </td>
+                <td>{{ hrs.satHrs }}</td>
             </tr>
             <tr>
               <td>SUNDAY</td>
@@ -372,10 +405,15 @@
                   [disabled]="disableInputFields"
                 ></p-calendar>
               </td>
-              <td>{{ hrs.sunHrs }}</td>
+              
               <td>
                 <p-calendar [(ngModel)]="timesheetsObj.sunExtraHrs" [disabled]="disableInputFields || checkExtraHrsField('sunHrs')" (onClose)="setExtraHours(timesheetsObj.sunExtraHrs,'sunExtraHrs','sunHrs')" (onFocus)="clearField('sunExtraHrs','sunHrs')" [timeOnly]="true"></p-calendar>
               </td>
+              <td *ngIf="paid">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                     &nbsp;<span >{{timesheetsObj.sunBreakTime}}</span>
+                </td>
+                <td>{{ hrs.sunHrs }}</td>
             </tr>
             <tr>
               <td>
@@ -398,6 +436,7 @@
       </div>
     </div>
     <hr />
+    <div *ngIf="hideButton">
     <mat-form-field class="example-full-width" style="width: 50%;">
       <mat-label>Comments</mat-label>
       <input
@@ -409,7 +448,7 @@
         
       />
     </mat-form-field>
-    <div class="row" *ngIf="hideButton">
+    <div class="row" >
       <div class="col-4"></div>
 
       <!-- <button mat-raised-button color="primary" style="background-color: black;">Save Timesheet</button> -->
@@ -419,14 +458,21 @@
         color="primary"
         style="margin-left: 10%;"
         [disabled]="disableSaveButton"
-        (click)="modifyAndApprove()"
+        (click)="showModal()"
       >
       <div *ngIf="showBtnLoader" class="spinner-grow text-light" role="status">
         <span class="sr-only">Loading...</span>
       </div>
-        Modify & Approve
+        Save Timesheet
       </button>
+      <nz-modal [nzFooter]=null [(nzVisible)]="isVisible" nzTitle="Save or Modify Timesheet" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container>"
+        <button nz-button nzType="primary" style="background-color: #3f51b5;margin-left: 20%;" (click)="modifyTimesheetOnly()">Modify Only</button>
+        <button nz-button nzType="primary" style="background-color: #3f51b5;margin-left: 5%;" (click)="modifyAndApproveTimesheetOnly()">Modify & Approve</button>
+        </ng-container>
+      </nz-modal>
       <!-- <button mat-raised-button color="warn" style="margin-left: 1%;">Disapprove</button> -->
     </div>
+  </div>
   </mat-card>
 </div>

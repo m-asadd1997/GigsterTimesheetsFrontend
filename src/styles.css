@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-button-toggle-button:focus {
+    outline: none;
+  }
+
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
+    outline: none !important;
+}
+.mat-button.mat-warn, .mat-icon-button.mat-warn, .mat-stroked-button.mat-warn{
+    outline: none !important;
+}
+.mat-icon-button{
+    outline: none !important;
+}
+
+.ant-modal-close-x :focus{
+    outline: none !important;
+}

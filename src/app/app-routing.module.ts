@@ -17,6 +17,7 @@ import { AuthGuard } from './auth.guard';
 import { PreviousTimesheetsComponent } from './previous-timesheets/previous-timesheets.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { ProfileViewComponent } from './profile-view/profile-view.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path:"browseProfiles",component:TestComponent
   },
+  {
+    path:'viewprofile/:id', component: ProfileViewComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true, "ADMIN":true,"SUPERVISOR":true}
+  }
+  ,
   {
 
     path:"editapplicantform/:id",component:MainScreenComponent,canActivate:[AuthGuard],data:{"EMPLOYEE":true, "ADMIN":true,"SUPERVISOR":true}

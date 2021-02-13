@@ -64,7 +64,7 @@
       <div class="row">
         <nz-modal  [(nzVisible)]="isVisible" nzTitle="Resize your image" (nzOnCancel)="handleCancel()" (nzOnOk)="updateCroppedImage()">
           <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-          [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1/1" [disabled]="true"
+          [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1/1" 
           [resizeToWidth]="100" backgroundColor="lightgray" [resizeToHeight]="100" [cropperMinWidth]="100"
           [roundCropper]="true" [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'center'"
           [style.display]="showCropper ? null : 'none'" [imageQuality]="100" (imageCropped)="imageCropped($event)"

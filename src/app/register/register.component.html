@@ -105,7 +105,10 @@
       <a style="color: steelblue;" (click)="routeToLogin()">Login now.</a>
     </div>
     <br />
+     <nz-switch [(ngModel)]="registerObj.paid" nzSize="small" name="paid" style="float: right;" (ngModelChange)="onSwitchButtonChange()"></nz-switch>
 
+      <label for="paid" style="float: right;margin-right: 2%;margin-top: 0.5%;"><b>Unpaid Breaks</b></label>
+   
     <label for="email"><b>Email</b></label>
     <input
       type="text"

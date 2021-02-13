@@ -45,7 +45,8 @@ export class LoginPageComponent implements OnInit {
           this.getImageInStorage(res,res.result.organizationName);
           sessionStorage.setItem("userType", res.result.userType);
           sessionStorage.setItem("organizationName",res.result.organizationName);
-          sessionStorage.setItem("userName",res.result.username)
+          sessionStorage.setItem("userName",res.result.username);
+          sessionStorage.setItem("paid",res.result.paid);
 
           if (res.result.userType === "ADMIN") {
 

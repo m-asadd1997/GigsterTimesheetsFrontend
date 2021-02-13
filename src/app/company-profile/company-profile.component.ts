@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Dimensions, ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
+declare var $: any;
 
 
 @Component({
@@ -270,4 +271,5 @@ export class CompanyProfileComponent implements OnInit {
     console.log('Button cancel clicked!', this.companyObj.companyimage);
     this.isVisible = false;
   }
+ 
 }

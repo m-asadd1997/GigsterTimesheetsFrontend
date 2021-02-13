@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
   repeatPassword:any;
   registerObj: Register = new Register();
   showLoading: boolean;
+  
   constructor(private router:Router,private service: ApplicantServiceService, private message: NzMessageService) { }
 
   ngOnInit(): void {
@@ -47,6 +48,10 @@ export class RegisterComponent implements OnInit {
       console.log(d)
     })
 
+  }
+
+  onSwitchButtonChange(){
+    console.log(this.registerObj.paid);
   }
 
 

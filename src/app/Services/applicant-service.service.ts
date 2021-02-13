@@ -14,16 +14,8 @@ export class ApplicantServiceService {
    url:any = environment.baseUrl;
 
    logout(router){
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('userType');
-    sessionStorage.removeItem('userId');
-    sessionStorage.removeItem('organizationName');
-    sessionStorage.removeItem('userImage');
-    sessionStorage.removeItem('companyImage')
-    sessionStorage.removeItem('userName')
-     router.navigate(['']);
+    sessionStorage.clear();
+    router.navigate(['']);
   }
 
   saveUserForm(adduserObj:any):Observable<any>{
@@ -96,6 +88,11 @@ export class ApplicantServiceService {
     return this.http.get(this.url+"api/timesheets/"+status+"/"+id);
   }
 
+  disapproveTimesheet(id,comment):Observable<any>
+  {
+    return this.http.get(this.url+"api/timesheets/addcomment/"+comment+"/"+id);
+  }
+
   modifyAndApprove(id,obj):Observable<any>{
     return this.http.put(this.url+"api/timesheets/"+id,obj)
   }
@@ -153,4 +150,9 @@ export class ApplicantServiceService {
     return this.http.post(this.url+"api/forgotpassword/savepass",obj)
   }
 
+  downloadPDF(id,isAll):Observable<any>{
+    return this.http.get(this.url+"api/timesheets/downloadpdf/"+isAll+"/"+id,{ responseType: 'blob'   });
+  }
+
+ 
 }

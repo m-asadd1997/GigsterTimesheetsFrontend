@@ -49,7 +49,7 @@
     data-target="#myCropImageModal" nz-button [hidden]="true" [nzType]="'primary'" ><span>Show Modal</span></button> -->
     <nz-modal  [(nzVisible)]="isVisible" nzTitle="Resize your image" (nzOnCancel)="handleCancel()" (nzOnOk)="updateCroppedImage()">
       <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-      [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1/1" [disabled]="true"
+      [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1/1"
       [resizeToWidth]="100" backgroundColor="lightgray" [resizeToHeight]="100" [cropperMinWidth]="100"
       [roundCropper]="true" [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'center'"
       [style.display]="showCropper ? null : 'none'" [imageQuality]="100" (imageCropped)="imageCropped($event)"
@@ -93,7 +93,43 @@
     <div class="col-md-6">
       <mat-card>
         <form class="example-form" #myForm="ngForm">
+          <div class="row">
+            <div class="col-md-5">
           <h3>Personal Information</h3>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <button  
+          style="font-size: smaller; float: right;"
+          mat-raised-button
+          (click)="showModalForChangePass()"
+        >  
+        <i nz-icon nzType="setting" nzTheme="outline"></i>    
+          Change Password?
+        </button>
+          <nz-modal [(nzVisible)]="isVisibleForChangePass" nzTitle="Change Password for timesheets" (nzOnCancel)="handleCancelForChangePass()" (nzOnOk)="handleOkForChangePass()">
+            <div class="row" *ngIf="!loaderForChangePass">
+              <div class="col-md-12">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Password</mat-label>
+                  <input
+                    style="width: 100%;"
+                    matInput
+                    placeholder="New Password"
+                    [(ngModel)]="newPassObj.password"
+                    name="password"
+                    [type]="typeChange"
+                    
+                  />
+                  <i nz-icon style="float: right;" nzType="eye" nzTheme="outline" (click)="onToggleShowPassword()"></i>
+                </mat-form-field>
+              
+              </div>
+            </div>
+            <nz-spin nzSimple *ngIf="loaderForChangePass" style="margin-left: 45%;margin-top: 10%;" [nzSize]="'large'" nzTip="Loading..."></nz-spin>
+          </nz-modal>
+        </div>
+      </div>
           <div class="row">
             <div class="col-md-12">
               <mat-form-field class="example-full-width">
@@ -126,6 +162,8 @@
               </mat-form-field>
             </div>
           </div>
+
+
 
           <div class="row">
             <div class="col-md-12">

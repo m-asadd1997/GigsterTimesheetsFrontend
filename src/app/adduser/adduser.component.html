@@ -51,7 +51,11 @@
   <div  style="font-size: large;">
     <img src = "assets/icons8-contacts-30.png" > 
     <span><b>Add User</b></span>
+    <nz-switch [(ngModel)]="adduserobj.paid" nzSize="small" name="paid" style="float: right;" (ngModelChange)="onSwitchButtonChange()"></nz-switch>
+
+  <label for="paid" style="float: right;margin-right: 2%;margin-top: 0.5%;font-size: small;"><b>Unpaid Breaks</b></label>
   </div>
+ 
   <hr />
   <form class="example-form" #myForm="ngForm">
     <div class="row">
@@ -79,12 +83,24 @@
       </div>
       </mat-form-field>
     </div>
-    <div>
-      <mat-form-field class="example-full-width" style="width: 100%;">
-        <!-- <mat-label>Favorite food</mat-label> -->
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" placeholder="Password" name = "password" [(ngModel)]=adduserobj.password />
+    <!-- <div>
+      <mat-form-field class="example-full-width" style="width: 60%;">
+       
+        <input matInput [type]="typeChange" placeholder="Password" placeholder="Password" name = "password" [(ngModel)]=adduserobj.password />
+        <i nz-icon style="float: right;" nzType="eye" nzTheme="outline" (click)="onToggleShowPassword()"></i>
+
       </mat-form-field>
-    </div>
+      <button
+     
+      mat-button
+    
+      style="margin-left: 5%;font-size: smaller;"
+      (click)="generatePassword();"
+    > 
+      Generate password
+    </button>
+
+    </div> -->
    
     <div>
       <mat-form-field class="example-full-width" style="width: 100%;">

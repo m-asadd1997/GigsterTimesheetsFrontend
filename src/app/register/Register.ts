@@ -6,4 +6,5 @@ export class Register{
 	active:Boolean = true;
 	userType:String;
 	organizationName:String;
+	paid:Boolean = false;
 }

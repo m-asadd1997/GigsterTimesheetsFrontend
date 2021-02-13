@@ -7,6 +7,7 @@ export class adduser{
     password: string;
     userType: string;
     organizationName:String;
+    paid:Boolean = false;
     // active:boolean = true;
 
 }

@@ -32,9 +32,17 @@ export class AdduserComponent implements OnInit {
     if(this.id){
       this.getUserById()
     }
+   this.getItemsFromSessionStorage();
+  }
+
+  getItemsFromSessionStorage(){
     this.userImage = sessionStorage.getItem("companyImage");
     this.adduserobj.organizationName = sessionStorage.getItem("organizationName")
+    this.adduserobj.paid = (sessionStorage.getItem("paid") === "true") ? true : false;
+    console.log("paid ====>",this.adduserobj.paid);
+    
   }
+
   goToProfiles(){
     this.router.navigate(['applicantForm'])
   }
@@ -119,6 +127,29 @@ export class AdduserComponent implements OnInit {
     })
   }
 
+   generatePassword() {
+    var length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    this.adduserobj.password = retVal;
+}
+
+typeChange = "password";
+onToggleShowPassword(){
+  if(this.typeChange === "password"){
+    this.typeChange = "text"
+  }
+  else if(this.typeChange === "text"){
+    this.typeChange = "password"
+  }
+}
+
+onSwitchButtonChange(){
+  console.log(this.adduserobj.paid);
+}
   
 
 }

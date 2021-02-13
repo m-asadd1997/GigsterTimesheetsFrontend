@@ -44,6 +44,8 @@ export class SupervisorEditComponent implements OnInit {
   type: string;
   showBtnLoader= false;
   hideButton = true;
+  paid :Boolean;
+  isVisible = false;
   constructor(private activateRoute: ActivatedRoute,private service: ApplicantServiceService,private message: NzMessageService,private router: Router) { }
 
   ngOnInit(): void {
@@ -80,6 +82,8 @@ export class SupervisorEditComponent implements OnInit {
     this.userName = sessionStorage.getItem("userName")
     this.type = sessionStorage.getItem("userType").toLowerCase();
   this.userType = this.type.charAt(0).toUpperCase()+this.type.slice(1);
+  // this.paid = (sessionStorage.getItem("paid") === "true") ? true : false;
+
 
   }
 
@@ -88,6 +92,7 @@ export class SupervisorEditComponent implements OnInit {
     this.showForm = false;
     this.service.getTimesheetById(id).subscribe(d=>{
       this.timesheetsObj = d.result;
+      this.paid = d.result.user.paid
       this.populateDuration(d.result);
       this.calulateHours()
       this.weekId = d.result.weekId;
@@ -108,11 +113,11 @@ export class SupervisorEditComponent implements OnInit {
     
   }
 
-  modifyAndApprove(){
+  modifyAndApprove(status){
     this.calulateHours();
     this.populateTimesheetObjTotalHrs();
     this.showBtnLoader = true;
-    this.timesheetsObj.status = "Approved"
+    this.timesheetsObj.status = status
     this.timesheetsObj.dateSubmitted = this.dateFormatedDate(new Date())
     this.service.modifyAndApprove(this.id,this.timesheetsObj).subscribe(d=>{
       if(d.status == 200){
@@ -418,5 +423,27 @@ populateTimesheetObjTotalHrs(){
   this.timesheetsObj.friTotalHrs = this.hrs.friHrs;
   this.timesheetsObj.satTotalHrs = this.hrs.satHrs;
   this.timesheetsObj.sunTotalHrs = this.hrs.sunHrs;
+}
+
+showModal(): void {
+  this.isVisible = true;
+}
+
+handleOk(): void {
+  console.log('Button ok clicked!');
+  this.isVisible = false;
+}
+
+handleCancel(): void {
+  console.log('Button cancel clicked!');
+  this.isVisible = false;
+}
+
+modifyTimesheetOnly(){
+  this.modifyAndApprove("Pending")
+}
+
+modifyAndApproveTimesheetOnly(){
+  this.modifyAndApprove("Approved")
 }
 }

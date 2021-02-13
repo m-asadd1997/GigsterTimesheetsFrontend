@@ -57,9 +57,21 @@
 </nav>
 <br />
 <div class="container">
-  <h1 style="color: #6e6f6d; font-weight: 600;">
-    Previous Timesheets
-  </h1>
+
+  <div class="row">
+    <div class="col-10">
+    <h1 style="color: #6e6f6d; font-weight: 600">Previous Timesheets</h1>
+  </div>
+  <div class="col-2">
+    <button
+      mat-stroked-button
+      (click)="downloadAll()"
+      [disabled]="disableDownloadAll"
+    >
+      Download All &nbsp;<mat-icon style="font-size: 1.5 em;">save_alt</mat-icon>
+    </button>
+  </div>
+  </div>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
       <!-- Position Column -->
@@ -83,7 +95,8 @@
         <th mat-header-cell *matHeaderCellDef style="text-align: center;">
           Modified By
         </th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element" (click)="goToViewProfile(element.modifiedId)"
+        style="cursor: pointer;">
             <nz-avatar
             nzSize="small"
             nzIcon="user"
@@ -109,7 +122,8 @@
         <th mat-header-cell *matHeaderCellDef style="text-align: center;">
           Sent By
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.sentBy }}</td>
+        <td (click)="goToViewProfile(element.sentById)" mat-cell *matCellDef="let element"
+        style="cursor: pointer;">{{ element.sentBy }}</td>
       </ng-container>
       <ng-container matColumnDef="week">
         <th mat-header-cell *matHeaderCellDef style="text-align: center;">
@@ -120,7 +134,16 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action </th>
         <td mat-cell *matCellDef="let element">
-        <button mat-icon-button  color="primary" (click)="viewTimesheet(element.id)"><mat-icon>visibility</mat-icon></button> 
+        <button mat-icon-button matTooltip="View Timesheet"  color="primary" (click)="viewTimesheet(element.id)"><mat-icon>visibility</mat-icon></button> 
+        <button
+        mat-icon-button
+        matTooltip="Download"
+        color="primary"
+        (click)="downloadTimesheet(element.id,'no')"
+        
+      >
+        <mat-icon>save_alt</mat-icon>
+      </button>
     </td>
 
       </ng-container>
@@ -131,7 +154,177 @@
         style="text-align: center; overflow: auto;"
       ></tr>
     </table>
-
+    <nz-modal [nzFooter]=null [(nzVisible)]="isVisible" [nzTitle]="viewTimesheetName" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" nzWidth="800px" [nzClosable]="'false'" [nzStyle]="{ top: '20px'}">
+      <ng-container>
+        <nz-spin
+        nzSimple
+        *ngIf="showLoaderForView"
+        style="margin-left: 45%; margin-top: 10%;"
+        [nzSize]="'large'"
+         nzTip="Loading..."
+        ></nz-spin>
+        <div class="row" *ngIf="!showLoaderForView">
+          <div class="col-12">
+            <p style="color: #6e6f6d; margin-top: -3%;">
+              {{ showRangeForView }} , Week No. {{ weekId }}
+            </p>
+            <table class="table" style="text-align: center;">
+              <thead>
+                <tr style="font-size: small;">
+                  <th scope="col">Day</th>
+                  <th scope="col">Start Time</th>
+                  <th scope="col">End Time</th>              
+                  <th scope="col">Overtime</th>
+                  <th *ngIf="paid" scope="col">Break Time</th>
+                  <th scope="col">Hours</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+                <tr>
+                  <td>MONDAY</td>
+                  <td>
+                 {{timesheetsObj.mondayStartTime | timeFormat}}
+                  </td>
+                  <td>
+                  {{timesheetsObj.mondayEndTime | timeFormat}}
+                  </td>
+    
+                 
+                  <td>
+                    {{timesheetsObj.monExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                  <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                       &nbsp;<span >{{timesheetsObj.monBreakTime | timeFormat}}</span>
+                  </td>
+                  
+                  <td>{{ hrs.monHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>TUESDAY</td>
+    
+                  <td>
+                 {{timesheetsObj.tuesdayStartTime | timeFormat}}
+                  </td>
+    
+                  <td>
+                  {{timesheetsObj.tuesdayEndTime | timeFormat}}
+                  </td>
+                  
+                  <td>
+                    {{timesheetsObj.tueExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                    <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                         &nbsp;<span >{{timesheetsObj.tueBreakTime | timeFormat}}</span>
+                    </td>
+                    <td>{{ hrs.tuesHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>WEDNESDAY</td>
+                  <td>
+                  {{timesheetsObj.wednesdayStartTime | timeFormat}}
+                  </td>
+                  <td>
+                  {{timesheetsObj.wednesdayEndTime | timeFormat}}
+                  </td>
+                  
+                  <td>
+                    {{timesheetsObj.wedExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                    <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                         &nbsp;<span >{{timesheetsObj.wedBreakTime | timeFormat}}</span>
+                    </td>
+                    <td>{{ hrs.wedHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>THURSDAY</td>
+                  <td>
+                  {{timesheetsObj.thursdayStartTime | timeFormat}}
+                  </td>
+                  <td>
+                  {{timesheetsObj.thursdayEndTime | timeFormat}}
+                  </td>
+                  
+                  <td>
+                    {{timesheetsObj.thursExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                    <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                         &nbsp;<span >{{timesheetsObj.thursBreakTime | timeFormat}}</span>
+                    </td>
+                    <td>{{ hrs.thursHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>FRIDAY</td>
+                  <td>
+                    {{timesheetsObj.fridayStartTime | timeFormat}}
+                  </td>
+                  <td>
+                  {{timesheetsObj.fridayEndTime | timeFormat}}
+                  </td>
+                  
+                  <td>
+                    {{timesheetsObj.friExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                    <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                         &nbsp;<span >{{timesheetsObj.friBreakTime | timeFormat}}</span>
+                    </td>
+                    <td>{{ hrs.friHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>SATURDAY</td>
+                  <td>
+                   {{timesheetsObj.saturdayStartTime | timeFormat}}
+                  </td>
+                  <td>
+                   {{timesheetsObj.saturdayEndTime | timeFormat}}
+                  </td>
+                  
+                  <td>
+                    {{timesheetsObj.satExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                    <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                         &nbsp;<span >{{timesheetsObj.satBreakTime | timeFormat}}</span>
+                    </td>
+                    <td>{{ hrs.satHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>SUNDAY</td>
+                  <td>
+                    {{timesheetsObj.sundayStartTime | timeFormat}}
+                  </td>
+                  <td>
+                    {{timesheetsObj.sundayEndTime | timeFormat}}
+                  </td>
+                  
+                  <td>
+                    {{timesheetsObj.sunExtraHrs | timeFormat}}
+                  </td>
+                  <td *ngIf="paid">
+                    <i nz-icon nzType="clock-circle" nzTheme="outline" style="font-size: larger;"></i>
+                         &nbsp;<span >{{timesheetsObj.sunBreakTime | timeFormat}}</span>
+                    </td>
+                    <td>{{ hrs.sunHrs | timeFormat}}</td>
+                </tr>
+                <tr>
+                  <td>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td>Total Hours : {{ totalHrs }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+    </nz-modal>
     <mat-paginator
       #scheduledOrdersPaginator
       [pageSize]="5"
